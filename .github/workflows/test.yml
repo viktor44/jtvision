@@ -45,4 +45,6 @@ jobs:
 
       - name: Deploy
         run: |
-          mvn deploy --batch-mode --no-transfer-progress -DskipTests -X
+          cat ~/.m2/settings.xml;
+
+          mvn deploy --batch-mode --no-transfer-progress -DskipTests
