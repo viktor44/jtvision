@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.platform;
 
 import static org.viktor44.jtvision.core.EventCodes.evKeyDown;
@@ -36,10 +40,10 @@ import org.viktor44.jtvision.core.MouseEvent;
 import org.viktor44.jtvision.util.SystemUtils;
 
 /**
- * Platform-level input event queue for the Turbo Vision Java port.
+ * Platform-level input event queue.
  * <p>
  * EventQueue bridges raw terminal or Win32 console input into the
- * {@link JtvEvent} objects consumed by the Turbo Vision event loop
+ * {@link JtvEvent} objects consumed by the JT Vision event loop
  * ({@code TProgram.getEvent}). It is a pure static utility class: all state
  * is held in static fields and all methods are static.
  * 

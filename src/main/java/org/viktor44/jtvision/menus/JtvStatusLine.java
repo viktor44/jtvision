@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.menus;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmCommandSetChanged;
@@ -28,7 +32,7 @@ import org.viktor44.jtvision.views.JtvView;
 /**
  * The application status line, typically displayed at the bottom of the screen.
  * <p>
- * TStatusLine renders a single row of {@link JtvStatusItem} labels and an
+ * JtvStatusLine renders a single row of {@link JtvStatusItem} labels and an
  * optional context-sensitive hint string. It is normally owned by the
  * application group and is one of the three standard application sub-views
  * (together with the menu bar and desktop).

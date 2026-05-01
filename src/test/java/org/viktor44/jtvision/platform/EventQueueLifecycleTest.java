@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.platform;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -14,7 +18,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.viktor44.jtvision.platform.EventQueue;
 
-class EventQueueLifecycleTest {
+public class EventQueueLifecycleTest {
 
     @AfterEach
     void resetEventQueueStatics() throws Exception {
@@ -50,7 +54,7 @@ class EventQueueLifecycleTest {
     }
 
     @Test
-    void shutdownForceClosesBlockedInputAndStopsReaderThread() throws Exception {
+    public void shutdownForceClosesBlockedInputAndStopsReaderThread() throws Exception {
         BlockingInputStream stream = new BlockingInputStream();
         Thread reader = startBlockedReader(stream);
 
@@ -71,7 +75,7 @@ class EventQueueLifecycleTest {
     }
 
     @Test
-    void suspendClosesTtyInputAndStopsReaderThread() throws Exception {
+    public void suspendClosesTtyInputAndStopsReaderThread() throws Exception {
         BlockingInputStream stream = new BlockingInputStream();
         Thread reader = startBlockedReader(stream);
 

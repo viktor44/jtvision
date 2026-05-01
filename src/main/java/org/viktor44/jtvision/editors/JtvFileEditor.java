@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.editors;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmCancel;
@@ -44,7 +48,7 @@ import lombok.Getter;
 /**
  * A file-backed editor that loads and saves text files.
  *
- * <p>{@code TFileEditor} extends {@link JtvEditor} with file I/O, search-and-replace dialogs,
+ * <p>{@code JtvFileEditor} extends {@link JtvEditor} with file I/O, search-and-replace dialogs,
  * and {@code cmSave}/{@code cmSaveAs} command handling.  It is normally hosted inside a
  * {@link JtvEditWindow}, which adds a window frame, scroll bars, and an indicator.
  *

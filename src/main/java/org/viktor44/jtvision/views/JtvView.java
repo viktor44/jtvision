@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.views;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmCancel;
@@ -61,14 +65,14 @@ import org.viktor44.jtvision.core.JtvScreenCell;
 import org.viktor44.jtvision.platform.Screen;
 
 /**
- * Abstract base class for all Turbo Vision views.
+ * Abstract base class for all JT Vision views.
  * <p>
- * TView represents an empty rectangular region of the screen. It is the
- * common ancestor of every visible object in the Turbo Vision hierarchy
+ * JtvView represents an empty rectangular region of the screen. It is the
+ * common ancestor of every visible object in the JT Vision hierarchy
  * and contains all the fundamental screen-management methods and fields
  * used by dialogs, windows, controls, and the application itself.
  * <p>
- * Although you can instantiate a plain TView for prototyping, it is
+ * Although you can instantiate a plain JtvView for prototyping, it is
  * usually subclassed. Subclasses override {@link #draw()} to produce
  * their visual content, {@link #handleEvent(JtvEvent)} to respond to
  * events, and {@link #getPalette()} to supply a colour palette.

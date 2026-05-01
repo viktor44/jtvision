@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.views;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmScrollBarChanged;
@@ -17,7 +21,7 @@ import lombok.Setter;
 /**
  * A scrollable view that provides a viewport onto a larger virtual surface.
  * <p>
- * TScroller extends {@link JtvView} to link two optional {@link JtvScrollBar}
+ * JtvScroller extends {@link JtvView} to link two optional {@link JtvScrollBar}
  * controls to a scrolling offset ({@link #delta}) that subclasses use in
  * their {@link #draw()} method to determine which portion of a larger
  * content area to render.
@@ -25,7 +29,7 @@ import lombok.Setter;
  * <h3>How scrolling works</h3>
  * 
  * When either scroll bar's value changes, the scroll bar broadcasts
- * {@code cmScrollBarChanged}. TScroller receives this broadcast in
+ * {@code cmScrollBarChanged}. JtvScroller receives this broadcast in
  * {@link #handleEvent(JtvEvent)} and calls {@link #scrollDraw()}, which
  * reads the new values from both scroll bars, updates {@link #delta}, and
  * redraws the view. Subclasses render the part of their content starting

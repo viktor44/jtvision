@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.editors;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmUpdateTitle;
@@ -18,7 +22,7 @@ import lombok.Getter;
  * A window containing a {@link JtvFileEditor} together with horizontal and vertical scroll bars
  * and a {@link JtvIndicator}.
  *
- * <p>{@code TEditWindow} constructs all required subviews in its constructor and associates
+ * <p>{@code JtvEditWindow} constructs all required subviews in its constructor and associates
  * them with the editor.  The window title is derived from the editor's file name, or
  * {@code "Untitled"} when no file name has been set.
  *

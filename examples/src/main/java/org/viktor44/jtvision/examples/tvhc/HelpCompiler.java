@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.examples.tvhc;
 
 import java.io.BufferedReader;
@@ -14,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Help file compiler mirroring the Turbo Vision tvhc example.
+ * Help file compiler mirroring the JT Vision tvhc example.
  *
  * <p>Input: a text file with {@code .topic} directives defining help topics,
  * paragraphs of help text, and {@code {text:alias}} cross-references.
@@ -364,7 +368,7 @@ public class HelpCompiler {
             }
             line.deleteCharAt(end);      // remove '}'
             line.deleteCharAt(beg);      // remove '{'
-            // Mark spaces inside the highlighted region as 0xFF (Turbo Vision
+            // Mark spaces inside the highlighted region as 0xFF (JT Vision
             // help-viewer convention for non-breaking highlighted spaces).
             for (int k = beg; k < beg + highlightLen && k < line.length(); k++) {
                 if (line.charAt(k) == ' ') line.setCharAt(k, (char) 0xFF);

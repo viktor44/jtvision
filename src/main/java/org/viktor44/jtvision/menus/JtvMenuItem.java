@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.menus;
 
 import org.viktor44.jtvision.views.JtvView;
@@ -8,7 +12,7 @@ import lombok.Setter;
 /**
  * A single menu item record.
  * <p>
- * TMenuItem represents one entry in a {@link JtvMenu}: a selectable action,
+ * JtvMenuItem represents one entry in a {@link JtvMenu}: a selectable action,
  * a submenu trigger, or a visual separator (divider line).
  * 
  * <h3>Item kinds</h3>

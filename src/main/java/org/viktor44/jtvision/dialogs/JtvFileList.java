@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.dialogs;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmFileDoubleClicked;
@@ -17,7 +21,7 @@ import org.viktor44.jtvision.views.JtvScrollBar;
 /**
  * A sorted list box that displays files and directories for a file dialog.
  * <p>
- * TFileList extends {@link JtvSortedListBox} to show the contents of a directory
+ * JtvFileList extends {@link JtvSortedListBox} to show the contents of a directory
  * filtered by a wildcard pattern. It displays:
  * <ul>
  *   <li>A {@code ".."} parent-directory entry (always first).</li>

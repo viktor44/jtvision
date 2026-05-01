@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.examples.avscolor;
 
 import java.awt.image.BufferedImage;
@@ -9,7 +13,7 @@ import javax.imageio.ImageIO;
  * Terminal color quantization demo.
  *
  * A Java port of the avscolor example: applies the terminal color quantizations
- * used by Turbo Vision to an RGB image file. Supports four modes:
+ * used by JT Vision to an RGB image file. Supports four modes:
  *   indexed8   - 8-color palette, stippled for bold rows
  *   indexed16  - 16-color palette
  *   indexed256 - xterm 256-color palette

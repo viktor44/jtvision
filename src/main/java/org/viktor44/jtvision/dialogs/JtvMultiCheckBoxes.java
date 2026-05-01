@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.dialogs;
 
 import org.viktor44.jtvision.core.JtvRect;
@@ -5,7 +9,7 @@ import org.viktor44.jtvision.core.JtvRect;
 /**
  * A cluster of multi-state check-box controls.
  * <p>
- * TMultiCheckBoxes extends {@link JtvCluster} to support items with more than two
+ * JtvMultiCheckBoxes extends {@link JtvCluster} to support items with more than two
  * states (checked/unchecked). Each item occupies a fixed number of bits in the
  * inherited 32-bit {@link JtvCluster#value} field. Pressing an item cycles it
  * through {@code selRange} states.

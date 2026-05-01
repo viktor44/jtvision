@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.dialogs;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmColorBackgroundChanged;
@@ -11,7 +15,7 @@ import org.viktor44.jtvision.core.JtvRect;
 /**
  * A radio-button cluster for selecting monochrome text attributes.
  * <p>
- * TMonoSelector is a specialised {@link JtvCluster} used by {@link JtvColorDialog} on
+ * JtvMonoSelector is a specialised {@link JtvCluster} used by {@link JtvColorDialog} on
  * monochrome displays (when {@code showMarkers} is {@code true}). It offers five
  * predefined text attribute choices: Normal, Highlight, Underline, Inverse, and Bold.
  * <p>

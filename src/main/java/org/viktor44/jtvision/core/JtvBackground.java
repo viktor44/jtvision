@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.core;
 
 import static org.viktor44.jtvision.core.ViewFlags.gfGrowHiX;
@@ -14,7 +18,7 @@ import lombok.Setter;
  * {@code TBackground} fills its entire area with a single repeating {@link #pattern}
  * character drawn in palette color 1.  By default the desktop uses
  * {@link JtvDesktop#defaultBkgrnd} (light-shade block {@code ░}, CP437 {@code 0xB0}) as the
- * pattern, giving the classic Turbo Vision appearance.
+ * pattern, giving the classic JT Vision appearance.
  * <p>
  * To customise the desktop background, replace the factory passed to the
  * {@link JtvDesktop} constructor or override {@link JtvDesktop#initBackground}.

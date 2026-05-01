@@ -1,10 +1,14 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.core;
 
 /**
  * A rectangle defined by two {@link JtvPoint} corner coordinates.
  *
  * <p>Field {@link #a} holds the upper-left corner and {@link #b} holds the lower-right corner.
- * Every Turbo Vision view is rectangular: their constructors accept a {@code TRect} parameter
+ * Every JT Vision view is rectangular: their constructors accept a {@code JtvRect} parameter
  * (conventionally named {@code Bounds}) that determines the region the view covers.
  * {@code TRect} objects are not views themselves and cannot draw.
  *

@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.views;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmCancel;
@@ -36,7 +40,7 @@ import org.viktor44.jtvision.platform.Screen;
 /**
  * A container view that owns and manages an ordered list of child views.
  * <p>
- * TGroup extends {@link JtvView} to hold a dynamically chained list of
+ * JtvGroup extends {@link JtvView} to hold a dynamically chained list of
  * related views. It handles:
  * <ul>
  *   <li><b>Insertion and removal</b> — {@link #insert(JtvView)},

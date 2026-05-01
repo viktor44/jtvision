@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.menus;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmMenu;
@@ -16,7 +20,7 @@ import org.viktor44.jtvision.util.StringUtils;
 /**
  * The horizontal menu bar displayed at the top of the application screen.
  * <p>
- * TMenuBar renders its top-level {@link JtvMenuItem} list in a single
+ * JtvMenuBar renders its top-level {@link JtvMenuItem} list in a single
  * horizontal row, with each item preceded and followed by a padding space.
  * The currently highlighted item ({@link JtvMenuView#current}) is drawn in
  * the selected colour; disabled items use their own colour pair.

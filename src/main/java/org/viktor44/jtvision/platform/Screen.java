@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.platform;
 
 import org.fusesource.jansi.Ansi;
@@ -15,7 +19,7 @@ import java.io.PrintStream;
 /**
  * Low-level terminal screen manager for the jtvision TUI framework.
  * <p>
- * Screen corresponds to the Turbo Vision {@code TScreen} unit: it owns the
+ * Screen corresponds to the JT Vision {@code Screen} unit: it owns the
  * physical terminal surface, maintains the logical {@link #screenBuffer} of
  * {@link JtvScreenCell} objects, and provides a dirty-cell optimised flush that
  * converts the buffer to ANSI escape sequences.
@@ -46,7 +50,7 @@ import java.io.PrintStream;
  * 
  * <h3>Colour mapping</h3>
  * 
- * Turbo Vision uses the CGA/BIOS 4-bit attribute byte: bits 0–3 are the
+ * JT Vision uses the CGA/BIOS 4-bit attribute byte: bits 0–3 are the
  * foreground colour index (0–15) and bits 4–6 are the background colour index
  * (0–7). {@link #ANSI_FG} and {@link #ANSI_BG} translate these indices to the
  * corresponding ANSI SGR colour codes.
@@ -75,7 +79,7 @@ public class Screen {
      * The current terminal width in columns.
      * <p>
      * Populated by {@link #detectSize()} and kept in sync with
-     * {@link #screenBuffer}. The Turbo Vision default is 80.
+     * {@link #screenBuffer}. The JT Vision default is 80.
      */
     public static int screenWidth = 80;
 
@@ -83,7 +87,7 @@ public class Screen {
      * The current terminal height in rows.
      * <p>
      * Populated by {@link #detectSize()} and kept in sync with
-     * {@link #screenBuffer}. The Turbo Vision default is 25.
+     * {@link #screenBuffer}. The JT Vision default is 25.
      */
     public static int screenHeight = 25;
 

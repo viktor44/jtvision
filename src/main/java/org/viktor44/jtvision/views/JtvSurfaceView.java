@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.views;
 
 import org.viktor44.jtvision.core.JtvColorAttr;
@@ -9,7 +13,7 @@ import org.viktor44.jtvision.core.JtvScreenCell;
 /**
  * A view that renders a {@link JtvDrawSurface} with a scroll offset.
  * <p>
- * TSurfaceView maps a rectangular window onto a {@link JtvDrawSurface}
+ * JtvSurfaceView maps a rectangular window onto a {@link JtvDrawSurface}
  * cell buffer. The {@link #delta} field defines the top-left corner of
  * the visible region within the surface. Cells that lie outside the
  * surface bounds are filled with the background colour from palette

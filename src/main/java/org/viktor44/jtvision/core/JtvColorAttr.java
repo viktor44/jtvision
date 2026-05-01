@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.core;
 
 /**
@@ -9,8 +13,8 @@ package org.viktor44.jtvision.core;
  *   <li>Bits 7–4 (high nibble): background color index (0–7; bit 7 may enable blinking)</li>
  * </ul>
  * The 16 standard color constants defined here correspond to the IBM PC BIOS color palette.
- * Use {@link #TColorAttr(int, int)} to build an attribute from separate foreground and
- * background values, or pass the raw packed byte directly to {@link #TColorAttr(int)}.
+ * Use {@link #JtvColorAttr(int, int)} to build an attribute from separate foreground and
+ * background values, or pass the raw packed byte directly to {@link #JtvColorAttr(int)}.
  */
 public class JtvColorAttr {
     /** Black (0x00). */

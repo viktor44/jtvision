@@ -1,7 +1,11 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.util;
 
 /**
- * String utility functions ported from Turbo Vision.
+ * String utility functions ported from JT Vision.
  */
 public final class StringUtils {
 

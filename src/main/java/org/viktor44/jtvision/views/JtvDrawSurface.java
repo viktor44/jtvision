@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.views;
 
 import org.viktor44.jtvision.core.JtvColorAttr;
@@ -7,7 +11,7 @@ import org.viktor44.jtvision.core.JtvScreenCell;
 /**
  * A two-dimensional off-screen cell buffer used as a drawing surface.
  * <p>
- * TDrawSurface stores a rectangular grid of {@link JtvScreenCell} objects
+ * JtvDrawSurface stores a rectangular grid of {@link JtvScreenCell} objects
  * laid out in row-major order. It is not a view itself — it has no parent,
  * no event handling, and no palette. Its primary consumer is
  * {@link JtvSurfaceView}, which maps a scrollable viewport onto a surface

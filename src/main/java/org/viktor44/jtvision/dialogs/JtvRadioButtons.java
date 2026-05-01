@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.dialogs;
 
 import org.viktor44.jtvision.core.JtvRect;
@@ -5,7 +9,7 @@ import org.viktor44.jtvision.core.JtvRect;
 /**
  * A cluster of mutually exclusive radio-button controls.
  * <p>
- * TRadioButtons is a specialised {@link JtvCluster} where only one item can be
+ * JtvRadioButtons is a specialised {@link JtvCluster} where only one item can be
  * selected at a time. The inherited {@link JtvCluster#value} field stores the
  * zero-based index of the currently selected item. Pressing or moving to an item
  * sets {@code value} to that item's index.

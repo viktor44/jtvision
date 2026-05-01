@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.views;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmOutlineItemSelected;
@@ -24,7 +28,7 @@ import org.viktor44.jtvision.core.JtvRect;
  * <p>
  * Abstract base class for tree-outline views.
  * <p>
- * TOutlineViewer extends {@link JtvScroller} to display a hierarchical tree
+ * JtvOutlineViewer extends {@link JtvScroller} to display a hierarchical tree
  * structure, with each node rendered as a graph prefix (branch lines and
  * expand/collapse glyphs) followed by the node's text label.
  * 

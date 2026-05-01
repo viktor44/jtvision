@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.dialogs;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmCancel;
@@ -21,7 +25,7 @@ import org.viktor44.jtvision.views.JtvScrollBar;
 /**
  * The list-viewer component inside a {@link JtvHistoryWindow}.
  * <p>
- * THistoryViewer displays the history entries for a given history ID in
+ * JtvHistoryViewer displays the history entries for a given history ID in
  * reverse-chronological order (most recent first). Selecting an entry — either
  * by pressing Enter, double-clicking, or calling {@link #selectItem(int)} —
  * ends the modal state with {@code cmOK}. Pressing Escape or receiving a

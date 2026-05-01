@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.dialogs;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmReceivedFocus;
@@ -20,7 +24,7 @@ import org.viktor44.jtvision.views.JtvView;
 /**
  * A text label that acts as a proxy for another control.
  * <p>
- * TLabel serves two purposes: it displays an identifying text string next to
+ * JtvLabel serves two purposes: it displays an identifying text string next to
  * a linked control, and it allows the user to focus the linked control either
  * by clicking the label or by pressing its Alt+letter hot-key.
  * <p>

@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.views;
 
 import org.viktor44.jtvision.core.JtvRect;
@@ -5,9 +9,9 @@ import org.viktor44.jtvision.core.JtvRect;
 /**
  * Abstract base class for text-output views that extend {@link JtvScroller}.
  * <p>
- * TTextDevice provides a minimal streaming-text interface on top of a
+ * JtvTextDevice provides a minimal streaming-text interface on top of a
  * scrollable viewport. Concrete subclasses implement {@link #doSputn(String)}
- * to store and display the incoming text; TTextDevice supplies the higher-level
+ * to store and display the incoming text; JtvTextDevice supplies the higher-level
  * {@link #write(String)} entry point and the {@link #overflow(int)} overflow
  * callback.
  * <p>

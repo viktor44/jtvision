@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.help;
 
 import static org.viktor44.jtvision.core.ViewFlags.ofCentered;
@@ -13,7 +17,7 @@ import org.viktor44.jtvision.views.JtvWindow;
 /**
  * A centred, non-numbered help window that hosts a {@link JtvHelpViewer}.
  * <p>
- * THelpWindow is a standard {@link JtvWindow} descendant that wraps a
+ * JtvHelpWindow is a standard {@link JtvWindow} descendant that wraps a
  * {@link JtvHelpViewer} together with keyboard-driven horizontal and vertical
  * scroll bars. It is the top-level container shown when context-sensitive
  * help is requested by the application.

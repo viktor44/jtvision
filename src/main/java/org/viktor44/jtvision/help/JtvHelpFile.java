@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.help;
 
 import java.io.BufferedInputStream;
@@ -13,7 +17,7 @@ import java.util.Map;
 /**
  * A binary help-file loader and topic registry for the JTVision help system.
  * <p>
- * THelpFile reads a file in the custom JTVHELP binary format, parses each
+ * JtvHelpFile reads a file in the custom JTVHELP binary format, parses each
  * help topic together with its paragraph text and cross-references, and
  * stores them in an internal map keyed by integer help-context IDs.
  * <p>

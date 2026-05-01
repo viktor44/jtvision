@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.views;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmScrollBarChanged;
@@ -40,7 +44,7 @@ import lombok.Getter;
  * <p>
  * A horizontal or vertical scroll bar control.
  * <p>
- * TScrollBar provides a standard scrolling control that can be oriented
+ * JtvScrollBar provides a standard scrolling control that can be oriented
  * either horizontally (width &gt; 1) or vertically (width == 1). The
  * orientation is determined automatically from the bounding rectangle
  * supplied at construction time.

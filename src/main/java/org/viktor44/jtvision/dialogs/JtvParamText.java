@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.dialogs;
 
 import org.viktor44.jtvision.core.JtvRect;
@@ -5,7 +9,7 @@ import org.viktor44.jtvision.core.JtvRect;
 /**
  * A {@link JtvStaticText} variant that supports runtime parameter substitution.
  * <p>
- * TParamText allows a static text view to display text with substituted parameters,
+ * JtvParamText allows a static text view to display text with substituted parameters,
  * similar to {@link String#format}. The text string is treated as a format template
  * and the parameters supplied via {@link #setParams(Object...)} are merged into it
  * when the view is drawn.

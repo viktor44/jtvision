@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.menus;
 
 import java.util.ArrayList;
@@ -9,7 +13,7 @@ import lombok.Setter;
 /**
  * Represents one level of a menu tree.
  * <p>
- * TMenu holds the item list of {@link JtvMenuItem} records that form a single
+ * JtvMenu holds the item list of {@link JtvMenuItem} records that form a single
  * menu level — either the top-level menu bar or one drop-down submenu.
  * A {@link JtvMenuView} (and its concrete descendants {@link JtvMenuBar} and
  * {@link JtvMenuBox}) owns a TMenu and iterates over {@link #items} to render

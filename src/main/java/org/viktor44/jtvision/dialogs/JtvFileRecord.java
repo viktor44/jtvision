@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.dialogs;
 
 import java.io.File;
@@ -7,7 +11,7 @@ import lombok.Getter;
 /**
  * An immutable snapshot of a single file-system entry used by {@link JtvFileList}.
  * <p>
- * TFileRecord holds the metadata for one file or directory: its display name,
+ * JtvFileRecord holds the metadata for one file or directory: its display name,
  * absolute path, whether it is a directory, its size in bytes, and its last-modified
  * timestamp. The special name {@code ".."} is used for the parent directory entry.
  * <p>

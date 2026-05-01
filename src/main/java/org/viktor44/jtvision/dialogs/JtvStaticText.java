@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.dialogs;
 
 import org.viktor44.jtvision.core.JtvColorAttr;
@@ -10,7 +14,7 @@ import org.viktor44.jtvision.views.JtvView;
 /**
  * A non-interactive view that displays a fixed text string.
  * <p>
- * TStaticText encapsulates a text string in a view, displaying it within its
+ * JtvStaticText encapsulates a text string in a view, displaying it within its
  * bounding rectangle. It is not selectable, so the user never actively interacts
  * with it. Use this view for labels, instructions, or other fixed text elements
  * in dialog boxes.

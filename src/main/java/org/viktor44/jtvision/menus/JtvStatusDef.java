@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.menus;
 
 import java.util.ArrayList;
@@ -8,7 +12,7 @@ import lombok.Getter;
 /**
  * A help-context-sensitive status line definition.
  * <p>
- * TStatusDef pairs a range of help context values ({@link #min} to
+ * JtvStatusDef pairs a range of help context values ({@link #min} to
  * {@link #max}) with a list of {@link JtvStatusItem} records. A
  * {@link JtvStatusLine} holds an ordered list of TStatusDef records and
  * displays the items belonging to the <em>first</em> definition whose
@@ -17,18 +21,18 @@ import lombok.Getter;
  * <h3>How context selection works</h3>
  * {@link JtvStatusLine#update()} queries the focused view's help context,
  * then walks the {@link JtvStatusLine}'s definition list and selects the
- * first TStatusDef for which
+ * first JtvStatusDef for which
  * {@code helpCtx >= min && helpCtx <= max}. The matched definition's
  * {@link #items} list is then rendered on the status line.
  * <p>
  * A catch-all definition covering all contexts can be created with
  * {@code min = 0} and {@code max = Integer.MAX_VALUE}.
  * <p>
- * TStatusDef records are typically added to a status line in sequence:
+ * JtvStatusDef records are typically added to a status line in sequence:
  * <pre>
- * TStatusLine line = new TStatusLine(bounds,
- *     new TStatusDef(hcNoContext, hcNoContext, defaultItems))
- *         .addDefinition(new TStatusDef(hcFileOpen, hcFileOpen, fileOpenItems));
+ * JtvStatusLine line = new JtvStatusLine(bounds,
+ *     new JtvStatusDef(hcNoContext, hcNoContext, defaultItems))
+ *         .addDefinition(new JtvStatusDef(hcFileOpen, hcFileOpen, fileOpenItems));
  * </pre>
  *
  * @see JtvStatusItem

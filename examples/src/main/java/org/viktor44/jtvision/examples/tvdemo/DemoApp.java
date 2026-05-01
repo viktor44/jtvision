@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.examples.tvdemo;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmCancel;
@@ -76,7 +80,7 @@ import org.viktor44.jtvision.views.JtvView;
 import org.viktor44.jtvision.views.JtvWindow;
 
 /**
- * Turbo Vision demo application port.
+ * JT Vision demo application port.
  */
 public class DemoApp extends JtvApplication {
 

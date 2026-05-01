@@ -1,9 +1,13 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.dialogs;
 
 /**
  * A data object representing a single entry in the directory tree list.
  * <p>
- * TDirEntry pairs a formatted display string (with indentation and prefix
+ * JtvDirEntry pairs a formatted display string (with indentation and prefix
  * characters that visualise the tree structure) with the absolute path of the
  * directory it represents. Instances are created internally by
  * {@link JtvDirListBox} and passed as event payloads in {@code cmChangeDir}

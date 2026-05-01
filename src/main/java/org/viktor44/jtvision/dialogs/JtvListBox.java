@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.dialogs;
 
 import java.util.ArrayList;
@@ -10,7 +14,7 @@ import org.viktor44.jtvision.views.JtvScrollBar;
 /**
  * A scrollable list-box control backed by a {@link List} of strings.
  * <p>
- * TListBox is a concrete descendant of {@code TListViewer} that stores its
+ * JtvListBox is a concrete descendant of {@code TListViewer} that stores its
  * items in a {@link List}. For many use cases the default implementation
  * requires no subclassing. When items are not plain strings, override
  * {@link #getText(int, int)} to convert items to display text.

@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.dialogs;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmCancel;
@@ -16,7 +20,7 @@ import org.viktor44.jtvision.views.JtvWindow;
 /**
  * The popup window that hosts a {@link JtvHistoryViewer}.
  * <p>
- * THistoryWindow is a borderless, number-less window created automatically by
+ * JtvHistoryWindow is a borderless, number-less window created automatically by
  * {@link JtvHistory#initHistoryWindow(JtvRect)} when the user requests the history
  * pick-list. It contains a {@link JtvHistoryViewer} with horizontal and vertical
  * scroll bars.

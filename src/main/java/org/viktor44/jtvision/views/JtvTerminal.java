@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.views;
 
 import static org.viktor44.jtvision.core.ViewFlags.gfGrowHiX;
@@ -14,7 +18,7 @@ import org.viktor44.jtvision.core.JtvRect;
 /**
  * A scrollable terminal view that accumulates text output in a line buffer.
  * <p>
- * TTerminal extends {@link JtvTextDevice} with a concrete ring-buffer
+ * JtvTerminal extends {@link JtvTextDevice} with a concrete ring-buffer
  * implementation. Incoming text is split on newline characters into a list
  * of completed lines ({@link #lines}) plus a {@link #currentLine} that is
  * still being assembled. When the total character count exceeds

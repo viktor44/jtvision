@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.menus;
 
 import org.viktor44.jtvision.core.JtvRect;
@@ -5,7 +9,7 @@ import org.viktor44.jtvision.core.JtvRect;
 /**
  * A standalone pop-up menu box with no parent menu.
  * <p>
- * TMenuPopup is a thin convenience subclass of {@link JtvMenuBox} that sets
+ * JtvMenuPopup is a thin convenience subclass of {@link JtvMenuBox} that sets
  * {@link JtvMenuView#parentMenu} to {@code null}. It is used when a context
  * menu or free-floating menu needs to be shown without being anchored to a
  * {@link JtvMenuBar} or another {@link JtvMenuBox}.

@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.hello;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmCancel;
@@ -22,7 +26,7 @@ import org.viktor44.jtvision.menus.JtvStatusLine;
 import org.viktor44.jtvision.menus.JtvSubMenu;
 
 /**
- * Turbo Vision Hello World Demo.
+ * JT Vision Hello World Demo.
  */
 public class HelloApp extends JtvApplication {
 

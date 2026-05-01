@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.help;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmCancel;
@@ -20,7 +24,7 @@ import org.viktor44.jtvision.views.JtvScroller;
 /**
  * A scrollable viewer that renders a single {@link JtvHelpTopic}.
  * <p>
- * THelpViewer extends {@link JtvScroller} to display the word-wrapped text of a
+ * JtvHelpViewer extends {@link JtvScroller} to display the word-wrapped text of a
  * help topic and to highlight any embedded cross-references (hyperlinks).
  * It is the primary content view inside a {@link JtvHelpWindow}.
  * 

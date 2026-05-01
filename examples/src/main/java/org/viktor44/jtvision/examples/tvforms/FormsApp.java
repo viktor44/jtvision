@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.examples.tvforms;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmClose;
@@ -38,7 +42,7 @@ import org.viktor44.jtvision.util.MessageBox;
 import org.viktor44.jtvision.views.JtvView;
 
 /**
- * Turbo Vision forms demo: browse and edit a phone-directory record file.
+ * JT Vision forms demo: browse and edit a phone-directory record file.
  *
  * <p>The file path is read from argv[0] (defaults to {@code phonenum.txt}).
  * Each line is a tab-separated PhoneRecord; the list window offers New / Edit /

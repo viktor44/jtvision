@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.dialogs;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmCopy;
@@ -38,7 +42,7 @@ import lombok.Setter;
 /**
  * A single-line text editor control.
  * <p>
- * TInputLine provides a basic editable string field. It handles cursor movement,
+ * JtvInputLine provides a basic editable string field. It handles cursor movement,
  * text insertion and deletion, text selection (including Shift+arrow), overwrite
  * mode (Ins), and scrolling when the text is longer than the visible area.
  * Left and right arrow indicators ({@code ◄} / {@code ►}) appear at the edges

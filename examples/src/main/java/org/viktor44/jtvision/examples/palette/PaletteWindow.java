@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.examples.palette;
 
 import static org.viktor44.jtvision.core.ViewFlags.ofCentered;

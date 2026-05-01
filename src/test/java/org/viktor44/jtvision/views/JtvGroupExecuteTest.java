@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.views;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -13,10 +17,10 @@ import org.viktor44.jtvision.core.JtvEvent;
 import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.views.JtvGroup;
 
-class JtvGroupExecuteTest {
+public class JtvGroupExecuteTest {
 
     @Test
-    void executeHandlesRuntimeExceptionsWithoutStoppingApp() {
+    public void executeHandlesRuntimeExceptionsWithoutStoppingApp() {
         ThrowingGroup group = new ThrowingGroup();
 
         assertDoesNotThrow(group::execute);

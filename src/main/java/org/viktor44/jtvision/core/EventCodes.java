@@ -1,7 +1,11 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.core;
 
 /**
- * Event type codes and masks used in {@code TEvent.what}.
+ * Event type codes and masks used in {@code JtvEvent.what}.
  * Additional constants are jtvision extensions
  * (mouse wheel directions and richer click flags).
  */

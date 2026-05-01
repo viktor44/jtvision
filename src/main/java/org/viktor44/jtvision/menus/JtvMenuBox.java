@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.menus;
 
 import static org.viktor44.jtvision.core.ViewFlags.ofPreProcess;
@@ -12,7 +16,7 @@ import org.viktor44.jtvision.util.StringUtils;
 /**
  * A vertical drop-down or pop-up menu box.
  * <p>
- * TMenuBox renders a bordered box containing the items of a {@link JtvMenu}.
+ * JtvMenuBox renders a bordered box containing the items of a {@link JtvMenu}.
  * Each item is drawn on its own row between a top and bottom border drawn
  * with Unicode box-drawing characters. Separator items are drawn as
  * horizontal rules using the left-tee ({@code ├}), dash ({@code ─}), and

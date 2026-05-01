@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.views;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmClose;
@@ -33,7 +37,7 @@ import org.viktor44.jtvision.core.JtvRect;
 /**
  * The border and title-bar view drawn around a {@link JtvWindow}.
  * <p>
- * TFrame renders a full-perimeter border using Unicode box-drawing characters.
+ * JtvFrame renders a full-perimeter border using Unicode box-drawing characters.
  * The border uses single-line characters when the window is inactive or
  * being dragged, and double-line characters when active. Mixed-weight junction
  * glyphs (e.g. {@code ╟} / {@code ╤}) are used where {@code ofFramed}

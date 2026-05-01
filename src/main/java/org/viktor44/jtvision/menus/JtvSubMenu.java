@@ -1,19 +1,23 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.menus;
 
 /**
  * A {@link JtvMenuItem} that represents a submenu entry in a menu bar or
  * another menu box.
  * <p>
- * TSubMenu is a convenience subclass that automatically creates an empty
+ * JtvSubMenu is a convenience subclass that automatically creates an empty
  * {@link JtvMenu} as its {@link JtvMenuItem#subMenu} and provides a builder API
  * for populating it. This makes it easy to construct nested menu structures
  * in a readable, chained style:
  * <pre>
- * TSubMenu file = new TSubMenu("~F~ile", TKey.kbAltF)
- *     .addItem(new TMenuItem("~O~pen", cmFileOpen, TKey.kbF3))
- *     .addItem(new TMenuItem("~S~ave", cmFileSave, TKey.kbF2))
+ * JtvSubMenu file = new JtvSubMenu("~F~ile", JtvKey.kbAltF)
+ *     .addItem(new JtvMenuItem("~O~pen", cmFileOpen, JtvKey.kbF3))
+ *     .addItem(new JtvMenuItem("~S~ave", cmFileSave, JtvKey.kbF2))
  *     .addSeparator()
- *     .addItem(new TMenuItem("E~x~it", cmQuit, TKey.kbAltX));
+ *     .addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKey.kbAltX));
  * </pre>
  * @see JtvMenuItem
  * @see JtvMenu

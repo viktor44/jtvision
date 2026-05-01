@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.examples.tvdemo;
 
 import static org.viktor44.jtvision.core.EventCodes.evBroadcast;
@@ -17,7 +21,7 @@ import org.viktor44.jtvision.dialogs.JtvDialog;
 import org.viktor44.jtvision.views.JtvView;
 
 /**
- * Turbo Vision calc.cpp port. A 4x5 grid of broadcast buttons drives a
+ * A 4x5 grid of broadcast buttons drives a
  * {@link CalcDisplay}; the display tracks operand/operator state and
  * updates on each button press or typed key.
  */

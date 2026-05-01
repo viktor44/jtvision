@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.views;
 
 import lombok.Getter;
@@ -7,7 +11,7 @@ import lombok.Setter;
  * A general-purpose tree node used by {@link JtvOutline} and
  * {@link JtvOutlineViewer}.
  * <p>
- * TNode stores a display label and links to a sibling ({@link #next}) and a
+ * JtvNode stores a display label and links to a sibling ({@link #next}) and a
  * child list ({@link #childList}). Children are themselves TNode instances,
  * linked through their own {@code next} pointers. The {@link #expanded} flag
  * controls whether children are visible in the outline viewer.

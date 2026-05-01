@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.views;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmListItemSelected;
@@ -27,7 +31,7 @@ import org.viktor44.jtvision.core.JtvRect;
  * A scrollable list view that displays a range of selectable items in one or
  * more columns.
  * <p>
- * TListViewer provides a general-purpose list control backed by an abstract
+ * JtvListViewer provides a general-purpose list control backed by an abstract
  * {@link #getText(int, int)} method that subclasses override to supply each
  * item's display string. The viewer handles keyboard navigation (arrow keys,
  * Page Up/Down, Home, End), mouse clicks and drag-selection, and optional

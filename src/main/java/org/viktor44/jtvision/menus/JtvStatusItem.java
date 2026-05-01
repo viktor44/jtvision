@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.menus;
 
 import lombok.Getter;
@@ -5,7 +9,7 @@ import lombok.Getter;
 /**
  * A single entry in a {@link JtvStatusLine} item list.
  * <p>
- * TStatusItem combines a visual label, a keyboard hot key, and a command
+ * JtvStatusItem combines a visual label, a keyboard hot key, and a command
  * into one record. Status items serve two distinct roles:
  * <ul>
  *   <li><b>Visual label</b> — when {@link #text} is non-{@code null} it is

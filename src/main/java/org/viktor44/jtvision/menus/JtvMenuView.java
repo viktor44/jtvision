@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.menus;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmCommandSetChanged;
@@ -20,10 +24,10 @@ import org.viktor44.jtvision.views.JtvView;
 /**
  * Abstract base class for all menu view objects.
  * <p>
- * TMenuView provides the core event loop, keyboard navigation, mouse
+ * JtvMenuView provides the core event loop, keyboard navigation, mouse
  * tracking, hot-key dispatch, and command-set update logic shared by
  * {@link JtvMenuBar} (horizontal bar) and {@link JtvMenuBox} (drop-down or
- * pop-up box). Direct instances of TMenuView are not useful; use one of
+ * pop-up box). Direct instances of JtvMenuView are not useful; use one of
  * the concrete subclasses instead.
  * 
  * <h3>Menu ownership chain</h3>

@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.dialogs;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmOK;
@@ -27,7 +31,7 @@ import org.viktor44.jtvision.views.JtvView;
 /**
  * A small drop-down history picker linked to an {@link JtvInputLine}.
  * <p>
- * THistory implements a generic pick-list mechanism for recalling previous entries
+ * JtvHistory implements a generic pick-list mechanism for recalling previous entries
  * made in an associated {@link JtvInputLine}. It appears as a small button (a
  * down-arrow icon) placed immediately to the right of the input line.
  * <p>

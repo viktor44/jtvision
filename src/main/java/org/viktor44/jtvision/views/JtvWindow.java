@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.views;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmCancel;
@@ -44,7 +48,7 @@ import lombok.Setter;
 /**
  * A bordered, titled window with optional close, zoom, and resize controls.
  * <p>
- * TWindow extends {@link JtvGroup} to provide a standard Turbo Vision window.
+ * JtvWindow extends {@link JtvGroup} to provide a standard JT Vision window.
  * It automatically creates and inserts a {@link JtvFrame} that draws the
  * border, title bar, close button, zoom button, and resize corner icons.
  * 

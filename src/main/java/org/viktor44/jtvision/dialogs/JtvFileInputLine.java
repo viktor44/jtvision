@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.dialogs;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmFileFocused;
@@ -10,7 +14,7 @@ import org.viktor44.jtvision.core.JtvRect;
 /**
  * An input line that automatically updates itself when the file list focus changes.
  * <p>
- * TFileInputLine extends {@link JtvInputLine} to handle {@code cmFileFocused}
+ * JtvFileInputLine extends {@link JtvInputLine} to handle {@code cmFileFocused}
  * broadcast events from a {@link JtvFileList}. When a file or directory is focused
  * in the list and this input line does not have the selection, the input line
  * text is updated to reflect the focused item.

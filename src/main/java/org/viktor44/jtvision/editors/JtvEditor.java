@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.editors;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmBackSpace;
@@ -63,13 +67,13 @@ import org.viktor44.jtvision.views.JtvScrollBar;
 import org.viktor44.jtvision.views.JtvView;
 
 /**
- * A simple, fast text editor view for use in Turbo Vision applications.
+ * A simple, fast text editor view for use in JT Vision applications.
  * <p>
- * {@code TEditor} provides mouse support, undo, clipboard cut/copy/paste,
+ * {@code JtvEditor} provides mouse support, undo, clipboard cut/copy/paste,
  * automatic indentation, insert/overwrite toggle, key binding, and search and replace.
  * It can be used both for editing text files and for multi-line memo fields in dialog boxes.
  * <p>
- * {@code TEditor} is the base class for {@link JtvMemo} (dialog memo fields) and
+ * {@code JtvEditor} is the base class for {@link JtvMemo} (dialog memo fields) and
  * {@link JtvFileEditor} (file-backed editors).  All editing functionality is implemented
  * here; subclasses add persistence and data-transfer support.
  * <p>

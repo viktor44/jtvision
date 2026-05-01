@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.util;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmCancel;
@@ -20,9 +24,9 @@ import org.viktor44.jtvision.dialogs.JtvInputLine;
 import org.viktor44.jtvision.dialogs.JtvStaticText;
 
 /**
- * Static factory for Turbo Vision–style message boxes and input boxes.
+ * Static factory for JT Vision–style message boxes and input boxes.
  * <p>
- * This class corresponds to the Turbo Vision {@code MsgBox} unit and provides
+ * This class corresponds to the JT Vision {@code MsgBox} unit and provides
  * four public factory methods:
  * <ul>
  *   <li>{@link #messageBox(String, int)} — a centred 40×9 notification dialog.</li>

@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.dialogs;
 
 import java.util.ArrayList;
@@ -19,7 +23,7 @@ import java.awt.event.KeyEvent;
 /**
  * A list box that keeps its items in sorted order and supports incremental search.
  * <p>
- * TSortedListBox extends {@link JtvListBox} to maintain its item list in
+ * JtvSortedListBox extends {@link JtvListBox} to maintain its item list in
  * case-insensitive sorted order. It provides incremental (type-ahead) searching:
  * as the user types characters the list scrolls to the first matching item.
  * <p>

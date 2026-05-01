@@ -1,3 +1,7 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright 2026-present Viktor44
+ */
 package org.viktor44.jtvision.editors;
 
 import org.viktor44.jtvision.core.JtvEvent;
@@ -6,9 +10,9 @@ import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.views.JtvScrollBar;
 
 /**
- * A multi-line text memo field for use inside Turbo Vision dialog boxes and forms.
+ * A multi-line text memo field for use inside JT Vision dialog boxes and forms.
  *
- * <p>{@code TMemo} extends {@link JtvEditor} with data-transfer support ({@link #getDataTo},
+ * <p>{@code JtvMemo} extends {@link JtvEditor} with data-transfer support ({@link #getDataTo},
  * {@link #setDataFrom}, {@link #dataSize}) so that it can participate in the standard dialog
  * data-record mechanism.  It is typically embedded in a dialog box alongside other controls.
  *
