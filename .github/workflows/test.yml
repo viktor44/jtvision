@@ -6,9 +6,9 @@ on:
       - main
   workflow_dispatch:
 
-env:
-  MYREPO_USER: ${{ secrets.MYREPO_USER }}
-  MYREPO_PASSWORD: ${{ secrets.MYREPO_PASSWORD }}
+#env:
+#  MYREPO_USER: ${{ secrets.MYREPO_USER }}
+#  MYREPO_PASSWORD: ${{ secrets.MYREPO_PASSWORD }}
 
 jobs:
   test:
@@ -41,6 +41,11 @@ jobs:
         with:
           java-version: '8'
           distribution: 'zulu'
+          server-id: central-sonatype
+          server-username: ${{ secrets.CENTRAL_REPO_USER }}
+          server-password: ${{ secrets.CENTRAL_REPO_PASSWORD }}
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: Deploy
         run: mvn deploy --batch-mode --no-transfer-progress
