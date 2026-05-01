@@ -40,8 +40,8 @@ jobs:
           server-id: central-sonatype
           server-username: CENTRAL_REPO_USER 
           server-password: CENTRAL_REPO_PASSWORD
-          gpg-private-key: GPG_PRIVATE_KEY
-          gpg-passphrase: GPG_PASSPHRASE
+#          gpg-private-key: GPG_PRIVATE_KEY
+#          gpg-passphrase: GPG_PASSPHRASE
 
       - name: Deploy
         env:
