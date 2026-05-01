@@ -6,6 +6,10 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  MYREPO_USER: ${{ secrets.MYREPO_USER }}
+  MYREPO_PASSWORD: ${{ secrets.MYREPO_PASSWORD }}
+
 jobs:
   test:
     runs-on: ${{ matrix.os }}
