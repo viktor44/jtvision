@@ -38,8 +38,8 @@ jobs:
           java-version: '8'
           distribution: 'zulu'
           server-id: central-sonatype
-          server-username: ${{ secrets.CENTRAL_REPO_USER }}
-          server-password: ${{ secrets.CENTRAL_REPO_PASSWORD }}
+          server-username: CENTRAL_REPO_USER 
+          server-password: CENTRAL_REPO_PASSWORD
 #          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
 #          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
 
