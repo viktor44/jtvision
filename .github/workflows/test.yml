@@ -21,7 +21,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           java-version: ${{ matrix.java }}
-          distribution: 'temurin'
+          distribution: 'zulu'
 
       - name: Test
         run: mvn clean package --batch-mode --no-transfer-progress
@@ -36,7 +36,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           java-version: '8'
-          distribution: 'temurin'
+          distribution: 'zulu'
 
       - name: Deploy
         run: mvn deploy --batch-mode --no-transfer-progress
