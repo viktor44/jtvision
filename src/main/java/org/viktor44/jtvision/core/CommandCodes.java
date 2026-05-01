@@ -5,7 +5,7 @@
 package org.viktor44.jtvision.core;
 
 /**
- * Standard command codes, matching Turbo Vision conventions.
+ * Standard command codes, matching JT Vision conventions.
  */
 public final class CommandCodes {
 

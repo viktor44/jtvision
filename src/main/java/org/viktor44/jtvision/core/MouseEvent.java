@@ -89,7 +89,7 @@ public class MouseEvent {
      * Non-zero only for {@link EventCodes#evMouseWheel} events.  Direction
      * bits are defined in {@link EventCodes}: {@link EventCodes#mwUp},
      * {@link EventCodes#mwDown}, {@link EventCodes#mwLeft},
-     * {@link EventCodes#mwRight}.  Not present in the original Turbo Vision
+     * {@link EventCodes#mwRight}.
      * Pascal record.
      */
 	@Getter

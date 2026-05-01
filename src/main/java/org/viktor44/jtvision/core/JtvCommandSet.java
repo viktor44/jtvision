@@ -7,8 +7,8 @@ package org.viktor44.jtvision.core;
 /**
  * A compact set of up to 256 command codes, stored as a 256-bit array (32 bytes).
  *
- * <p>Every Turbo Vision view owns a reference to the application-wide current command set
- * ({@code TView.curCommandSet}).  Commands whose bit is <em>clear</em> are disabled, so their
+ * <p>Every JT Vision view owns a reference to the application-wide current command set
+ * ({@code JtvView.curCommandSet}).  Commands whose bit is <em>clear</em> are disabled, so their
  * associated menu items and buttons appear greyed out.  Only command codes in the range
  * {@code 0..255} can be tracked; codes outside that range are silently ignored.
  *

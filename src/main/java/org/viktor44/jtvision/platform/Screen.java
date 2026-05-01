@@ -43,7 +43,7 @@ import java.io.PrintStream;
  * 
  * <h3>Screen mode</h3>
  * 
- * {@link #screenMode} holds a Turbo Vision screen-mode constant. The default
+ * {@link #screenMode} holds a JT Vision screen-mode constant. The default
  * value {@code 0x0003} is {@code smCO80} — 80-column colour mode. Other TV
  * constants include {@code smMono} (0x0007), {@code smBW80} (0x0002), and
  * {@code smFont8x8} (0x0100).
@@ -92,10 +92,10 @@ public class Screen {
     public static int screenHeight = 25;
 
     /**
-     * The active screen mode, encoded as a Turbo Vision screen-mode constant.
+     * The active screen mode, encoded as a JT Vision screen-mode constant.
      * <p>
      * The default value {@code 0x0003} corresponds to {@code smCO80}
-     * (80-column colour mode). Other Turbo Vision constants:
+     * (80-column colour mode). Other JT Vision constants:
      * <ul>
      *   <li>{@code 0x0002} — {@code smBW80}: 80-column black-and-white.</li>
      *   <li>{@code 0x0007} — {@code smMono}: monochrome.</li>
@@ -116,7 +116,7 @@ public class Screen {
     public static JtvScreenCell[] screenBuffer;
 
     /**
-     * The cursor shape register, mirroring the Turbo Vision {@code CursorLines}
+     * The cursor shape register, mirroring the JT Vision {@code CursorLines}
      * variable. A value of {@code 0} selects the default cursor shape; other
      * values are reserved for hardware-cursor line masks in the original PC
      * BIOS interface (unused in the ANSI terminal back-end).
@@ -201,7 +201,7 @@ public class Screen {
     /**
      * ANSI SGR foreground colour codes for the 16 CGA/BIOS colour indices.
      * <p>
-     * The foreground colour index occupies bits 0–3 of a Turbo Vision
+     * The foreground colour index occupies bits 0–3 of a JT Vision
      * attribute byte. Indices 0–7 map to standard ANSI colours (SGR 30–37)
      * and indices 8–15 map to bright/high-intensity colours (SGR 90–97).
      * The ordering follows the CGA palette:
@@ -224,7 +224,7 @@ public class Screen {
     /**
      * ANSI SGR background colour codes for the 16 CGA/BIOS colour indices.
      * <p>
-     * The background colour index occupies bits 4–6 of a Turbo Vision
+     * The background colour index occupies bits 4–6 of a JT Vision
      * attribute byte (3 bits, so only indices 0–7 are valid for backgrounds).
      * Indices 0–7 map to standard ANSI background codes (SGR 40–47) and
      * indices 8–15 map to high-intensity background codes (SGR 100–107),
@@ -390,7 +390,7 @@ public class Screen {
      * The {@code mode} parameter is stored in {@link #screenMode} by the
      * caller; this method does not record it itself.
      *
-     * @param mode the Turbo Vision screen-mode constant ({@code smCO80},
+     * @param mode the JT Vision screen-mode constant ({@code smCO80},
      *             {@code smMono}, {@code smBW80}, or {@code smFont8x8})
      */
     public static void setVideoMode(int mode) {
@@ -505,7 +505,7 @@ public class Screen {
     /**
      * Fills every cell in {@link #screenBuffer} with a space character
      * ({@code ' '}) and the default attribute {@code 0x07} (light-grey
-     * foreground on black background), matching the Turbo Vision
+     * foreground on black background), matching the JT Vision
      * {@code ClearScreen} behaviour.
      * <p>
      * This does not immediately update the terminal; call
@@ -552,7 +552,7 @@ public class Screen {
      * call.
      * <p>
      * Two shapes are supported, both steady (non-blinking) to match the
-     * Turbo Vision insert/overwrite convention:
+     * JT Vision insert/overwrite convention:
      * <ul>
      *   <li>{@code true} — steady block cursor ({@code ESC[1 q}), used in
      *       overwrite mode.</li>

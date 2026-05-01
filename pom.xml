@@ -11,7 +11,10 @@
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<description></description>
+	<description>
+		A Java text UI framework. Build terminal applications with windows, dialogs, menus, 
+		status lines, and full keyboard/mouse input — cross-platform on Windows, macOS, and Linux.
+	</description>
 
 	<properties>
 		<java.version>8</java.version>

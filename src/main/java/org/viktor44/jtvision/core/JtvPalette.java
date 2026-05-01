@@ -7,7 +7,7 @@ package org.viktor44.jtvision.core;
 import lombok.Getter;
 
 /**
- * An array of color-attribute indices used by the Turbo Vision palette system.
+ * An array of color-attribute indices used by the JT Vision palette system.
  *
  * <p>Each view returns a palette from its {@code getPalette()} method.  The palette maps
  * logical color indices (1-based) to physical color attributes.  These attributes are

@@ -95,7 +95,7 @@ public class EventQueue {
 
     /**
      * The main event queue shared between input-parsing threads and the
-     * Turbo Vision event loop. Mouse and keyboard events are offered here
+     * JT Vision event loop. Mouse and keyboard events are offered here
      * by the reader threads and dequeued by {@link #getMouseEvent} and
      * {@link #getKeyEvent}.
      */
@@ -266,7 +266,7 @@ public class EventQueue {
 
     /**
      * Maximum time between two mouse-down events (in milliseconds) for them
-     * to be counted as a double-click. Analogous to the original Turbo Vision
+     * to be counted as a double-click. Analogous to the original JT Vision
      * {@code DoubleDelay} variable (which measured eighteenths of a second;
      * the default of 8 ≈ 440 ms). Defaults to 400 ms.
      */
@@ -373,7 +373,6 @@ public class EventQueue {
     /**
      * Dequeues the next keyboard event into {@code event}, or sets
      * {@code event.what} to {@code evNothing} if no keyboard event is queued.
-     * Corresponds to the original Turbo Vision {@code GetKeyEvent} procedure.
      *
      * @param event the target event object to fill in
      * @return {@code event} for convenience
@@ -1203,7 +1202,7 @@ public class EventQueue {
 
     /**
      * Converts an SGR button number (0 = left, 1 = middle, 2 = right) to
-     * the corresponding Turbo Vision {@code mbXXXX} button mask constant.
+     * the corresponding JT Vision {@code mbXXXX} button mask constant.
      *
      * @param sgrButton the SGR button index (bits 0–1 of the button byte)
      * @return {@code mbLeftButton}, {@code mbMiddleButton},
@@ -1284,7 +1283,7 @@ public class EventQueue {
     }
 
     /**
-     * Translates a Windows {@code KEY_EVENT_RECORD} into a Turbo Vision
+     * Translates a Windows {@code KEY_EVENT_RECORD} into a JT Vision
      * {@code evKeyDown} event and offers it to {@link #eventQueue}.
      * Key-down events only; key-up records are silently discarded.
      * <p>
@@ -1385,7 +1384,7 @@ public class EventQueue {
     }
 
     /**
-     * Translates a Windows {@code MOUSE_EVENT_RECORD} into a Turbo Vision
+     * Translates a Windows {@code MOUSE_EVENT_RECORD} into a JT Vision
      * mouse event and offers it to {@link #eventQueue}. Classifies the event
      * as {@code evMouseWheel}, {@code evMouseMove}, {@code evMouseDown}, or
      * {@code evMouseUp} based on the Windows event flags and button-state

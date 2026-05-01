@@ -44,9 +44,9 @@ import org.viktor44.jtvision.views.JtvView;
 import org.viktor44.jtvision.views.JtvWindow;
 
 /**
- * Abstract base class for Turbo Vision applications.
+ * Abstract base class for JT Vision applications.
  *
- * <p>{@code TProgram} is the top-level group that fills the entire screen and owns three
+ * <p>{@code JtvProgram} is the top-level group that fills the entire screen and owns three
  * standard subviews: a {@link JtvMenuBar} at the top, a {@link JtvDesktop} in the middle, and a
  * {@link JtvStatusLine} at the bottom.  These are created via injectable factory functions so
  * that applications can supply custom implementations without subclassing the factories.

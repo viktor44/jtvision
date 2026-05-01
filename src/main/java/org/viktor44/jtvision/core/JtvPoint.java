@@ -11,7 +11,7 @@ import lombok.Getter;
  *
  * <p>The coordinate origin {@code (0, 0)} is the top-left corner of the screen.
  * {@code X} increases horizontally to the right; {@code Y} increases vertically downwards.
- * All Turbo Vision views are positioned and sized using {@code TPoint} and {@link JtvRect}.
+ * All JT Vision views are positioned and sized using {@code TPoint} and {@link JtvRect}.
  */
 public class JtvPoint {
 
