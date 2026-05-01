@@ -1,15 +1,17 @@
 # JT Vision
 
-A Java TUI framework inspired by the classic Turbo Vision paradigm. Build terminal applications with windows, dialogs, menus, status lines, and full keyboard/mouse input — cross-platform on Windows, macOS, and Linux.
+A Java text-based user interface framework inspired by the classic Turbo Vision library. Build terminal applications with windows, dialogs, menus, status lines, and full keyboard/mouse input — cross-platform on Windows, macOS, and Linux.
 
 ## Features
 
-- **Double-buffered screen rendering** with dirty-cell optimization and ANSI SGR output
-- **Mouse support** — position, buttons, wheel, modifiers via ANSI SGR mouse protocol
-- **Cross-platform input** — Win32 console API (via Jansi/Kernel32) on Windows; raw `stty` + POSIX ioctl on Unix/macOS
-- **Color palette** — 1-based indexed color array mapping logical colors to CGA 8-bit attributes
-- **Command system** — compact 256-bit command set for enabling/disabling actions
-- **Event model** — unified event records covering keyboard, mouse, commands, and broadcasts
+ * Multiple, resizeable, overlapping windows
+ * Pull-down menus
+ * Mouse support
+ * Dialog boxes
+ * Built-in color installation
+ * Buttons, scroll bars, input boxes, check boxes, and radio buttons
+ * Standard handling of keystrokes and mouse clicks
+ * And more!
 
 ## Requirements
 
