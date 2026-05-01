@@ -7,15 +7,36 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        java: ['8', '17', '25']
+
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: 'temurin'
+
+      - name: Test
+        run: mvn clean package --batch-mode --no-transfer-progress
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
       - uses: actions/setup-java@v4
         with:
           java-version: '8'
           distribution: 'temurin'
-          architecture: x64
-      - name: Build
-        run: |
-          mvn clean package --batch-mode --no-transfer-progress
+
+      - name: Deploy
+        run: mvn deploy --batch-mode --no-transfer-progress
