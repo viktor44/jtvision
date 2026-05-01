@@ -2,7 +2,7 @@
  * SPDX-License-Identifier: Apache-2.0
  * Copyright 2026-present Viktor44
  */
-package org.viktor44.jtvision.examples.test;
+package org.viktor44.jtvision.test;
 
 import java.awt.Frame;
 import java.awt.Label;
@@ -22,9 +22,9 @@ import java.awt.event.WindowEvent;
  * {@code keyTyped} because AWT's {@code keyPressed} may return
  * {@code CHAR_UNDEFINED} for printable keys on some platforms.
  */
-public final class TestKeysApp2 {
+public final class TestAwtKeysApp {
 
-    private TestKeysApp2() {}
+    private TestAwtKeysApp() {}
 
     public static void main(String[] args) {
         Frame frame = new Frame("TestKeysApp2 - press any key (Esc to quit)");
