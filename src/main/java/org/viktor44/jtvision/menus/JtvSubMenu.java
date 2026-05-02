@@ -31,6 +31,17 @@ public class JtvSubMenu extends JtvMenuItem {
      *
      * @param aName    the display label for this top-level menu entry
      *                 (may contain {@code ~} hot-key markers, e.g. {@code "~F~ile"})
+     */
+    public JtvSubMenu(String aName) {
+        this(aName, 0, 0);
+    }
+
+    /**
+     * Creates a submenu item with no help context.
+     * Equivalent to {@link #TSubMenu(String, int, int) TSubMenu(aName, aKeyCode, 0)}.
+     *
+     * @param aName    the display label for this top-level menu entry
+     *                 (may contain {@code ~} hot-key markers, e.g. {@code "~F~ile"})
      * @param aKeyCode the Alt+letter scan code that opens this submenu
      */
     public JtvSubMenu(String aName, int aKeyCode) {

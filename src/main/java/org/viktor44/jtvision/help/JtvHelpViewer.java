@@ -31,7 +31,7 @@ import org.viktor44.jtvision.views.JtvScroller;
  * <h3>Cross-reference navigation</h3>
  * 
  * Cross-references are rendered with a distinct colour. The user can cycle
- * through them with Tab (forward) and Shift-Tab (backward). Pressing Enter
+ * through them with Tab (forward) and Shift+Tab (backward). Pressing Enter
  * on the selected cross-reference, or clicking one with the mouse, calls
  * {@link #switchToTopic(int)} with the linked context ID, replacing the
  * displayed topic in place.
@@ -40,7 +40,7 @@ import org.viktor44.jtvision.views.JtvScroller;
  * 
  * <ul>
  *   <li><b>Tab</b> — select next cross-reference.</li>
- *   <li><b>Shift-Tab</b> — select previous cross-reference.</li>
+ *   <li><b>Shift+Tab</b> — select previous cross-reference.</li>
  *   <li><b>Enter</b> — follow the currently selected cross-reference.</li>
  *   <li><b>Escape</b> — synthesises {@code cmClose} to close the help window.</li>
  * </ul>
@@ -215,7 +215,7 @@ public class JtvHelpViewer extends JtvScroller {
      * <ul>
      *   <li><b>Tab</b> — advance {@link #selected} to the next cross-reference
      *       (wrapping around), scroll it into view, and redraw.</li>
-     *   <li><b>Shift-Tab</b> — move {@link #selected} to the previous
+     *   <li><b>Shift+Tab</b> — move {@link #selected} to the previous
      *       cross-reference (wrapping around), scroll it into view, and redraw.</li>
      *   <li><b>Enter</b> — follow the currently selected cross-reference by
      *       calling {@link #switchToTopic(int)}.</li>

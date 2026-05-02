@@ -135,18 +135,24 @@ public class FormsApp extends JtvApplication {
     @Override
     protected JtvMenuBar initMenuBar(JtvRect r) {
         r = new JtvRect(r.getA().getX(), r.getA().getY(), r.getB().getX(), r.getA().getY() + 1);
-        return new JtvMenuBar(r, new JtvMenu()
-                .addItem(new JtvMenuItem("~\u2261~", JtvKey.kbNoKey, new JtvMenu(
-                new JtvMenuItem("~A~bout...", cmAboutBox, JtvKey.kbAltA))))
-                .addItem(new JtvSubMenu("~F~ile", JtvKey.kbAltF)
-                .addItem(new JtvMenuItem("~O~pen list", cmListOpen, JtvKey.kbF3, 0, "F3"))
-                .addItem(new JtvMenuItem("~S~ave", cmListSave, JtvKey.kbF2, 0, "F2"))
-                .addSeparator()
-                .addItem(new JtvMenuItem("~C~hange directory...", cmChgDir, JtvKey.kbNoKey))
-                .addSeparator()
-                .addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKey.kbCtrlQ, 0, "Ctrl-Q")))
-                .addItem(new JtvSubMenu("~W~indow", JtvKey.kbAltW)
-                .addItem(new JtvMenuItem("~M~ove", cmResize, JtvKey.kbCtrlF5, 0, "Ctrl-F5"))));
+        return new JtvMenuBar(r)
+                .addItem(
+                		new JtvSubMenu("~\u2261~")
+                			.addItem(new JtvMenuItem("~A~bout...", cmAboutBox, JtvKey.kbAltA))
+                )
+                .addItem(
+                		new JtvSubMenu("~F~ile", JtvKey.kbAltF)
+                			.addItem(new JtvMenuItem("~O~pen list", cmListOpen, JtvKey.kbF3, 0, "F3"))
+                			.addItem(new JtvMenuItem("~S~ave", cmListSave, JtvKey.kbF2, 0, "F2"))
+                			.addSeparator()
+                			.addItem(new JtvMenuItem("~C~hange directory...", cmChgDir, JtvKey.kbNoKey))
+                			.addSeparator()
+                			.addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKey.kbCtrlQ, 0, "Ctrl+Q"))
+                )
+       			.addItem(
+       					new JtvSubMenu("~W~indow", JtvKey.kbAltW)
+       						.addItem(new JtvMenuItem("~M~ove", cmResize, JtvKey.kbCtrlF5, 0, "Ctrl+F5"))
+       			);
     }
 
     @Override
@@ -158,7 +164,7 @@ public class FormsApp extends JtvApplication {
                 .addItem(new JtvStatusItem("~F3~ Open", JtvKey.kbF3, cmListOpen))
                 .addItem(new JtvStatusItem(null, JtvKey.kbCtrlF5, cmResize))
                 .addItem(new JtvStatusItem(null, JtvKey.kbF10, cmMenu))
-                .addItem(new JtvStatusItem("~Ctrl-Q~ Exit", JtvKey.kbCtrlQ, cmQuit))
+                .addItem(new JtvStatusItem("~Ctrl+Q~ Exit", JtvKey.kbCtrlQ, cmQuit))
                 .addItem(new JtvStatusItem(null, JtvKey.kbAltF3, cmClose)));
     }
 

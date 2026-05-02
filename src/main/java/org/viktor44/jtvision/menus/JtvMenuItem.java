@@ -109,14 +109,23 @@ public class JtvMenuItem {
     private JtvMenu subMenu;
 
 	/**
-     * Creates a command menu item with no help context and no param string.
-     * Equivalent to {@link #TMenuItem(String, int, int, int, String)
-     * TMenuItem(aName, aCommand, aKeyCode, 0, null)}.
+     * Creates a command menu item.
      *
      * @param name    the display label (may contain {@code ~} hot-key markers)
      * @param command the {@code cmXXXX} command to post on selection
-     * @param keyCode the shortcut scan code, or
-     *                 {@link org.viktor44.jtvision.core.JtvKey#kbNoKey}
+     */
+    public JtvMenuItem(String name, int command) {
+        this(name, command, 0, 0, null);
+    }
+
+	/**
+     * Creates a command menu item with no help context and no param string.
+     * Equivalent to {@link #JtvMenuItem(String, int, int, int, String)
+     * JtvMenuItem(aName, aCommand, aKeyCode, 0, null)}.
+     *
+     * @param name    the display label (may contain {@code ~} hot-key markers)
+     * @param command the {@code cmXXXX} command to post on selection
+     * @param keyCode the shortcut scan code
      */
     public JtvMenuItem(String name, int command, int keyCode) {
         this(name, command, keyCode, 0, null);
@@ -124,8 +133,6 @@ public class JtvMenuItem {
 
     /**
      * Creates a submenu item with no help context.
-     * Equivalent to {@link #TMenuItem(String, int, JtvMenu, int)
-     * TMenuItem(aName, aKeyCode, aSubMenu, 0)}.
      *
      * @param name    the display label
      * @param keyCode the hot-key scan code (Alt+letter), or

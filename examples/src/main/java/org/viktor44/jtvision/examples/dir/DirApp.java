@@ -74,13 +74,18 @@ public class DirApp extends JtvApplication {
     @Override
     protected JtvMenuBar initMenuBar(JtvRect r) {
         r = new JtvRect(r.getA().getX(), r.getA().getY(), r.getB().getX(), r.getA().getY() + 1);
-        return new JtvMenuBar(r, new JtvMenu()
-                .addItem(new JtvMenuItem("~\u2261~", JtvKey.kbNoKey, new JtvMenu(
-                new JtvMenuItem("~A~bout...", cmAbout, JtvKey.kbAltA))))
-                .addItem(new JtvSubMenu("~F~ile", JtvKey.kbAltF)
-                .addItem(new JtvMenuItem("~N~ew Window...", cmDirTree, JtvKey.kbAltN))
-                .addSeparator()
-                .addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKey.kbCtrlQ, 0, "Ctrl-Q"))));
+
+        return new JtvMenuBar(r)
+				.addItem(
+						new JtvSubMenu("~\u2261~")
+							.addItem(new JtvMenuItem("~A~bout...", cmAbout, JtvKey.kbAltA))
+				)
+				.addItem(
+						new JtvSubMenu("~F~ile", JtvKey.kbAltF)
+							.addItem(new JtvMenuItem("~N~ew Window...", cmDirTree, JtvKey.kbAltN))
+							.addSeparator()
+							.addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKey.kbCtrlQ, 0, "Ctrl+Q"))
+				);
     }
 
     @Override
@@ -88,7 +93,7 @@ public class DirApp extends JtvApplication {
         r = new JtvRect(r.getA().getX(), r.getB().getY() - 1, r.getB().getX(), r.getB().getY());
         return new JtvStatusLine(r,
             new JtvStatusDef(0, 0xFFFF, null)
-                .addItem(new JtvStatusItem("~Ctrl-Q~ Exit", JtvKey.kbCtrlQ, cmQuit))
+                .addItem(new JtvStatusItem("~Ctrl+Q~ Exit", JtvKey.kbCtrlQ, cmQuit))
                 .addItem(new JtvStatusItem(null, JtvKey.kbF10, cmMenu))
                 .addItem(new JtvStatusItem(null, JtvKey.kbAltF3, cmClose)));
     }

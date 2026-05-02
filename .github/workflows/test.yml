@@ -49,4 +49,4 @@ jobs:
           CENTRAL_REPO_PASSWORD: ${{ secrets.CENTRAL_REPO_PASSWORD }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
         run: |
-          mvn deploy --batch-mode --no-transfer-progress -DskipTests
+          mvn deploy --batch-mode --no-transfer-progress -DskipTests -Dgpg.skip=false

@@ -97,10 +97,10 @@ public class PaletteApp extends JtvApplication {
     @Override
     protected JtvMenuBar initMenuBar(JtvRect r) {
         r = new JtvRect(r.getA().getX(), r.getA().getY(), r.getB().getX(), r.getA().getY() + 1);
-        return new JtvMenuBar(r, new JtvMenu()
+        return new JtvMenuBar(r)
                 .addItem(new JtvMenuItem("~A~bout...", cmAbout, JtvKey.kbAltA))
                 .addItem(new JtvMenuItem("~P~alette", cmPaletteView, JtvKey.kbAltP))
-                .addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKey.kbCtrlQ, 0, "Ctrl-Q")));
+                .addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKey.kbCtrlQ, 0, "Ctrl+Q"));
     }
 
     @Override
@@ -108,7 +108,7 @@ public class PaletteApp extends JtvApplication {
         r = new JtvRect(r.getA().getX(), r.getB().getY() - 1, r.getB().getX(), r.getB().getY());
         return new JtvStatusLine(r,
             new JtvStatusDef(0, 0xFFFF, new ArrayList<JtvStatusItem>())
-                .addItem(new JtvStatusItem("~Ctrl-Q~ Exit", JtvKey.kbCtrlQ, cmQuit))
+                .addItem(new JtvStatusItem("~Ctrl+Q~ Exit", JtvKey.kbCtrlQ, cmQuit))
                 .addItem(new JtvStatusItem(null, JtvKey.kbF10, cmMenu)));
     }
 

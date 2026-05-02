@@ -18,6 +18,7 @@ import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.dialogs.JtvButton;
 import org.viktor44.jtvision.dialogs.JtvDialog;
 import org.viktor44.jtvision.dialogs.JtvStaticText;
+import org.viktor44.jtvision.menus.JtvMenu;
 import org.viktor44.jtvision.menus.JtvMenuBar;
 import org.viktor44.jtvision.menus.JtvMenuItem;
 import org.viktor44.jtvision.menus.JtvStatusDef;
@@ -66,12 +67,13 @@ public class HelloApp extends JtvApplication {
     @Override
     protected JtvMenuBar initMenuBar(JtvRect r) {
         r = new JtvRect(r.getA().getX(), r.getA().getY(), r.getB().getX(), r.getA().getY() + 1);
-        return new JtvMenuBar(r,
-            new JtvSubMenu("~H~ello", JtvKey.kbAltH)
-                .addItem(new JtvMenuItem("~G~reeting...", GreetThemCmd, JtvKey.kbAltG))
-                .addSeparator()
-                .addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKey.kbCtrlQ, hcNoContext, "Ctrl+Q"))
-        );
+        return new JtvMenuBar(r)
+        		.addItem(
+        				new JtvSubMenu("~H~ello", JtvKey.kbAltH)
+			                .addItem(new JtvMenuItem("~G~reeting...", GreetThemCmd, JtvKey.kbAltG))
+			                .addSeparator()
+			                .addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKey.kbCtrlQ, hcNoContext, "Ctrl+Q"))
+			    );
     }
 
     @Override
@@ -79,7 +81,7 @@ public class HelloApp extends JtvApplication {
         r = new JtvRect(r.getA().getX(), r.getB().getY() - 1, r.getB().getX(), r.getB().getY());
         return new JtvStatusLine(r,
             new JtvStatusDef(0, 0xFFFF, null)
-                .addItem(new JtvStatusItem("~Ctrl-Q~ Exit", JtvKey.kbCtrlQ, cmQuit))
+                .addItem(new JtvStatusItem("~Ctrl+Q~ Exit", JtvKey.kbCtrlQ, cmQuit))
                 .addItem(new JtvStatusItem(null, JtvKey.kbF10, cmMenu)));
     }
 

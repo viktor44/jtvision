@@ -673,82 +673,44 @@ public class DemoApp extends JtvApplication {
     @Override
     protected JtvMenuBar initMenuBar(JtvRect r) {
         r = new JtvRect(r.getA().getX(), r.getA().getY(), r.getB().getX(), r.getA().getY() + 1);
-//        TMenuItem systemMenu = new TSubMenu("~\u2261~", TKey.kbNoKey)
-//                .addItem(new TMenuItem("~A~bout...", cmAboutCmd, TKey.kbAltA))
-//                .addSeparator()
-//                .addItem(new TMenuItem("~P~uzzle", cmPuzzleCmd, TKey.kbNoKey))
-//                .addItem(new TMenuItem("Ca~l~endar", cmCalendarCmd, TKey.kbNoKey))
-//                .addItem(new TMenuItem("Ascii ~T~able", cmAsciiCmd, TKey.kbNoKey))
-//                .addItem(new TMenuItem("~C~alculator", cmCalcCmd, TKey.kbNoKey))
-//                .addItem(new TMenuItem("~E~vent Viewer", cmEventViewCmd, TKey.kbAlt0, 0, "Alt-0"));
-//
-//        TMenuItem fileMenu = new TSubMenu("~F~ile", TKey.kbAltF)
-//                .addItem(new TMenuItem("~O~pen...", cmOpenCmd, TKey.kbF3, 0, "F3"))
-//                .addItem(new TMenuItem("~C~hange Dir...", cmChDirCmd, TKey.kbNoKey))
-//                .addSeparator()
-//                .addItem(new TMenuItem("E~x~it", cmQuit, TKey.kbCtrlQ, 0, "Ctrl-Q"));
-//
-//        TMenuItem windowMenu = new TSubMenu("~W~indow", TKey.kbAltW)
-//                .addItem(new TMenuItem("~R~esize/move", cmResize, TKey.kbCtrlF5, 0, "Ctrl-F5"))
-//                .addItem(new TMenuItem("~Z~oom", cmZoom, TKey.kbF5, 0, "F5"))
-//                .addItem(new TMenuItem("~N~ext", io.github.viktor44.jtvision.core.CommandCodes.cmNext, TKey.kbF6, 0, "F6"))
-//                .addItem(new TMenuItem("~C~lose", cmClose, TKey.kbAltF3, 0, "Alt-F3"))
-//                .addItem(new TMenuItem("~T~ile", cmTile, TKey.kbNoKey))
-//                .addItem(new TMenuItem("C~a~scade", cmCascade, TKey.kbNoKey)));
-//
-//        TMenuItem desktopSubMenu = new TSubMenu("~D~esktop", TKey.kbNoKey)
-//                .addItem(new TMenuItem("~S~ave desktop", cmSaveCmd, TKey.kbNoKey))
-//                .addItem(new TMenuItem("~R~etrieve desktop", cmRestoreCmd, TKey.kbNoKey));
-//
-//        TMenuItem optionsMenu = new TSubMenu("~O~ptions", TKey.kbAltO)
-//                .addItem(new TMenuItem("~M~ouse...", cmMouseCmd, TKey.kbNoKey))
-//                .addItem(new TMenuItem("~C~olors...", cmColorCmd, TKey.kbNoKey))
-//                .addItem(new TMenuItem("~B~ackground...", cmChBackground, TKey.kbNoKey))
-//                .addItem(
-//                		new TSubMenu("~D~esktop", TKey.kbNoKey)
-//		                        .addItem(new TMenuItem("~S~ave desktop", cmSaveCmd, TKey.kbNoKey))
-//		                        .addItem(new TMenuItem("~R~etrieve desktop", cmRestoreCmd, TKey.kbNoKey))
-//                );
-
-        JtvMenu menu = new JtvMenu()
-                .addItem(
-                		new JtvSubMenu("~\u2261~", JtvKey.kbNoKey)
+        return new JtvMenuBar(r)
+		        .addItem(
+		        		new JtvSubMenu("~\u2261~")
 		                        .addItem(new JtvMenuItem("~A~bout...", cmAboutCmd, JtvKey.kbAltA))
 		                        .addSeparator()
-		                        .addItem(new JtvMenuItem("~P~uzzle", cmPuzzleCmd, JtvKey.kbNoKey))
-		                        .addItem(new JtvMenuItem("Ca~l~endar", cmCalendarCmd, JtvKey.kbNoKey))
-		                        .addItem(new JtvMenuItem("Ascii ~T~able", cmAsciiCmd, JtvKey.kbNoKey))
-		                        .addItem(new JtvMenuItem("~C~alculator", cmCalcCmd, JtvKey.kbNoKey))
-		                        .addItem(new JtvMenuItem("~E~vent Viewer", cmEventViewCmd, JtvKey.kbAlt0, 0, "Alt-0"))
-                )
-                .addItem(
-                		new JtvSubMenu("~F~ile", JtvKey.kbAltF)
+		                        .addItem(new JtvMenuItem("~P~uzzle", cmPuzzleCmd))
+		                        .addItem(new JtvMenuItem("Ca~l~endar", cmCalendarCmd))
+		                        .addItem(new JtvMenuItem("Ascii ~T~able", cmAsciiCmd))
+		                        .addItem(new JtvMenuItem("~C~alculator", cmCalcCmd))
+		                        .addItem(new JtvMenuItem("~E~vent Viewer", cmEventViewCmd, JtvKey.kbAlt0, 0, "Alt+0"))
+		        )
+		        .addItem(
+		        		new JtvSubMenu("~F~ile", JtvKey.kbAltF)
 		                        .addItem(new JtvMenuItem("~O~pen...", cmOpenCmd, JtvKey.kbF3, 0, "F3"))
-		                        .addItem(new JtvMenuItem("~C~hange Dir...", cmChDirCmd, JtvKey.kbNoKey))
+		                        .addItem(new JtvMenuItem("~C~hange Dir...", cmChDirCmd))
 		                        .addSeparator()
-		                        .addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKey.kbCtrlQ, 0, "Ctrl-Q"))
-                )
-                .addItem(
-                		new JtvSubMenu("~W~indow", JtvKey.kbAltW)
-		                        .addItem(new JtvMenuItem("~R~esize/move", cmResize, JtvKey.kbCtrlF5, 0, "Ctrl-F5"))
+		                        .addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKey.kbCtrlQ, 0, "Ctrl+Q"))
+		        )
+		        .addItem(
+		        		new JtvSubMenu("~W~indow", JtvKey.kbAltW)
+		                        .addItem(new JtvMenuItem("~R~esize/move", cmResize, JtvKey.kbCtrlF5, 0, "Ctrl+F5"))
 		                        .addItem(new JtvMenuItem("~Z~oom", cmZoom, JtvKey.kbF5, 0, "F5"))
 		                        .addItem(new JtvMenuItem("~N~ext", org.viktor44.jtvision.core.CommandCodes.cmNext, JtvKey.kbF6, 0, "F6"))
-		                        .addItem(new JtvMenuItem("~C~lose", cmClose, JtvKey.kbAltF3, 0, "Alt-F3"))
-		                        .addItem(new JtvMenuItem("~T~ile", cmTile, JtvKey.kbNoKey))
-		                        .addItem(new JtvMenuItem("C~a~scade", cmCascade, JtvKey.kbNoKey))
-                )
-                .addItem(
-                		new JtvSubMenu("~O~ptions", JtvKey.kbAltO)
-		                        .addItem(new JtvMenuItem("~M~ouse...", cmMouseCmd, JtvKey.kbNoKey))
-		                        .addItem(new JtvMenuItem("~C~olors...", cmColorCmd, JtvKey.kbNoKey))
-		                        .addItem(new JtvMenuItem("~B~ackground...", cmChBackground, JtvKey.kbNoKey))
+		                        .addItem(new JtvMenuItem("~C~lose", cmClose, JtvKey.kbAltF3, 0, "Alt+F3"))
+		                        .addItem(new JtvMenuItem("~T~ile", cmTile))
+		                        .addItem(new JtvMenuItem("C~a~scade", cmCascade))
+		        )
+		        .addItem(
+		        		new JtvSubMenu("~O~ptions", JtvKey.kbAltO)
+		                        .addItem(new JtvMenuItem("~M~ouse...", cmMouseCmd))
+		                        .addItem(new JtvMenuItem("~C~olors...", cmColorCmd))
+		                        .addItem(new JtvMenuItem("~B~ackground...", cmChBackground))
 		                        .addItem(
-		                        		new JtvSubMenu("~D~esktop", JtvKey.kbNoKey)
-		        		                        .addItem(new JtvMenuItem("~S~ave desktop", cmSaveCmd, JtvKey.kbNoKey))
-		        		                        .addItem(new JtvMenuItem("~R~etrieve desktop", cmRestoreCmd, JtvKey.kbNoKey))
+		                        		new JtvSubMenu("~D~esktop")
+		        		                        .addItem(new JtvMenuItem("~S~ave desktop", cmSaveCmd))
+		        		                        .addItem(new JtvMenuItem("~R~etrieve desktop", cmRestoreCmd))
 		                        )                
-                );
-        return new JtvMenuBar(r, menu);
+		        );
     }
 
     @Override
@@ -757,7 +719,7 @@ public class DemoApp extends JtvApplication {
         return new JtvStatusLine(r,
             new JtvStatusDef(0, 0xFFFF, null)
                 .addItem(new JtvStatusItem("~F1~ Help", JtvKey.kbF1, cmHelp))
-                .addItem(new JtvStatusItem("~Ctrl-Q~ Exit", JtvKey.kbCtrlQ, cmQuit))
+                .addItem(new JtvStatusItem("~Ctrl+Q~ Exit", JtvKey.kbCtrlQ, cmQuit))
                 .addItem(new JtvStatusItem(null, JtvKey.kbAltF3, cmClose))
                 .addItem(new JtvStatusItem(null, JtvKey.kbF10, cmMenu))
                 .addItem(new JtvStatusItem(null, JtvKey.kbF5, cmZoom))

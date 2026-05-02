@@ -49,7 +49,7 @@ public class MultiMenuApp extends JtvApplication {
         r = new JtvRect(r.getA().getX(), r.getB().getY() - 1, r.getB().getX(), r.getB().getY());
         return new JtvStatusLine(r,
             new JtvStatusDef(0, 0xFFFF, null)
-                .addItem(new JtvStatusItem("~Ctrl-Q~ Exit", JtvKey.kbCtrlQ, cmQuit))
+                .addItem(new JtvStatusItem("~Ctrl+Q~ Exit", JtvKey.kbCtrlQ, cmQuit))
                 .addItem(new JtvStatusItem(null, JtvKey.kbF10, cmMenu))
                 .addItem(new JtvStatusItem(null, JtvKey.kbAltF3, cmClose)));
     }

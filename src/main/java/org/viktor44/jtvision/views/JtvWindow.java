@@ -60,7 +60,7 @@ import lombok.Setter;
  *   <li>{@code wfMove} — the window can be dragged by its title bar.</li>
  *   <li>{@code wfGrow} — the window can be resized from its bottom corners.</li>
  *   <li>{@code wfClose} — a close button is shown; clicking it or pressing
- *       Ctrl-F4 sends {@code cmClose}.</li>
+ *       Ctrl+F4 sends {@code cmClose}.</li>
  *   <li>{@code wfZoom} — a zoom button is shown; clicking it or pressing F5
  *       toggles the window between its normal and maximum size.</li>
  * </ul>
@@ -301,7 +301,7 @@ public class JtvWindow extends JtvGroup {
      *   <li>{@code cmClose} — closes the window (non-modal) or sends
      *       {@code cmCancel} (modal).</li>
      *   <li>{@code cmZoom} — toggles the zoom state when {@code wfZoom} is set.</li>
-     *   <li>Tab / Shift-Tab — moves focus forward or backward among children.</li>
+     *   <li>Tab / Shift+Tab — moves focus forward or backward among children.</li>
      *   <li>{@code cmSelectWindowNum} broadcast — selects this window if its
      *       {@link #number} matches.</li>
      * </ul>

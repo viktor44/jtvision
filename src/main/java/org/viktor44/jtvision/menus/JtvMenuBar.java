@@ -57,27 +57,25 @@ public class JtvMenuBar extends JtvMenuView {
 
     /**
      * Constructs a menu bar with the given bounds and menu.
+     *
+     * @param bounds the bounding rectangle (typically the full top row)
+     */
+    public JtvMenuBar(JtvRect bounds) {
+        this(bounds, new JtvMenu());
+    }
+
+    /**
+     * Constructs a menu bar with the given bounds and menu.
      * Sets {@code growMode} to {@code gfGrowHiX} and adds
      * {@code ofPreProcess} to options.
      *
      * @param bounds the bounding rectangle (typically the full top row)
-     * @param aMenu  the {@link JtvMenu} whose items to display
+     * @param menu  the {@link JtvMenu} whose items to display
      */
-    public JtvMenuBar(JtvRect bounds, JtvMenu aMenu) {
-        super(bounds, aMenu);
+    public JtvMenuBar(JtvRect bounds, JtvMenu menu) {
+        super(bounds, menu);
         growMode = gfGrowHiX;
         options |= ofPreProcess;
-    }
-
-    /**
-     * Constructs a menu bar from a {@link JtvSubMenu} chain by wrapping it
-     * in a new {@link JtvMenu}. Convenience overload for builder-style setup.
-     *
-     * @param bounds the bounding rectangle
-     * @param aMenu  the root of a {@link JtvSubMenu} chain
-     */
-    public JtvMenuBar(JtvRect bounds, JtvSubMenu aMenu) {
-        this(bounds, new JtvMenu().addItem(aMenu));
     }
 
     /**
@@ -230,5 +228,23 @@ public class JtvMenuBar extends JtvMenuView {
             }
         }
         clearEvent(event);
+    }
+    
+    public JtvMenuBar addItem(JtvMenuItem item) {
+        if (item != null) {
+        	if (menu == null) {
+        		menu = new JtvMenu();
+        	}
+            menu.addItem(item);
+        }
+        return this;
+    }
+    
+    public JtvMenuBar addSeparator() {
+    	if (menu == null) {
+    		menu = new JtvMenu();
+    	}
+        menu.addSeparator();
+        return this;
     }
 }
