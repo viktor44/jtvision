@@ -313,7 +313,7 @@ public class JtvStatusLine extends JtvView {
                 if (event.getKeyDown().getKeyCode() != 0) {
                     int stroke = event.getKeyDown().getKeyStroke();
                     for (JtvStatusItem t : items) {
-                        if (t.getKeyCode() == stroke && commandEnabled(t.getCommand())) {
+                        if (t.getKeyStroke() != null && t.getKeyStroke().getKeyStroke() == stroke && commandEnabled(t.getCommand())) {
                             event.setWhat(evCommand);
                             event.getMessage().setCommand(t.getCommand());
                             event.getMessage().setInfoPtr(null);

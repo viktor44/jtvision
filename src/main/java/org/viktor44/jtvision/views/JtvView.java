@@ -53,11 +53,13 @@ import static org.viktor44.jtvision.core.ViewFlags.sfVisible;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
 import org.viktor44.jtvision.core.JtvColorAttr;
 import org.viktor44.jtvision.core.JtvCommandSet;
 import org.viktor44.jtvision.core.JtvDrawBuffer;
 import org.viktor44.jtvision.core.JtvEvent;
-import org.viktor44.jtvision.core.JtvKey;
 import org.viktor44.jtvision.core.JtvPalette;
 import org.viktor44.jtvision.core.JtvPoint;
 import org.viktor44.jtvision.core.JtvRect;
@@ -1611,24 +1613,24 @@ public class JtvView {
                 keyEvent(event);
                 int kc = event.getKeyDown().getKeyCode();
                 JtvPoint delta = new JtvPoint();
-                if (kc == JtvKey.kbLeft) delta = new JtvPoint(-1, 0);
-                else if (kc == JtvKey.kbRight) delta = new JtvPoint(1, 0);
-                else if (kc == JtvKey.kbUp) delta = new JtvPoint(0, -1);
-                else if (kc == JtvKey.kbDown) delta = new JtvPoint(0, 1);
-                else if (kc == JtvKey.kbHome) { p = new JtvPoint(limits.getA().getX(), p.getY()); }
-                else if (kc == JtvKey.kbEnd) { p = new JtvPoint(limits.getB().getX() - s.getX(), p.getY()); }
-                else if (kc == JtvKey.kbPgUp) { p = new JtvPoint(p.getX(), limits.getA().getY()); }
-                else if (kc == JtvKey.kbPgDn) { p = new JtvPoint(p.getX(), limits.getB().getY() - s.getY()); }
+                if (kc == KeyEvent.VK_LEFT) delta = new JtvPoint(-1, 0);
+                else if (kc == KeyEvent.VK_RIGHT) delta = new JtvPoint(1, 0);
+                else if (kc == KeyEvent.VK_UP) delta = new JtvPoint(0, -1);
+                else if (kc == KeyEvent.VK_DOWN) delta = new JtvPoint(0, 1);
+                else if (kc == KeyEvent.VK_HOME) { p = new JtvPoint(limits.getA().getX(), p.getY()); }
+                else if (kc == KeyEvent.VK_END) { p = new JtvPoint(limits.getB().getX() - s.getX(), p.getY()); }
+                else if (kc == KeyEvent.VK_PAGE_UP) { p = new JtvPoint(p.getX(), limits.getA().getY()); }
+                else if (kc == KeyEvent.VK_PAGE_DOWN) { p = new JtvPoint(p.getX(), limits.getB().getY() - s.getY()); }
 
-                if ((mode & dmDragMove) != 0 && (event.getKeyDown().getModifiers() & JtvKey.kbShiftMask) == 0)
+                if ((mode & dmDragMove) != 0 && (event.getKeyDown().getModifiers() & InputEvent.SHIFT_DOWN_MASK) == 0)
                     p = p.add(delta);
-                else if ((mode & dmDragGrow) != 0 && (event.getKeyDown().getModifiers() & JtvKey.kbShiftMask) != 0)
+                else if ((mode & dmDragGrow) != 0 && (event.getKeyDown().getModifiers() & InputEvent.SHIFT_DOWN_MASK) != 0)
                     s = s.add(delta);
 
                 moveGrow(p, s, limits, minSize, maxSize, mode);
-            } while (event.getKeyDown().getKeyCode() != JtvKey.kbEsc &&
-                     event.getKeyDown().getKeyCode() != JtvKey.kbEnter);
-            if (event.getKeyDown().getKeyCode() == JtvKey.kbEsc)
+            } while (event.getKeyDown().getKeyCode() != KeyEvent.VK_ESCAPE &&
+                     event.getKeyDown().getKeyCode() != KeyEvent.VK_ENTER);
+            if (event.getKeyDown().getKeyCode() == KeyEvent.VK_ESCAPE)
                 locate(saveBounds);
         }
         setState(sfDragging, false);

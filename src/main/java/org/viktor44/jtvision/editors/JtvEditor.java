@@ -52,6 +52,7 @@ import static org.viktor44.jtvision.core.ViewFlags.sfCursorIns;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 
@@ -285,8 +286,10 @@ public class JtvEditor extends JtvView {
     @Override
     public void changeBounds(JtvRect bounds) {
         setBounds(bounds);
-        delta = new JtvPoint(Math.max(0, Math.min(delta.getX(), Math.max(0, limit.getX() - size.getX()))),
-                             Math.max(0, Math.min(delta.getY(), Math.max(0, limit.getY() - size.getY()))));
+        delta = new JtvPoint(
+        		Math.max(0, Math.min(delta.getX(), Math.max(0, limit.getX() - size.getX()))),
+                Math.max(0, Math.min(delta.getY(), Math.max(0, limit.getY() - size.getY())))
+        );
         drawView();
     }
 
@@ -402,7 +405,9 @@ public class JtvEditor extends JtvView {
         int newCount = 0;
         for (int i = editOffset; i < insertEnd; i++) {
             if (buffer.charAt(i) == '\n') {
-                if (newCount == newStarts.length) newStarts = Arrays.copyOf(newStarts, newStarts.length * 2);
+                if (newCount == newStarts.length) {
+                	newStarts = Arrays.copyOf(newStarts, newStarts.length * 2);
+                }
                 newStarts[newCount++] = i + 1;
             }
         }
@@ -428,11 +433,15 @@ public class JtvEditor extends JtvView {
         int affectedEnd = Math.min(lineContaining + newCount + 2, lineOffsets.length);
         for (int li = lineContaining; li < affectedEnd; li++) {
             int w = getLineLength(li);
-            if (w > newMax) newMax = w;
+            if (w > newMax) {
+            	newMax = w;
+            }
         }
         limit = new JtvPoint(Math.max(256, newMax + 1), newLineCount);
 
-        if (curPtr > bufLen) curPtr = bufLen;
+        if (curPtr > bufLen) {
+        	curPtr = bufLen;
+        }
         recalcCurPos();
         updateScrollBars();
         updateIndicator();
@@ -473,7 +482,9 @@ public class JtvEditor extends JtvView {
         int lo = 0, hi = lineOffsets.length;
         while (lo < hi) {
             int mid = (lo + hi) >>> 1;
-            if (lineOffsets[mid] <= value) lo = mid + 1;
+            if (lineOffsets[mid] <= value) {
+            	lo = mid + 1;
+            }
             else hi = mid;
         }
         return lo;
@@ -481,11 +492,15 @@ public class JtvEditor extends JtvView {
 
     // Returns the column-width of line lineIndex without allocating a String.
     private int getLineLength(int lineIndex) {
-        if (lineIndex < 0 || lineIndex >= lineOffsets.length) return 0;
+        if (lineIndex < 0 || lineIndex >= lineOffsets.length) {
+        	return 0;
+        }
         int start = lineOffsets[lineIndex];
         int end = start;
         int len = buffer.length();
-        while (end < len && buffer.charAt(end) != '\n') end++;
+        while (end < len && buffer.charAt(end) != '\n') {
+        	end++;
+        }
         return end - start;
     }
 
@@ -694,11 +709,13 @@ public class JtvEditor extends JtvView {
             selStart = p;
             selEnd = p;
             curPtr = p;
-        } else {
+        }
+        else {
             if (curPtr == selStart) {
                 selStart = p;
                 curPtr = p;
-            } else {
+            }
+            else {
                 selEnd = p;
                 curPtr = p;
             }
@@ -757,7 +774,8 @@ public class JtvEditor extends JtvView {
         if (selectText) {
             selStart = start;
             selEnd = curPtr;
-        } else {
+        }
+        else {
             selStart = selEnd = curPtr;
         }
         modified = true;
@@ -804,7 +822,8 @@ public class JtvEditor extends JtvView {
                 char c = buffer.charAt(e);
                 if (c == ' ' || c == '\t') {
                     e++;
-                } else {
+                }
+                else {
                     break;
                 }
             }
@@ -840,7 +859,8 @@ public class JtvEditor extends JtvView {
     protected void trackCursor(boolean center) {
         if (center) {
             scrollTo(curPos.getX() - size.getX() + 1, curPos.getY() - size.getY() / 2);
-        } else {
+        }
+        else {
             int nx = Math.max(curPos.getX() - size.getX() + 1, Math.min(delta.getX(), curPos.getX()));
             int ny = Math.max(curPos.getY() - size.getY() + 1, Math.min(delta.getY(), curPos.getY()));
             scrollTo(nx, ny);
@@ -1016,7 +1036,8 @@ public class JtvEditor extends JtvView {
     protected void setCmdState(int command, boolean enable) {
         if (enable) {
             enableCommand(command);
-        } else {
+        }
+        else {
             disableCommand(command);
         }
     }
@@ -1067,29 +1088,34 @@ public class JtvEditor extends JtvView {
                 JtvPoint mouse = makeLocal(event.getMouse().getWhere());
                 if (mouse.getX() < 0) {
                     delta = new JtvPoint(Math.max(0, delta.getX() - 1), delta.getY());
-                } else if (mouse.getX() >= size.getX()) {
+                }
+                else if (mouse.getX() >= size.getX()) {
                     delta = new JtvPoint(Math.min(Math.max(0, limit.getX() - size.getX()), delta.getX() + 1), delta.getY());
                 }
                 if (mouse.getY() < 0) {
                     delta = new JtvPoint(delta.getX(), Math.max(0, delta.getY() - 1));
-                } else if (mouse.getY() >= size.getY()) {
+                }
+                else if (mouse.getY() >= size.getY()) {
                     delta = new JtvPoint(delta.getX(), Math.min(Math.max(0, limit.getY() - size.getY()), delta.getY() + 1));
                 }
-                mouse = new JtvPoint(Math.max(0, Math.min(mouse.getX(), Math.max(0, size.getX() - 1))),
-                                     Math.max(0, Math.min(mouse.getY(), Math.max(0, size.getY() - 1))));
+                mouse = new JtvPoint(
+                		Math.max(0, Math.min(mouse.getX(), Math.max(0, size.getX() - 1))),
+                        Math.max(0, Math.min(mouse.getY(), Math.max(0, size.getY() - 1)))
+                );
                 int p = lineToPtr(mouse.getY() + delta.getY(), mouse.getX() + delta.getX());
                 setCurPtr(p, selectMode);
                 selectMode |= 1;
                 trackCursor(false);
                 drawView();
-            } while (mouseEvent(event, evMouseMove | evMouseAuto));
+            }
+            while (mouseEvent(event, evMouseMove | evMouseAuto));
             clearEvent(event);
             return;
         }
 
         if (event.getWhat() == evKeyDown) {
-            int stroke = JtvKey.ctrlToArrow(event.getKeyDown().getKeyStroke());
-            if ((event.getKeyDown().getModifiers() & JtvKey.kbShiftMask) != 0) {
+            int stroke = event.getKeyDown().getKeyStroke();
+            if ((event.getKeyDown().getModifiers() & InputEvent.SHIFT_DOWN_MASK) != 0) {
                 selectMode = 1;
             }
             char keyChar = event.getKeyDown().getKeyChar();
@@ -1106,34 +1132,71 @@ public class JtvEditor extends JtvView {
             }
 
             // Compound shortcuts first; navigation keys ignore the Shift modifier (used for selection).
-            if (stroke == JtvKey.kbShiftDel) {
-                if (!readOnly) clipCut();
+            if (stroke == ((InputEvent.SHIFT_DOWN_MASK << 16) | KeyEvent.VK_DELETE)) {
+                if (!readOnly) {
+                	clipCut();
+                }
             }
-            else if (stroke == JtvKey.kbCtrlIns) {
+            else if (stroke == ((InputEvent.CTRL_DOWN_MASK << 16) | KeyEvent.VK_INSERT)) {
                 clipCopy();
             }
-            else if (stroke == JtvKey.kbShiftIns) {
-                if (!readOnly) clipPaste();
+            else if (stroke == ((InputEvent.SHIFT_DOWN_MASK << 16) | KeyEvent.VK_INSERT)) {
+                if (!readOnly) {
+                	clipPaste();
+                }
             }
             else {
-                switch (stroke & 0xFFFF) {
-                    case JtvKey.kbLeft: setCurPtr(prevChar(curPtr), selectMode); break;
-                    case JtvKey.kbRight: setCurPtr(nextChar(curPtr), selectMode); break;
-                    case JtvKey.kbUp: setCurPtr(prevLine(curPtr), selectMode); break;
-                    case JtvKey.kbDown: setCurPtr(nextLine(curPtr), selectMode); break;
-                    case JtvKey.kbHome: setCurPtr(lineStart(curPtr), selectMode); break;
-                    case JtvKey.kbEnd: setCurPtr(lineEnd(curPtr), selectMode); break;
-                    case JtvKey.kbPgUp: setCurPtr(Math.max(0, curPtr - (size.getX() * size.getY())), selectMode); break;
-                    case JtvKey.kbPgDn: setCurPtr(Math.min(bufLen, curPtr + (size.getX() * size.getY())), selectMode); break;
-                    case JtvKey.kbBack: if (!readOnly) deleteRange(prevChar(curPtr), curPtr); break;
-                    case JtvKey.kbDel: if (!readOnly) deleteRange(curPtr, nextChar(curPtr)); break;
-                    case JtvKey.kbEnter: if (!readOnly) newLine(); break;
-                    case JtvKey.kbIns: if (!readOnly) toggleInsMode(); break;
-                    default: return;
+                switch (stroke) {
+                    case KeyEvent.VK_LEFT: 
+                    	setCurPtr(prevChar(curPtr), selectMode);
+                    	break;
+                    case KeyEvent.VK_RIGHT:
+                    	setCurPtr(nextChar(curPtr), selectMode);
+                    	break;
+                    case KeyEvent.VK_UP:
+                    	setCurPtr(prevLine(curPtr), selectMode);
+                    	break;
+                    case KeyEvent.VK_DOWN:
+                    	setCurPtr(nextLine(curPtr), selectMode);
+                    	break;
+                    case KeyEvent.VK_HOME:
+                    	setCurPtr(lineStart(curPtr), selectMode);
+                    	break;
+                    case KeyEvent.VK_END:
+                    	setCurPtr(lineEnd(curPtr), selectMode);
+                    	break;
+                    case KeyEvent.VK_PAGE_UP:
+                    	setCurPtr(Math.max(0, curPtr - (size.getX() * size.getY())), selectMode);
+                    	break;
+                    case KeyEvent.VK_PAGE_DOWN:
+                    	setCurPtr(Math.min(bufLen, curPtr + (size.getX() * size.getY())), selectMode);
+                    	break;
+                    case KeyEvent.VK_BACK_SPACE:
+                    	if (!readOnly) {
+                    		deleteRange(prevChar(curPtr), curPtr); 
+                    	}
+                    	break;
+                    case KeyEvent.VK_DELETE: 
+                    	if (!readOnly) {
+                    		deleteRange(curPtr, nextChar(curPtr)); 
+                    	}
+                    	break;
+                    case KeyEvent.VK_ENTER:
+                    	if (!readOnly) {
+                    		newLine();
+                    	}
+                    	break;
+                    case KeyEvent.VK_INSERT:
+                    	if (!readOnly) {
+                    		toggleInsMode();
+                    	}
+                    	break;
+                    default: 
+                    	return;
                 }
             }
 
-            if ((event.getKeyDown().getModifiers() & JtvKey.kbShiftMask) == 0) {
+            if ((event.getKeyDown().getModifiers() & InputEvent.SHIFT_DOWN_MASK) == 0) {
                 selecting = false;
                 selStart = selEnd = curPtr;
             }
@@ -1261,7 +1324,8 @@ public class JtvEditor extends JtvView {
                 if (event.getMessage().getInfoPtr() == hScrollBar) {
                     delta = new JtvPoint(hScrollBar.getValue(), delta.getY());
                     drawView();
-                } else if (event.getMessage().getInfoPtr() == vScrollBar) {
+                }
+                else if (event.getMessage().getInfoPtr() == vScrollBar) {
                     delta = new JtvPoint(delta.getX(), vScrollBar.getValue());
                     drawView();
                 }

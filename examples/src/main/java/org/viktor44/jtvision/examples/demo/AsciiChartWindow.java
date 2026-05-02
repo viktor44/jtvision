@@ -15,6 +15,7 @@ import static org.viktor44.jtvision.core.ViewFlags.wfZoom;
 import static org.viktor44.jtvision.core.ViewFlags.wnNoNumber;
 import static org.viktor44.jtvision.core.ViewFlags.wpGrayWindow;
 
+import java.awt.event.KeyEvent;
 import java.nio.charset.Charset;
 
 import org.viktor44.jtvision.core.JtvColorAttr;
@@ -121,28 +122,28 @@ public class AsciiChartWindow extends JtvWindow {
                 clearEvent(event);
             } else if ((event.getWhat() & evKeyboard) != 0) {
                 switch (event.getKeyDown().getKeyCode()) {
-                    case JtvKey.kbHome: 
+                    case KeyEvent.VK_HOME: 
 	                    	setCursor(0, 0);
 	                    	break;
-                    case JtvKey.kbEnd:
+                    case KeyEvent.VK_END:
 	                    	setCursor(getSize().getX() - 1, getSize().getY() - 1);
 	                    	break;
-                    case JtvKey.kbUp:
+                    case KeyEvent.VK_UP:
 	                    	if (getCursor().getY() > 0) {
 	                    		setCursor(getCursor().getX(), getCursor().getY() - 1);
 	                    	}
 	                    	break;
-                    case JtvKey.kbDown:
+                    case KeyEvent.VK_DOWN:
 	                    	if (getCursor().getY() < getSize().getY() - 1) {
 	                    		setCursor(getCursor().getX(), getCursor().getY() + 1);
 	                    	}
 	                    	break;
-                    case JtvKey.kbLeft:
+                    case KeyEvent.VK_LEFT:
 	                    	if (getCursor().getX() > 0) {
 	                    		setCursor(getCursor().getX() - 1, getCursor().getY());
 	                    	}
 	                    	break;
-                    case JtvKey.kbRight:
+                    case KeyEvent.VK_RIGHT:
 	                    	if (getCursor().getX() < getSize().getX() - 1) {
 	                    		setCursor(getCursor().getX() + 1, getCursor().getY());
 	                    	}

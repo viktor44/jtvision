@@ -31,6 +31,8 @@ import static org.viktor44.jtvision.core.ViewFlags.sbRightArrow;
 import static org.viktor44.jtvision.core.ViewFlags.sbUpArrow;
 import static org.viktor44.jtvision.core.ViewFlags.sfVisible;
 
+import java.awt.event.KeyEvent;
+
 import org.viktor44.jtvision.core.JtvDrawBuffer;
 import org.viktor44.jtvision.core.JtvEvent;
 import org.viktor44.jtvision.core.JtvKey;
@@ -358,18 +360,18 @@ public class JtvScrollBar extends JtvView {
                 if ((state & sfVisible) != 0) {
                     int clickPart = sbIndicator;
                     int i = value;
-                    int kc = JtvKey.ctrlToArrow(event.getKeyDown().getKeyStroke()) & 0xFFFF;
+                    int kc = event.getKeyDown().getKeyStroke();
                     if (size.getY() == 1) {
-                        if (kc == JtvKey.kbLeft) {
+                        if (kc == KeyEvent.VK_LEFT) {
                         	clickPart = sbLeftArrow;
                         }
-                        else if (kc == JtvKey.kbRight) {
+                        else if (kc == KeyEvent.VK_RIGHT) {
                         	clickPart = sbRightArrow;
                         }
-                        else if (kc == JtvKey.kbHome) {
+                        else if (kc == KeyEvent.VK_HOME) {
                         	i = minVal;
                         }
-                        else if (kc == JtvKey.kbEnd) {
+                        else if (kc == KeyEvent.VK_END) {
                         	i = maxVal;
                         }
                         else {
@@ -377,16 +379,16 @@ public class JtvScrollBar extends JtvView {
                         }
                     }
                     else {
-                        if (kc == JtvKey.kbUp) {
+                        if (kc == KeyEvent.VK_UP) {
                         	clickPart = sbUpArrow;
                         }
-                        else if (kc == JtvKey.kbDown) {
+                        else if (kc == KeyEvent.VK_DOWN) {
                         	clickPart = sbDownArrow;
                         }
-                        else if (kc == JtvKey.kbPgUp) {
+                        else if (kc == KeyEvent.VK_PAGE_UP) {
                         	clickPart = sbPageUp;
                         }
-                        else if (kc == JtvKey.kbPgDn) {
+                        else if (kc == KeyEvent.VK_PAGE_DOWN) {
                         	clickPart = sbPageDown;
                         }
                         else {

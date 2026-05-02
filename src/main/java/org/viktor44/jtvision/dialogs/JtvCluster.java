@@ -15,6 +15,7 @@ import static org.viktor44.jtvision.core.ViewFlags.ofSelectable;
 import static org.viktor44.jtvision.core.ViewFlags.sfFocused;
 import static org.viktor44.jtvision.core.ViewFlags.sfSelected;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -263,10 +264,8 @@ public class JtvCluster extends JtvView {
             clearEvent(event);
         } else if (event.getWhat() == evKeyDown) {
             int s = sel;
-            int kc = JtvKey.ctrlToArrow(event.getKeyDown().getKeyStroke()) & 0xFFFF;
-
-            switch (kc) {
-                case JtvKey.kbUp:
+            switch (event.getKeyDown().getKeyStroke()) {
+                case KeyEvent.VK_UP:
                     if ((state & sfFocused) != 0) {
                         int count = 0;
                         do {
@@ -278,7 +277,7 @@ public class JtvCluster extends JtvView {
                         clearEvent(event);
                     }
                     break;
-                case JtvKey.kbDown:
+                case KeyEvent.VK_DOWN:
                     if ((state & sfFocused) != 0) {
                         int count = 0;
                         do {

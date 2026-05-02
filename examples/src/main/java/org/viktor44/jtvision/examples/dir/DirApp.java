@@ -12,9 +12,13 @@ import static org.viktor44.jtvision.core.EventCodes.evCommand;
 import static org.viktor44.jtvision.core.ViewFlags.bfDefault;
 import static org.viktor44.jtvision.core.ViewFlags.ofCentered;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
 import org.viktor44.jtvision.core.JtvApplication;
 import org.viktor44.jtvision.core.JtvEvent;
 import org.viktor44.jtvision.core.JtvKey;
+import org.viktor44.jtvision.core.JtvKeyStroke;
 import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.dialogs.JtvButton;
 import org.viktor44.jtvision.dialogs.JtvDialog;
@@ -78,24 +82,25 @@ public class DirApp extends JtvApplication {
         return new JtvMenuBar(r)
 				.addItem(
 						new JtvSubMenu("~\u2261~")
-							.addItem(new JtvMenuItem("~A~bout...", cmAbout, JtvKey.kbAltA))
+							.addItem(new JtvMenuItem("~A~bout...", cmAbout))
 				)
 				.addItem(
-						new JtvSubMenu("~F~ile", JtvKey.kbAltF)
-							.addItem(new JtvMenuItem("~N~ew Window...", cmDirTree, JtvKey.kbAltN))
+						new JtvSubMenu("~F~ile", JtvKeyStroke.of(KeyEvent.VK_F, InputEvent.ALT_DOWN_MASK))
+							.addItem(new JtvMenuItem("~N~ew Window...", cmDirTree))
 							.addSeparator()
-							.addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKey.kbCtrlQ, 0, "Ctrl+Q"))
+							.addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKeyStroke.of(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+Q"))
 				);
     }
 
     @Override
     protected JtvStatusLine initStatusLine(JtvRect r) {
-        r = new JtvRect(r.getA().getX(), r.getB().getY() - 1, r.getB().getX(), r.getB().getY());
-        return new JtvStatusLine(r,
-            new JtvStatusDef(0, 0xFFFF, null)
-                .addItem(new JtvStatusItem("~Ctrl+Q~ Exit", JtvKey.kbCtrlQ, cmQuit))
-                .addItem(new JtvStatusItem(null, JtvKey.kbF10, cmMenu))
-                .addItem(new JtvStatusItem(null, JtvKey.kbAltF3, cmClose)));
+        return new JtvStatusLine(
+        		new JtvRect(r.getA().getX(), r.getB().getY() - 1, r.getB().getX(), r.getB().getY()),
+	            new JtvStatusDef()
+		                .addItem(new JtvStatusItem("~Ctrl+Q~ Exit", JtvKeyStroke.of(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), cmQuit))
+		                .addItem(new JtvStatusItem(null, JtvKeyStroke.of(KeyEvent.VK_F10), cmMenu))
+		                .addItem(new JtvStatusItem(null, JtvKeyStroke.of(KeyEvent.VK_F3, InputEvent.ALT_DOWN_MASK), cmClose))
+        );
     }
 
     public static void main(String[] args) {

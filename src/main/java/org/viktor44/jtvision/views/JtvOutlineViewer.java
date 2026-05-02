@@ -16,6 +16,9 @@ import static org.viktor44.jtvision.core.ViewFlags.sfFocused;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
 import org.viktor44.jtvision.core.JtvColorAttr;
 import org.viktor44.jtvision.core.JtvDrawBuffer;
 import org.viktor44.jtvision.core.JtvEvent;
@@ -543,34 +546,34 @@ public abstract class JtvOutlineViewer extends JtvScroller {
         }
 
         if (event.getWhat() == evKeyDown) {
-            switch (JtvKey.ctrlToArrow(event.getKeyDown().getKeyStroke())) {
-                case JtvKey.kbUp:
-                case JtvKey.kbLeft:
+            switch (event.getKeyDown().getKeyStroke()) {
+                case KeyEvent.VK_UP:
+                case KeyEvent.VK_LEFT:
                     newFocus--;
                     break;
-                case JtvKey.kbDown:
-                case JtvKey.kbRight:
+                case KeyEvent.VK_DOWN:
+                case KeyEvent.VK_RIGHT:
                     newFocus++;
                     break;
-                case JtvKey.kbPgDn:
+                case KeyEvent.VK_PAGE_DOWN:
                     newFocus += size.getY() - 1;
                     break;
-                case JtvKey.kbPgUp:
+                case KeyEvent.VK_PAGE_UP:
                     newFocus -= size.getY() - 1;
                     break;
-                case JtvKey.kbHome:
+                case KeyEvent.VK_HOME:
                     newFocus = delta.getY();
                     break;
-                case JtvKey.kbEnd:
+                case KeyEvent.VK_END:
                     newFocus = delta.getY() + size.getY() - 1;
                     break;
-                case JtvKey.kbCtrlPgUp:
+                case (InputEvent.CTRL_DOWN_MASK << 16) | KeyEvent.VK_PAGE_UP:
                     newFocus = 0;
                     break;
-                case JtvKey.kbCtrlPgDn:
+                case (InputEvent.CTRL_DOWN_MASK << 16) | KeyEvent.VK_PAGE_DOWN:
                     newFocus = limit.getY() - 1;
                     break;
-                case JtvKey.kbEnter:
+                case KeyEvent.VK_ENTER:
                     selected(newFocus);
                     break;
                 default:

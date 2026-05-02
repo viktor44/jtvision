@@ -64,14 +64,17 @@ public class JtvStatusDef {
      *
      * @param min   the minimum help context (inclusive)
      * @param max   the maximum help context (inclusive)
-     * @param items the item list for this context range
      */
-    public JtvStatusDef(int min, int max, List<JtvStatusItem> items) {
+    public JtvStatusDef(int min, int max) {
         this.min = min;
         this.max = max;
-        if (items != null) {
-        	this.items.addAll(items);
-        }
+    }
+
+	/**
+     * Creates a status definition.
+     */
+    public JtvStatusDef() {
+    	this(0, 0xFFFF);
     }
 
     public JtvStatusDef addItem(JtvStatusItem item) {

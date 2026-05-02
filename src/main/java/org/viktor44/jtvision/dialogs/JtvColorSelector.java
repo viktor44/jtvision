@@ -15,6 +15,8 @@ import static org.viktor44.jtvision.core.ViewFlags.ofFirstClick;
 import static org.viktor44.jtvision.core.ViewFlags.ofFramed;
 import static org.viktor44.jtvision.core.ViewFlags.ofSelectable;
 
+import java.awt.event.KeyEvent;
+
 import org.viktor44.jtvision.core.JtvColorAttr;
 import org.viktor44.jtvision.core.JtvDrawBuffer;
 import org.viktor44.jtvision.core.JtvEvent;
@@ -145,14 +147,14 @@ public class JtvColorSelector extends JtvView {
                 return;
 
             case evKeyDown:
-                switch (JtvKey.ctrlToArrow(event.getKeyDown().getKeyStroke()) & 0xFFFF) {
-                    case JtvKey.kbLeft:
+                switch (event.getKeyDown().getKeyStroke()) {
+                    case KeyEvent.VK_LEFT:
                         color = color > 0 ? color - 1 : maxCol;
                         break;
-                    case JtvKey.kbRight:
+                    case KeyEvent.VK_RIGHT:
                         color = color < maxCol ? color + 1 : 0;
                         break;
-                    case JtvKey.kbUp:
+                    case KeyEvent.VK_UP:
                         if (color > 3) {
                             color -= 4;
                         } else if (color == 0) {
@@ -161,7 +163,7 @@ public class JtvColorSelector extends JtvView {
                             color += maxCol - 4;
                         }
                         break;
-                    case JtvKey.kbDown:
+                    case KeyEvent.VK_DOWN:
                         if (color < maxCol - 3) {
                             color += 4;
                         } else if (color == maxCol) {

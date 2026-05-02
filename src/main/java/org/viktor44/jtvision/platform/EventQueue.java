@@ -33,7 +33,6 @@ import org.fusesource.jansi.internal.Kernel32.KEY_EVENT_RECORD;
 import org.fusesource.jansi.internal.Kernel32.MOUSE_EVENT_RECORD;
 import org.viktor44.jtvision.core.EventCodes;
 import org.viktor44.jtvision.core.JtvEvent;
-import org.viktor44.jtvision.core.JtvKey;
 import org.viktor44.jtvision.core.JtvPoint;
 import org.viktor44.jtvision.core.KeyDownEvent;
 import org.viktor44.jtvision.core.MouseEvent;
@@ -801,7 +800,7 @@ public class EventQueue {
             int second = readByteWithTimeout(ESC_SEQUENCE_TIMEOUT_MS);
             if (second < 0) {
                 // Plain Escape
-                pushKeyEvent(JtvKey.kbEsc, 0, '\033');
+                pushKeyEvent(KeyEvent.VK_ESCAPE, 0, '\033');
             }
             else if (second == '[') {
                 parseCSI();
@@ -815,10 +814,10 @@ public class EventQueue {
             }
         }
         else if (firstByte == '\r' || firstByte == '\n') {
-            pushKeyEvent(JtvKey.kbEnter, 0, '\n');
+            pushKeyEvent(KeyEvent.VK_ENTER, 0, '\n');
         }
         else if (firstByte == '\t') {
-            pushKeyEvent(JtvKey.kbTab, 0, '\t');
+            pushKeyEvent(KeyEvent.VK_TAB, 0, '\t');
         }
         else if (firstByte == 127 || firstByte == 8) {
             pushKeyEvent(KeyEvent.VK_BACK_SPACE, 0, KeyEvent.CHAR_UNDEFINED);
@@ -991,10 +990,10 @@ public class EventQueue {
             case '^':
                 parseCsiCaret(paramStr);
                 break;
-            case 'P': pushKeyEvent(JtvKey.kbF1, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 'Q': pushKeyEvent(JtvKey.kbF2, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 'R': pushKeyEvent(JtvKey.kbF3, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 'S': pushKeyEvent(JtvKey.kbF4, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 'P': pushKeyEvent(KeyEvent.VK_F1, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 'Q': pushKeyEvent(KeyEvent.VK_F2, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 'R': pushKeyEvent(KeyEvent.VK_F3, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 'S': pushKeyEvent(KeyEvent.VK_F4, 0, KeyEvent.CHAR_UNDEFINED); break;
         }
     }
 
@@ -1046,18 +1045,18 @@ public class EventQueue {
         }
 
         switch (code) {
-            case 1: pushKeyEvent(JtvKey.kbHome, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 2: pushKeyEvent(JtvKey.kbIns, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 3: pushKeyEvent(JtvKey.kbDel, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 4: pushKeyEvent(JtvKey.kbEnd, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 5: pushKeyEvent(JtvKey.kbPgUp, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 6: pushKeyEvent(JtvKey.kbPgDn, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 15: pushKeyEvent(JtvKey.kbF5, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 17: pushKeyEvent(JtvKey.kbF6, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 18: pushKeyEvent(JtvKey.kbF7, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 19: pushKeyEvent(JtvKey.kbF8, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 20: pushKeyEvent(JtvKey.kbF9, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 21: pushKeyEvent(JtvKey.kbF10, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 1: pushKeyEvent(KeyEvent.VK_HOME, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 2: pushKeyEvent(KeyEvent.VK_INSERT, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 3: pushKeyEvent(KeyEvent.VK_DELETE, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 4: pushKeyEvent(KeyEvent.VK_END, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 5: pushKeyEvent(KeyEvent.VK_PAGE_UP, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 6: pushKeyEvent(KeyEvent.VK_PAGE_DOWN, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 15: pushKeyEvent(KeyEvent.VK_F5, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 17: pushKeyEvent(KeyEvent.VK_F6, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 18: pushKeyEvent(KeyEvent.VK_F7, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 19: pushKeyEvent(KeyEvent.VK_F8, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 20: pushKeyEvent(KeyEvent.VK_F9, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 21: pushKeyEvent(KeyEvent.VK_F10, 0, KeyEvent.CHAR_UNDEFINED); break;
             case 105:
                 if (modifier == 2) {
                     pushKeyEvent(KeyEvent.VK_INSERT, InputEvent.SHIFT_DOWN_MASK, KeyEvent.CHAR_UNDEFINED);
@@ -1088,7 +1087,7 @@ public class EventQueue {
         }
 
         switch (code) {
-            case 21: pushKeyEvent(JtvKey.kbF10, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 21: pushKeyEvent(KeyEvent.VK_F10, 0, KeyEvent.CHAR_UNDEFINED); break;
         }
     }
 
@@ -1105,12 +1104,12 @@ public class EventQueue {
             return;
         }
         switch (c) {
-            case 'P': pushKeyEvent(JtvKey.kbF1, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 'Q': pushKeyEvent(JtvKey.kbF2, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 'R': pushKeyEvent(JtvKey.kbF3, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 'S': pushKeyEvent(JtvKey.kbF4, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 'H': pushKeyEvent(JtvKey.kbHome, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 'F': pushKeyEvent(JtvKey.kbEnd, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 'P': pushKeyEvent(KeyEvent.VK_F1, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 'Q': pushKeyEvent(KeyEvent.VK_F2, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 'R': pushKeyEvent(KeyEvent.VK_F3, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 'S': pushKeyEvent(KeyEvent.VK_F4, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 'H': pushKeyEvent(KeyEvent.VK_HOME, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 'F': pushKeyEvent(KeyEvent.VK_END, 0, KeyEvent.CHAR_UNDEFINED); break;
         }
     }
 

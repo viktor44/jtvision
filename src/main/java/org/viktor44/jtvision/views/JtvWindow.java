@@ -35,9 +35,11 @@ import static org.viktor44.jtvision.core.ViewFlags.wpGrayWindow;
 
 import java.util.function.Function;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
 import org.viktor44.jtvision.core.JtvCommandSet;
 import org.viktor44.jtvision.core.JtvEvent;
-import org.viktor44.jtvision.core.JtvKey;
 import org.viktor44.jtvision.core.JtvPalette;
 import org.viktor44.jtvision.core.JtvPoint;
 import org.viktor44.jtvision.core.JtvRect;
@@ -346,11 +348,11 @@ public class JtvWindow extends JtvGroup {
         }
         else if (event.getWhat() == evKeyDown) {
             switch (event.getKeyDown().getKeyStroke()) {
-                case JtvKey.kbTab:
+                case KeyEvent.VK_TAB:
                     focusNext(false);
                     clearEvent(event);
                     break;
-                case JtvKey.kbShiftTab:
+                case (InputEvent.SHIFT_DOWN_MASK << 16) | KeyEvent.VK_TAB:
                     focusNext(true);
                     clearEvent(event);
                     break;

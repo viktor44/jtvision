@@ -4,6 +4,8 @@
  */
 package org.viktor44.jtvision.menus;
 
+import org.viktor44.jtvision.core.JtvKeyStroke;
+
 /**
  * A {@link JtvMenuItem} that represents a submenu entry in a menu bar or
  * another menu box.
@@ -13,11 +15,11 @@ package org.viktor44.jtvision.menus;
  * for populating it. This makes it easy to construct nested menu structures
  * in a readable, chained style:
  * <pre>
- * JtvSubMenu file = new JtvSubMenu("~F~ile", JtvKey.kbAltF)
- *     .addItem(new JtvMenuItem("~O~pen", cmFileOpen, JtvKey.kbF3))
- *     .addItem(new JtvMenuItem("~S~ave", cmFileSave, JtvKey.kbF2))
+ * JtvSubMenu file = new JtvSubMenu("~F~ile", JtvKeyStroke.altKey(KeyEvent.VK_F))
+ *     .addItem(new JtvMenuItem("~O~pen", cmFileOpen, JtvKeyStroke.of(KeyEvent.VK_F3)))
+ *     .addItem(new JtvMenuItem("~S~ave", cmFileSave, JtvKeyStroke.of(KeyEvent.VK_F2)))
  *     .addSeparator()
- *     .addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKey.kbAltX));
+ *     .addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKeyStroke.altKey(KeyEvent.VK_X)));
  * </pre>
  * @see JtvMenuItem
  * @see JtvMenu
@@ -27,25 +29,22 @@ public class JtvSubMenu extends JtvMenuItem {
 
     /**
      * Creates a submenu item with no help context.
-     * Equivalent to {@link #TSubMenu(String, int, int) TSubMenu(aName, aKeyCode, 0)}.
      *
-     * @param aName    the display label for this top-level menu entry
-     *                 (may contain {@code ~} hot-key markers, e.g. {@code "~F~ile"})
+     * @param aName the display label for this top-level menu entry
+     *              (may contain {@code ~} hot-key markers, e.g. {@code "~F~ile"})
      */
     public JtvSubMenu(String aName) {
-        this(aName, 0, 0);
+        this(aName, null, 0);
     }
 
     /**
      * Creates a submenu item with no help context.
-     * Equivalent to {@link #TSubMenu(String, int, int) TSubMenu(aName, aKeyCode, 0)}.
      *
-     * @param aName    the display label for this top-level menu entry
-     *                 (may contain {@code ~} hot-key markers, e.g. {@code "~F~ile"})
-     * @param aKeyCode the Alt+letter scan code that opens this submenu
+     * @param aName       the display label (may contain {@code ~} hot-key markers)
+     * @param aKeyStroke  the Alt+letter keystroke that opens this submenu, or {@code null}
      */
-    public JtvSubMenu(String aName, int aKeyCode) {
-        this(aName, aKeyCode, 0);
+    public JtvSubMenu(String aName, JtvKeyStroke aKeyStroke) {
+        this(aName, aKeyStroke, 0);
     }
 
     /**
@@ -53,12 +52,12 @@ public class JtvSubMenu extends JtvMenuItem {
      * created and assigned to {@link JtvMenuItem#subMenu}; items are added
      * via {@link #addItem(JtvMenuItem)}.
      *
-     * @param aName    the display label
-     * @param aKeyCode the Alt+letter scan code
-     * @param aHelpCtx the help context number
+     * @param aName       the display label
+     * @param aKeyStroke  the Alt+letter keystroke, or {@code null}
+     * @param aHelpCtx    the help context number
      */
-    public JtvSubMenu(String aName, int aKeyCode, int aHelpCtx) {
-        super(aName, aKeyCode, new JtvMenu(), aHelpCtx);
+    public JtvSubMenu(String aName, JtvKeyStroke aKeyStroke, int aHelpCtx) {
+        super(aName, aKeyStroke, new JtvMenu(), aHelpCtx);
     }
 
     /**

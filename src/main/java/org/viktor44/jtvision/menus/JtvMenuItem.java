@@ -4,6 +4,7 @@
  */
 package org.viktor44.jtvision.menus;
 
+import org.viktor44.jtvision.core.JtvKeyStroke;
 import org.viktor44.jtvision.views.JtvView;
 
 import lombok.Getter;
@@ -74,13 +75,12 @@ public class JtvMenuItem {
     private boolean disabled;
 
 	/**
-     * The keyboard scan code of the shortcut that triggers this item
-     * directly, or {@code 0} / {@link org.viktor44.jtvision.core.JtvKey#kbNoKey}
+     * The keystroke shortcut that triggers this item directly, or {@code null}
      * if there is no shortcut.
      */
 	@Getter
 	@Setter
-    private int keyCode;
+    private JtvKeyStroke keyStroke;
 
 	/**
      * The help context number for this item.
@@ -115,49 +115,46 @@ public class JtvMenuItem {
      * @param command the {@code cmXXXX} command to post on selection
      */
     public JtvMenuItem(String name, int command) {
-        this(name, command, 0, 0, null);
+        this(name, command, null, 0, null);
     }
 
 	/**
      * Creates a command menu item with no help context and no param string.
-     * Equivalent to {@link #JtvMenuItem(String, int, int, int, String)
-     * JtvMenuItem(aName, aCommand, aKeyCode, 0, null)}.
      *
-     * @param name    the display label (may contain {@code ~} hot-key markers)
-     * @param command the {@code cmXXXX} command to post on selection
-     * @param keyCode the shortcut scan code
+     * @param name      the display label (may contain {@code ~} hot-key markers)
+     * @param command   the {@code cmXXXX} command to post on selection
+     * @param keyStroke the shortcut keystroke, or {@code null}
      */
-    public JtvMenuItem(String name, int command, int keyCode) {
-        this(name, command, keyCode, 0, null);
+    public JtvMenuItem(String name, int command, JtvKeyStroke keyStroke) {
+        this(name, command, keyStroke, 0, null);
     }
 
     /**
      * Creates a submenu item with no help context.
      *
-     * @param name    the display label
-     * @param keyCode the hot-key scan code (Alt+letter), or
-     *                 {@link org.viktor44.jtvision.core.JtvKey#kbNoKey}
-     * @param subMenu the nested {@link JtvMenu} to open on selection
+     * @param name      the display label
+     * @param keyStroke the hot-key keystroke (Alt+letter), or {@code null}
+     * @param subMenu   the nested {@link JtvMenu} to open on selection
      */
-    public JtvMenuItem(String name, int keyCode, JtvMenu subMenu) {
-        this(name, keyCode, subMenu, 0);
+    public JtvMenuItem(String name, JtvKeyStroke keyStroke, JtvMenu subMenu) {
+        this(name, keyStroke, subMenu, 0);
     }
 
     /**
      * Creates a command menu item with all fields specified.
      * {@link #disabled} is set from the current command set.
      *
-     * @param name     the display label
-     * @param command  the {@code cmXXXX} command to post on selection
-     * @param keyCode  the shortcut scan code
-     * @param helpCtx  the help context number
-     * @param param    the shortcut display string, or {@code null}
+     * @param name      the display label
+     * @param command   the {@code cmXXXX} command to post on selection
+     * @param keyStroke the shortcut keystroke, or {@code null}
+     * @param helpCtx   the help context number
+     * @param param     the shortcut display string, or {@code null}
      */
-    public JtvMenuItem(String name, int command, int keyCode, int helpCtx, String param) {
+    public JtvMenuItem(String name, int command, JtvKeyStroke keyStroke, int helpCtx, String param) {
         this.name = name;
         this.command = command;
         this.disabled = !JtvView.commandEnabled(command);
-        this.keyCode = keyCode;
+        this.keyStroke = keyStroke;
         this.helpCtx = helpCtx;
         this.param = param;
         this.subMenu = null;
@@ -168,14 +165,14 @@ public class JtvMenuItem {
      * {@link #disabled} is always {@code false} — submenu items are never
      * disabled through the command set.
      *
-     * @param name    the display label
-     * @param keyCode the hot-key scan code (Alt+letter)
-     * @param subMenu the nested {@link JtvMenu}
-     * @param helpCtx the help context number
+     * @param name      the display label
+     * @param keyStroke the hot-key keystroke (Alt+letter), or {@code null}
+     * @param subMenu   the nested {@link JtvMenu}
+     * @param helpCtx   the help context number
      */
-    public JtvMenuItem(String name, int keyCode, JtvMenu subMenu, int helpCtx) {
+    public JtvMenuItem(String name, JtvKeyStroke keyStroke, JtvMenu subMenu, int helpCtx) {
     	this.name = name;
-    	this.keyCode = keyCode;
+    	this.keyStroke = keyStroke;
     	this.helpCtx = helpCtx;
     	this.subMenu = subMenu;
     }

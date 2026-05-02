@@ -5,6 +5,7 @@
 package org.viktor44.jtvision.examples.editor;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmCascade;
+import static org.viktor44.jtvision.core.CommandCodes.cmChangeDir;
 import static org.viktor44.jtvision.core.CommandCodes.cmClear;
 import static org.viktor44.jtvision.core.CommandCodes.cmClose;
 import static org.viktor44.jtvision.core.CommandCodes.cmCopy;
@@ -33,11 +34,15 @@ import static org.viktor44.jtvision.core.ViewFlags.mfError;
 import static org.viktor44.jtvision.core.ViewFlags.mfOKButton;
 import static org.viktor44.jtvision.core.ViewFlags.ofCentered;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
 import org.viktor44.jtvision.core.CommandCodes;
 import org.viktor44.jtvision.core.JtvApplication;
 import org.viktor44.jtvision.core.JtvCommandSet;
 import org.viktor44.jtvision.core.JtvEvent;
 import org.viktor44.jtvision.core.JtvKey;
+import org.viktor44.jtvision.core.JtvKeyStroke;
 import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.core.ViewFlags;
 import org.viktor44.jtvision.dialogs.JtvButton;
@@ -164,41 +169,41 @@ public class EditorApp extends JtvApplication {
     protected JtvMenuBar initMenuBar(JtvRect r) {
         r = new JtvRect(r.getA().getX(), r.getA().getY(), r.getB().getX(), r.getA().getY() + 1);
         JtvMenuItem systemMenu = new JtvSubMenu("~\u2261~")
-        		.addItem(new JtvMenuItem("~A~bout...", cmAbout, JtvKey.kbAltA));
+        		.addItem(new JtvMenuItem("~A~bout...", cmAbout));
 
-        JtvMenuItem fileMenu = new JtvSubMenu("~F~ile", JtvKey.kbAltF)
-                .addItem(new JtvMenuItem("~O~pen...", cmOpen, JtvKey.kbF3, 0, "F3"))
-                .addItem(new JtvMenuItem("~N~ew", cmNew, JtvKey.kbCtrlN, 0, "Ctrl+N"))
-                .addItem(new JtvMenuItem("~S~ave", cmSave, JtvKey.kbF2, 0, "F2"))
+        JtvMenuItem fileMenu = new JtvSubMenu("~F~ile")
+                .addItem(new JtvMenuItem("~O~pen...", cmOpen, JtvKeyStroke.of(KeyEvent.VK_F3), 0, "F3"))
+                .addItem(new JtvMenuItem("~N~ew", cmNew, JtvKeyStroke.of(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+N"))
+                .addItem(new JtvMenuItem("~S~ave", cmSave, JtvKeyStroke.of(KeyEvent.VK_F2), 0, "F2"))
                 .addItem(new JtvMenuItem("S~a~ve as...", cmSaveAs))
                 .addSeparator()
-                .addItem(new JtvMenuItem("~C~hange dir...", org.viktor44.jtvision.core.CommandCodes.cmChangeDir))
+                .addItem(new JtvMenuItem("~C~hange dir...", cmChangeDir))
                 .addItem(new JtvMenuItem("~D~OS shell", cmDosShell))
                 .addSeparator()
-                .addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKey.kbCtrlQ, 0, "Ctrl+Q"));
+                .addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKeyStroke.of(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+Q"));
 
-        JtvMenuItem editMenu = new JtvSubMenu("~E~dit", JtvKey.kbAltE)
-                .addItem(new JtvMenuItem("~U~ndo", cmUndo, JtvKey.kbCtrlU, 0, "Ctrl+U"))
+        JtvMenuItem editMenu = new JtvSubMenu("~E~dit")
+                .addItem(new JtvMenuItem("~U~ndo", cmUndo, JtvKeyStroke.of(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+U"))
                 .addSeparator()
-                .addItem(new JtvMenuItem("Cu~t~", cmCut, JtvKey.kbShiftDel, 0, "Shift+Del"))
-                .addItem(new JtvMenuItem("~C~opy", cmCopy, JtvKey.kbCtrlIns, 0, "Ctrl+Ins"))
-                .addItem(new JtvMenuItem("~P~aste", cmPaste, JtvKey.kbShiftIns, 0, "Shift+Ins"))
+                .addItem(new JtvMenuItem("Cu~t~", cmCut, JtvKeyStroke.of(KeyEvent.VK_DELETE, InputEvent.SHIFT_DOWN_MASK), 0, "Shift+Del"))
+                .addItem(new JtvMenuItem("~C~opy", cmCopy, JtvKeyStroke.of(KeyEvent.VK_INSERT, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+Ins"))
+                .addItem(new JtvMenuItem("~P~aste", cmPaste, JtvKeyStroke.of(KeyEvent.VK_INSERT, InputEvent.SHIFT_DOWN_MASK), 0, "Shift+Ins"))
                 .addSeparator()
-                .addItem(new JtvMenuItem("~C~lear", cmClear, JtvKey.kbCtrlDel, 0, "Ctrl+Del"));
+                .addItem(new JtvMenuItem("~C~lear", cmClear, JtvKeyStroke.of(KeyEvent.VK_DELETE, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+Del"));
 
-        JtvMenuItem searchMenu = new JtvSubMenu("~S~earch", JtvKey.kbAltS)
+        JtvMenuItem searchMenu = new JtvSubMenu("~S~earch")
                 .addItem(new JtvMenuItem("~F~ind...", cmFind))
                 .addItem(new JtvMenuItem("~R~eplace...", cmReplace))
                 .addItem(new JtvMenuItem("~S~earch again", cmSearchAgain));
 
-        JtvMenuItem windowMenu = new JtvSubMenu("~W~indow", JtvKey.kbAltW)
-                .addItem(new JtvMenuItem("~S~ize/move", cmResize, JtvKey.kbCtrlF5, 0, "Ctrl+F5"))
-                .addItem(new JtvMenuItem("~Z~oom", cmZoom, JtvKey.kbF5, 0, "F5"))
+        JtvMenuItem windowMenu = new JtvSubMenu("~W~indow")
+                .addItem(new JtvMenuItem("~S~ize/move", cmResize, JtvKeyStroke.of(KeyEvent.VK_F5, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+F5"))
+                .addItem(new JtvMenuItem("~Z~oom", cmZoom, JtvKeyStroke.of(KeyEvent.VK_F5), 0, "F5"))
                 .addItem(new JtvMenuItem("~T~ile", cmTile))
                 .addItem(new JtvMenuItem("C~a~scade", cmCascade))
-                .addItem(new JtvMenuItem("~N~ext", cmNext, JtvKey.kbF6, 0, "F6"))
-                .addItem(new JtvMenuItem("~P~revious", cmPrev, JtvKey.kbShiftF6, 0, "Shift+F6"))
-                .addItem(new JtvMenuItem("~C~lose", cmClose, JtvKey.kbCtrlW, 0, "Ctrl+W"));
+                .addItem(new JtvMenuItem("~N~ext", cmNext, JtvKeyStroke.of(KeyEvent.VK_F6), 0, "F6"))
+                .addItem(new JtvMenuItem("~P~revious", cmPrev, JtvKeyStroke.of(KeyEvent.VK_F6, InputEvent.SHIFT_DOWN_MASK), 0, "Shift+F6"))
+                .addItem(new JtvMenuItem("~C~lose", cmClose, JtvKeyStroke.of(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+W"));
 
         return new JtvMenuBar(r)
                 .addItem(systemMenu)
@@ -210,19 +215,21 @@ public class EditorApp extends JtvApplication {
 
     @Override
     protected JtvStatusLine initStatusLine(JtvRect r) {
-        r = new JtvRect(r.getA().getX(), r.getB().getY() - 1, r.getB().getX(), r.getB().getY());
-        return new JtvStatusLine(r, new JtvStatusDef(0, 0xFFFF, null)
-            .addItem(new JtvStatusItem("~F2~ Save", JtvKey.kbF2, cmSave))
-            .addItem(new JtvStatusItem("~F3~ Open", JtvKey.kbF3, cmOpen))
-            .addItem(new JtvStatusItem("~Ctrl+Q~ Exit", JtvKey.kbCtrlQ, cmQuit))
-            .addItem(new JtvStatusItem("~Ctrl+W~ Close", JtvKey.kbCtrlW, cmClose))
-            .addItem(new JtvStatusItem("~F5~ Zoom", JtvKey.kbF5, cmZoom))
-            .addItem(new JtvStatusItem("~F6~ Next", JtvKey.kbF6, org.viktor44.jtvision.core.CommandCodes.cmNext))
-            .addItem(new JtvStatusItem("~F10~ Menu", JtvKey.kbF10, cmMenu))
-            .addItem(new JtvStatusItem(null, JtvKey.kbShiftDel, cmCut))
-            .addItem(new JtvStatusItem(null, JtvKey.kbCtrlIns, cmCopy))
-            .addItem(new JtvStatusItem(null, JtvKey.kbShiftIns, cmPaste))
-            .addItem(new JtvStatusItem(null, JtvKey.kbCtrlF5, cmResize)));
+        return new JtvStatusLine(
+        		new JtvRect(r.getA().getX(), r.getB().getY() - 1, r.getB().getX(), r.getB().getY()), 
+        		new JtvStatusDef()
+			            .addItem(new JtvStatusItem("~F2~ Save", JtvKeyStroke.of(KeyEvent.VK_F2), cmSave))
+			            .addItem(new JtvStatusItem("~F3~ Open", JtvKeyStroke.of(KeyEvent.VK_F3), cmOpen))
+			            .addItem(new JtvStatusItem("~Ctrl+Q~ Exit", JtvKeyStroke.of(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), cmQuit))
+			            .addItem(new JtvStatusItem("~Ctrl+W~ Close", JtvKeyStroke.of(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK), cmClose))
+			            .addItem(new JtvStatusItem("~F5~ Zoom", JtvKeyStroke.of(KeyEvent.VK_F5), cmZoom))
+			            .addItem(new JtvStatusItem("~F6~ Next", JtvKeyStroke.of(KeyEvent.VK_F6), cmNext))
+			            .addItem(new JtvStatusItem("~F10~ Menu", JtvKeyStroke.of(KeyEvent.VK_F10), cmMenu))
+			            .addItem(new JtvStatusItem(null, JtvKeyStroke.of(KeyEvent.VK_DELETE, InputEvent.SHIFT_DOWN_MASK), cmCut))
+			            .addItem(new JtvStatusItem(null, JtvKeyStroke.of(KeyEvent.VK_INSERT, InputEvent.CTRL_DOWN_MASK), cmCopy))
+			            .addItem(new JtvStatusItem(null, JtvKeyStroke.of(KeyEvent.VK_INSERT, InputEvent.SHIFT_DOWN_MASK), cmPaste))
+			            .addItem(new JtvStatusItem(null, JtvKeyStroke.of(KeyEvent.VK_F5, InputEvent.CTRL_DOWN_MASK), cmResize))
+        );
     }
 
     public static void main(String[] args) {

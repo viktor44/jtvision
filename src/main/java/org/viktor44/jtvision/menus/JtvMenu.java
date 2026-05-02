@@ -78,6 +78,6 @@ public class JtvMenu {
     }
 
     public JtvMenu addSeparator() {
-        return addItem(new JtvMenuItem(null, 0, 0, 0, null));
+        return addItem(new JtvMenuItem(null, 0, null, 0, null));
     }
 }

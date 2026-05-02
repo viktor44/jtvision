@@ -16,6 +16,8 @@ import static org.viktor44.jtvision.core.ViewFlags.mfError;
 import static org.viktor44.jtvision.core.ViewFlags.mfOKButton;
 import static org.viktor44.jtvision.core.ViewFlags.ofCentered;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,6 +26,7 @@ import org.viktor44.jtvision.core.CommandCodes;
 import org.viktor44.jtvision.core.JtvApplication;
 import org.viktor44.jtvision.core.JtvEvent;
 import org.viktor44.jtvision.core.JtvKey;
+import org.viktor44.jtvision.core.JtvKeyStroke;
 import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.core.ViewFlags;
 import org.viktor44.jtvision.dialogs.JtvButton;
@@ -138,20 +141,20 @@ public class FormsApp extends JtvApplication {
         return new JtvMenuBar(r)
                 .addItem(
                 		new JtvSubMenu("~\u2261~")
-                			.addItem(new JtvMenuItem("~A~bout...", cmAboutBox, JtvKey.kbAltA))
+                			.addItem(new JtvMenuItem("~A~bout...", cmAboutBox))
                 )
                 .addItem(
-                		new JtvSubMenu("~F~ile", JtvKey.kbAltF)
-                			.addItem(new JtvMenuItem("~O~pen list", cmListOpen, JtvKey.kbF3, 0, "F3"))
-                			.addItem(new JtvMenuItem("~S~ave", cmListSave, JtvKey.kbF2, 0, "F2"))
+                		new JtvSubMenu("~F~ile")
+                			.addItem(new JtvMenuItem("~O~pen list", cmListOpen, JtvKeyStroke.of(KeyEvent.VK_F3), 0, "F3"))
+                			.addItem(new JtvMenuItem("~S~ave", cmListSave, JtvKeyStroke.of(KeyEvent.VK_F2), 0, "F2"))
                 			.addSeparator()
-                			.addItem(new JtvMenuItem("~C~hange directory...", cmChgDir, JtvKey.kbNoKey))
+                			.addItem(new JtvMenuItem("~C~hange directory...", cmChgDir))
                 			.addSeparator()
-                			.addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKey.kbCtrlQ, 0, "Ctrl+Q"))
+                			.addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKeyStroke.of(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+Q"))
                 )
        			.addItem(
-       					new JtvSubMenu("~W~indow", JtvKey.kbAltW)
-       						.addItem(new JtvMenuItem("~M~ove", cmResize, JtvKey.kbCtrlF5, 0, "Ctrl+F5"))
+       					new JtvSubMenu("~W~indow")
+       						.addItem(new JtvMenuItem("~M~ove", cmResize, JtvKeyStroke.of(KeyEvent.VK_F5, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+F5"))
        			);
     }
 
@@ -159,13 +162,13 @@ public class FormsApp extends JtvApplication {
     protected JtvStatusLine initStatusLine(JtvRect r) {
         r = new JtvRect(r.getA().getX(), r.getB().getY() - 1, r.getB().getX(), r.getB().getY());
         return new JtvStatusLine(r,
-            new JtvStatusDef(0, 0xFFFF, null)
-                .addItem(new JtvStatusItem("~F2~ Save", JtvKey.kbF2, cmListSave))
-                .addItem(new JtvStatusItem("~F3~ Open", JtvKey.kbF3, cmListOpen))
-                .addItem(new JtvStatusItem(null, JtvKey.kbCtrlF5, cmResize))
-                .addItem(new JtvStatusItem(null, JtvKey.kbF10, cmMenu))
-                .addItem(new JtvStatusItem("~Ctrl+Q~ Exit", JtvKey.kbCtrlQ, cmQuit))
-                .addItem(new JtvStatusItem(null, JtvKey.kbAltF3, cmClose)));
+            new JtvStatusDef()
+                .addItem(new JtvStatusItem("~F2~ Save", JtvKeyStroke.of(KeyEvent.VK_F2), cmListSave))
+                .addItem(new JtvStatusItem("~F3~ Open", JtvKeyStroke.of(KeyEvent.VK_F3), cmListOpen))
+                .addItem(new JtvStatusItem(null, JtvKeyStroke.of(KeyEvent.VK_F5, InputEvent.CTRL_DOWN_MASK), cmResize))
+                .addItem(new JtvStatusItem(null, JtvKeyStroke.of(KeyEvent.VK_F10), cmMenu))
+                .addItem(new JtvStatusItem("~Ctrl+Q~ Exit", JtvKeyStroke.of(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), cmQuit))
+                .addItem(new JtvStatusItem(null, JtvKeyStroke.of(KeyEvent.VK_F3, InputEvent.ALT_DOWN_MASK), cmClose)));
     }
 
     public static void main(String[] args) {
