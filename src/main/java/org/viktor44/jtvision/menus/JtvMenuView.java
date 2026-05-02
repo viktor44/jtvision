@@ -13,10 +13,10 @@ import static org.viktor44.jtvision.core.EventCodes.evMouseDown;
 import static org.viktor44.jtvision.core.EventCodes.evMouseMove;
 import static org.viktor44.jtvision.core.EventCodes.evMouseUp;
 
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import org.viktor44.jtvision.core.JtvEvent;
-import org.viktor44.jtvision.core.JtvKey;
 import org.viktor44.jtvision.core.JtvPalette;
 import org.viktor44.jtvision.core.JtvPoint;
 import org.viktor44.jtvision.core.JtvRect;
@@ -357,20 +357,29 @@ public class JtvMenuView extends JtvView {
                             exitRequested = true;
                             break;
                         default:
-                            // Check for hotkeys
                             if (menu != null) {
                                 for (JtvMenuItem p : menu.getItems()) {
-                                    if (p.getName() != null) {
-                                        char c = StringUtils.hotKey(p.getName());
-                                        int altCode = JtvKey.getAltCode(c);
-                                        if (altCode != 0 && altCode == e.getKeyDown().getKeyStroke()) {
-                                            current = p;
-                                            if (p.getCommand() != 0)
-                                                result = p.getCommand();
-                                            else
-                                                autoSelect = true;
-                                            break;
-                                        }
+                                    if (p.getName() == null || p.isDisabled()) continue;
+                                    char c = StringUtils.hotKey(p.getName());
+                                    if (c == 0) continue;
+                                    boolean match;
+                                    if (size.getY() == 1) {
+                                        // Menu bar: Alt+letter only
+                                        match = e.getKeyDown().getModifiers() == InputEvent.ALT_DOWN_MASK
+                                             && Character.toUpperCase(c) == e.getKeyDown().getKeyCode();
+                                    } else {
+                                        // Submenu box: bare letter (no modifiers) or Alt+letter
+                                        match = (e.getKeyDown().getModifiers() == InputEvent.ALT_DOWN_MASK
+                                              || e.getKeyDown().getModifiers() == 0)
+                                             && Character.toUpperCase(c) == e.getKeyDown().getKeyCode();
+                                    }
+                                    if (match) {
+                                        current = p;
+                                        if (p.getCommand() != 0)
+                                            result = p.getCommand();
+                                        else
+                                            autoSelect = true;
+                                        break;
                                     }
                                 }
                             }

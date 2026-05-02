@@ -15,6 +15,7 @@ import static org.viktor44.jtvision.core.ViewFlags.ofSelectable;
 import static org.viktor44.jtvision.core.ViewFlags.sfFocused;
 import static org.viktor44.jtvision.core.ViewFlags.sfSelected;
 
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,6 @@ import java.util.List;
 import org.viktor44.jtvision.core.JtvColorAttr;
 import org.viktor44.jtvision.core.JtvDrawBuffer;
 import org.viktor44.jtvision.core.JtvEvent;
-import org.viktor44.jtvision.core.JtvKey;
 import org.viktor44.jtvision.core.JtvPalette;
 import org.viktor44.jtvision.core.JtvPoint;
 import org.viktor44.jtvision.core.JtvRect;
@@ -240,21 +240,27 @@ public class JtvCluster extends JtvView {
     @Override
     public void handleEvent(JtvEvent event) {
         super.handleEvent(event);
-        if ((options & ofSelectable) == 0) return;
+        if ((options & ofSelectable) == 0) {
+        	return;
+        }
 
         if (event.getWhat() == evMouseDown) {
             JtvPoint mouse = makeLocal(event.getMouse().getWhere());
             int i = findSel(mouse);
-            if (i != -1 && buttonState(i))
+            if (i != -1 && buttonState(i)) {
                 sel = i;
+            }
             drawView();
             do {
                 mouse = makeLocal(event.getMouse().getWhere());
-                if (findSel(mouse) == sel && buttonState(sel))
+                if (findSel(mouse) == sel && buttonState(sel)) {
                     showCursor();
-                else
+                }
+                else {
                     hideCursor();
-            } while (mouseEvent(event, evMouseMove));
+                }
+            }
+            while (mouseEvent(event, evMouseMove));
             showCursor();
             mouse = makeLocal(event.getMouse().getWhere());
             if (findSel(mouse) == sel) {
@@ -262,7 +268,8 @@ public class JtvCluster extends JtvView {
                 drawView();
             }
             clearEvent(event);
-        } else if (event.getWhat() == evKeyDown) {
+        }
+        else if (event.getWhat() == evKeyDown) {
             int s = sel;
             switch (event.getKeyDown().getKeyStroke()) {
                 case KeyEvent.VK_UP:
@@ -271,8 +278,11 @@ public class JtvCluster extends JtvView {
                         do {
                             count++;
                             s--;
-                            if (s < 0) s = strings.size() - 1;
-                        } while (!(buttonState(s) || count > strings.size()));
+                            if (s < 0) {
+                            	s = strings.size() - 1;
+                            }
+                        }
+                        while (!(buttonState(s) || count > strings.size()));
                         moveSel(count, s);
                         clearEvent(event);
                     }
@@ -283,8 +293,11 @@ public class JtvCluster extends JtvView {
                         do {
                             count++;
                             s++;
-                            if (s >= strings.size()) s = 0;
-                        } while (!(buttonState(s) || count > strings.size()));
+                            if (s >= strings.size()) {
+                            	s = 0;
+                            }
+                        }
+                        while (!(buttonState(s) || count > strings.size()));
                         moveSel(count, s);
                         clearEvent(event);
                     }
@@ -294,7 +307,8 @@ public class JtvCluster extends JtvView {
                     for (int i = 0; i < strings.size(); i++) {
                         char c = StringUtils.hotKey(strings.get(i));
                         if (event.getKeyDown().getKeyCode() != 0 && c != 0 &&
-                            (JtvKey.getAltCode(c) == event.getKeyDown().getKeyStroke() ||
+                            ((event.getKeyDown().getModifiers() == InputEvent.ALT_DOWN_MASK
+                              && Character.toUpperCase(c) == event.getKeyDown().getKeyCode()) ||
                              ((state & sfFocused) != 0 &&
                               c == Character.toUpperCase(event.getKeyDown().getKeyChar())))) {
                             if (buttonState(i)) {

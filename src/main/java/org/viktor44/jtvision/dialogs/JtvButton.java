@@ -27,10 +27,11 @@ import static org.viktor44.jtvision.core.ViewFlags.sfDisabled;
 import static org.viktor44.jtvision.core.ViewFlags.sfFocused;
 import static org.viktor44.jtvision.core.ViewFlags.sfSelected;
 
+import java.awt.event.InputEvent;
+
 import org.viktor44.jtvision.core.JtvColorAttr;
 import org.viktor44.jtvision.core.JtvDrawBuffer;
 import org.viktor44.jtvision.core.JtvEvent;
-import org.viktor44.jtvision.core.JtvKey;
 import org.viktor44.jtvision.core.JtvPalette;
 import org.viktor44.jtvision.core.JtvPoint;
 import org.viktor44.jtvision.core.JtvRect;
@@ -313,7 +314,8 @@ public class JtvButton extends JtvView {
             case evKeyDown:
                 if (event.getKeyDown().getKeyCode() != 0
                 		&&
-                    (event.getKeyDown().getKeyStroke() == JtvKey.getAltCode(c) ||
+                    ((event.getKeyDown().getModifiers() == InputEvent.ALT_DOWN_MASK
+                      && Character.toUpperCase(c) == event.getKeyDown().getKeyCode()) ||
                      ((state & sfFocused) != 0 &&
                       event.getKeyDown().getKeyChar() == ' '))) {
                     animatePress();

@@ -15,7 +15,7 @@ import static org.viktor44.jtvision.core.ViewFlags.ofPreProcess;
 import org.viktor44.jtvision.core.JtvColorAttr;
 import org.viktor44.jtvision.core.JtvDrawBuffer;
 import org.viktor44.jtvision.core.JtvEvent;
-import org.viktor44.jtvision.core.JtvKey;
+import java.awt.event.InputEvent;
 import org.viktor44.jtvision.core.JtvPalette;
 import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.util.StringUtils;
@@ -104,8 +104,9 @@ public class JtvLabel extends JtvView {
         }
 
         b.moveChar(0, ' ', color, size.getX());
-        if (text != null)
+        if (text != null) {
             b.moveCStr(1, text, color, hotColor);
+        }
         writeLine(0, 0, size.getX(), 1, b);
     }
 
@@ -134,18 +135,23 @@ public class JtvLabel extends JtvView {
     public void handleEvent(JtvEvent event) {
         super.handleEvent(event);
         if (event.getWhat() == evMouseDown) {
-            if (link != null)
+            if (link != null) {
                 link.focus();
+            }
             clearEvent(event);
-        } else if (event.getWhat() == evKeyDown) {
+        }
+        else if (event.getWhat() == evKeyDown) {
             char c = StringUtils.hotKey(text);
             if (c != 0 && event.getKeyDown().getKeyCode() != 0 &&
-                event.getKeyDown().getKeyCode() == JtvKey.getAltCode(c)) {
-                if (link != null)
+                event.getKeyDown().getModifiers() == InputEvent.ALT_DOWN_MASK
+                    && Character.toUpperCase(c) == event.getKeyDown().getKeyCode()) {
+                if (link != null) {
                     link.focus();
+                }
                 clearEvent(event);
             }
-        } else if (event.getWhat() == evBroadcast) {
+        }
+        else if (event.getWhat() == evBroadcast) {
             if (event.getMessage().getCommand() == cmReceivedFocus || event.getMessage().getCommand() == cmReleasedFocus) {
                 if (link != null && event.getMessage().getInfoPtr() == link) {
                     light = event.getMessage().getCommand() == cmReceivedFocus;
