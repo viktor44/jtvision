@@ -19,6 +19,8 @@ import static org.viktor44.jtvision.core.ViewFlags.sfActive;
 import static org.viktor44.jtvision.core.ViewFlags.sfSelected;
 import static org.viktor44.jtvision.core.ViewFlags.sfVisible;
 
+import java.awt.event.KeyEvent;
+
 import org.viktor44.jtvision.core.JtvColorAttr;
 import org.viktor44.jtvision.core.JtvDrawBuffer;
 import org.viktor44.jtvision.core.JtvEvent;
@@ -437,29 +439,29 @@ public class JtvListViewer extends JtvView {
             clearEvent(event);
         }
         else if (event.getWhat() == evKeyDown) {
-            int kc = JtvKey.ctrlToArrow(event.getKeyDown().getKeyStroke()) & 0xFFFF;
-            if (kc == JtvKey.kbUp) {
+            int kc = event.getKeyDown().getKeyStroke();
+            if (kc == KeyEvent.VK_UP) {
             	newItem = focused - 1;
             }
-            else if (kc == JtvKey.kbDown) {
+            else if (kc == KeyEvent.VK_DOWN) {
             	newItem = focused + 1;
             }
-            else if (kc == JtvKey.kbRight && numCols > 1) {
+            else if (kc == KeyEvent.VK_RIGHT && numCols > 1) {
             	newItem = focused + size.getY();
             }
-            else if (kc == JtvKey.kbLeft && numCols > 1) {
+            else if (kc == KeyEvent.VK_LEFT && numCols > 1) {
             	newItem = focused - size.getY();
             }
-            else if (kc == JtvKey.kbPgDn) {
+            else if (kc == KeyEvent.VK_PAGE_DOWN) {
             	newItem = focused + size.getY() * numCols;
             }
-            else if (kc == JtvKey.kbPgUp) {
+            else if (kc == KeyEvent.VK_PAGE_UP) {
             	newItem = focused - size.getY() * numCols;
             }
-            else if (kc == JtvKey.kbHome) {
+            else if (kc == KeyEvent.VK_HOME) {
             	newItem = topItem;
             }
-            else if (kc == JtvKey.kbEnd) {
+            else if (kc == KeyEvent.VK_END) {
             	newItem = topItem + (size.getY() * numCols) - 1;
             }
             else {

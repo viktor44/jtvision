@@ -15,8 +15,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import java.awt.event.KeyEvent;
+
 import org.viktor44.jtvision.core.JtvEvent;
-import org.viktor44.jtvision.core.JtvKey;
 import org.viktor44.jtvision.core.JtvPalette;
 import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.views.JtvListViewer;
@@ -168,12 +169,12 @@ public class JtvHistoryViewer extends JtvListViewer {
     @Override
     public void handleEvent(JtvEvent event) {
         if ((event.getWhat() == evMouseDown && (event.getMouse().getEventFlags() & meDoubleClick) != 0)
-            || (event.getWhat() == evKeyDown && event.getKeyDown().getKeyCode() == JtvKey.kbEnter)) {
+            || (event.getWhat() == evKeyDown && event.getKeyDown().getKeyCode() == KeyEvent.VK_ENTER)) {
             endModal(cmOK);
             clearEvent(event);
             return;
         }
-        if ((event.getWhat() == evKeyDown && event.getKeyDown().getKeyCode() == JtvKey.kbEsc)
+        if ((event.getWhat() == evKeyDown && event.getKeyDown().getKeyCode() == KeyEvent.VK_ESCAPE)
             || (event.getWhat() == evCommand && event.getMessage().getCommand() == cmCancel)) {
             endModal(cmCancel);
             clearEvent(event);

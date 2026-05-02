@@ -18,10 +18,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
 import org.viktor44.jtvision.core.JtvColorAttr;
 import org.viktor44.jtvision.core.JtvDrawBuffer;
 import org.viktor44.jtvision.core.JtvEvent;
-import org.viktor44.jtvision.core.JtvKey;
 import org.viktor44.jtvision.core.JtvPalette;
 import org.viktor44.jtvision.core.JtvPoint;
 import org.viktor44.jtvision.core.JtvRect;
@@ -135,8 +137,8 @@ public class JtvHistory extends JtvView {
             showHistory();
             clearEvent(event);
         } else if (event.getWhat() == evKeyDown) {
-            if (event.getKeyDown().getKeyCode() == JtvKey.kbDown &&
-                (event.getKeyDown().getModifiers() & JtvKey.kbAltMask) != 0) {
+            if (event.getKeyDown().getKeyCode() == KeyEvent.VK_DOWN &&
+                (event.getKeyDown().getModifiers() & InputEvent.ALT_DOWN_MASK) != 0) {
                 showHistory();
                 clearEvent(event);
             }

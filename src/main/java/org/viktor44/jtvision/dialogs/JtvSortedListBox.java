@@ -10,7 +10,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.viktor44.jtvision.core.JtvEvent;
-import org.viktor44.jtvision.core.JtvKey;
 import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.views.JtvScrollBar;
 
@@ -181,7 +180,7 @@ public class JtvSortedListBox extends JtvListBox {
         }
 
         char keyChar = event.getKeyDown().getKeyChar();
-        boolean isBack = event.getKeyDown().getKeyCode() == JtvKey.kbBack;
+        boolean isBack = event.getKeyDown().getKeyCode() == KeyEvent.VK_BACK_SPACE;
         if (!isBack && (keyChar == KeyEvent.CHAR_UNDEFINED || keyChar < 32)) {
             return;
         }

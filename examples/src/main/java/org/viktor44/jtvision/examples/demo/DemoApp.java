@@ -9,6 +9,7 @@ import static org.viktor44.jtvision.core.CommandCodes.cmCascade;
 import static org.viktor44.jtvision.core.CommandCodes.cmClose;
 import static org.viktor44.jtvision.core.CommandCodes.cmHelp;
 import static org.viktor44.jtvision.core.CommandCodes.cmMenu;
+import static org.viktor44.jtvision.core.CommandCodes.cmNext;
 import static org.viktor44.jtvision.core.CommandCodes.cmOK;
 import static org.viktor44.jtvision.core.CommandCodes.cmQuit;
 import static org.viktor44.jtvision.core.CommandCodes.cmResize;
@@ -32,6 +33,8 @@ import static org.viktor44.jtvision.core.ViewFlags.mfOKButton;
 import static org.viktor44.jtvision.core.ViewFlags.ofCentered;
 import static org.viktor44.jtvision.core.ViewFlags.ofSelectable;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -48,6 +51,7 @@ import org.viktor44.jtvision.core.JtvDesktop;
 import org.viktor44.jtvision.core.JtvDrawBuffer;
 import org.viktor44.jtvision.core.JtvEvent;
 import org.viktor44.jtvision.core.JtvKey;
+import org.viktor44.jtvision.core.JtvKeyStroke;
 import org.viktor44.jtvision.core.JtvPalette;
 import org.viktor44.jtvision.core.JtvProgram;
 import org.viktor44.jtvision.core.JtvRect;
@@ -676,32 +680,32 @@ public class DemoApp extends JtvApplication {
         return new JtvMenuBar(r)
 		        .addItem(
 		        		new JtvSubMenu("~\u2261~")
-		                        .addItem(new JtvMenuItem("~A~bout...", cmAboutCmd, JtvKey.kbAltA))
+		                        .addItem(new JtvMenuItem("~A~bout...", cmAboutCmd))
 		                        .addSeparator()
 		                        .addItem(new JtvMenuItem("~P~uzzle", cmPuzzleCmd))
 		                        .addItem(new JtvMenuItem("Ca~l~endar", cmCalendarCmd))
 		                        .addItem(new JtvMenuItem("Ascii ~T~able", cmAsciiCmd))
 		                        .addItem(new JtvMenuItem("~C~alculator", cmCalcCmd))
-		                        .addItem(new JtvMenuItem("~E~vent Viewer", cmEventViewCmd, JtvKey.kbAlt0, 0, "Alt+0"))
+		                        .addItem(new JtvMenuItem("~E~vent Viewer", cmEventViewCmd, JtvKeyStroke.of(KeyEvent.VK_0, InputEvent.ALT_DOWN_MASK), 0, "Alt+0"))
 		        )
 		        .addItem(
-		        		new JtvSubMenu("~F~ile", JtvKey.kbAltF)
-		                        .addItem(new JtvMenuItem("~O~pen...", cmOpenCmd, JtvKey.kbF3, 0, "F3"))
+		        		new JtvSubMenu("~F~ile")
+		                        .addItem(new JtvMenuItem("~O~pen...", cmOpenCmd, JtvKeyStroke.of(KeyEvent.VK_F3), 0, "F3"))
 		                        .addItem(new JtvMenuItem("~C~hange Dir...", cmChDirCmd))
 		                        .addSeparator()
-		                        .addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKey.kbCtrlQ, 0, "Ctrl+Q"))
+		                        .addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKeyStroke.of(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+Q"))
 		        )
 		        .addItem(
-		        		new JtvSubMenu("~W~indow", JtvKey.kbAltW)
-		                        .addItem(new JtvMenuItem("~R~esize/move", cmResize, JtvKey.kbCtrlF5, 0, "Ctrl+F5"))
-		                        .addItem(new JtvMenuItem("~Z~oom", cmZoom, JtvKey.kbF5, 0, "F5"))
-		                        .addItem(new JtvMenuItem("~N~ext", org.viktor44.jtvision.core.CommandCodes.cmNext, JtvKey.kbF6, 0, "F6"))
-		                        .addItem(new JtvMenuItem("~C~lose", cmClose, JtvKey.kbAltF3, 0, "Alt+F3"))
+		        		new JtvSubMenu("~W~indow")
+		                        .addItem(new JtvMenuItem("~R~esize/move", cmResize, JtvKeyStroke.of(KeyEvent.VK_F5, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+F5"))
+		                        .addItem(new JtvMenuItem("~Z~oom", cmZoom, JtvKeyStroke.of(KeyEvent.VK_F5), 0, "F5"))
+		                        .addItem(new JtvMenuItem("~N~ext", cmNext, JtvKeyStroke.of(KeyEvent.VK_F10), 0, "F6"))
+		                        .addItem(new JtvMenuItem("~C~lose", cmClose, JtvKeyStroke.of(KeyEvent.VK_F3, InputEvent.ALT_DOWN_MASK), 0, "Alt+F3"))
 		                        .addItem(new JtvMenuItem("~T~ile", cmTile))
 		                        .addItem(new JtvMenuItem("C~a~scade", cmCascade))
 		        )
 		        .addItem(
-		        		new JtvSubMenu("~O~ptions", JtvKey.kbAltO)
+		        		new JtvSubMenu("~O~ptions")
 		                        .addItem(new JtvMenuItem("~M~ouse...", cmMouseCmd))
 		                        .addItem(new JtvMenuItem("~C~olors...", cmColorCmd))
 		                        .addItem(new JtvMenuItem("~B~ackground...", cmChBackground))
@@ -715,15 +719,16 @@ public class DemoApp extends JtvApplication {
 
     @Override
     protected JtvStatusLine initStatusLine(JtvRect r) {
-        r = new JtvRect(r.getA().getX(), r.getB().getY() - 1, r.getB().getX(), r.getB().getY());
-        return new JtvStatusLine(r,
-            new JtvStatusDef(0, 0xFFFF, null)
-                .addItem(new JtvStatusItem("~F1~ Help", JtvKey.kbF1, cmHelp))
-                .addItem(new JtvStatusItem("~Ctrl+Q~ Exit", JtvKey.kbCtrlQ, cmQuit))
-                .addItem(new JtvStatusItem(null, JtvKey.kbAltF3, cmClose))
-                .addItem(new JtvStatusItem(null, JtvKey.kbF10, cmMenu))
-                .addItem(new JtvStatusItem(null, JtvKey.kbF5, cmZoom))
-                .addItem(new JtvStatusItem(null, JtvKey.kbCtrlF5, cmResize)));
+        return new JtvStatusLine(
+        		new JtvRect(r.getA().getX(), r.getB().getY() - 1, r.getB().getX(), r.getB().getY()),
+	            new JtvStatusDef()
+		                .addItem(new JtvStatusItem("~F1~ Help", JtvKeyStroke.of(KeyEvent.VK_F1), cmHelp))
+		                .addItem(new JtvStatusItem("~Ctrl+Q~ Exit", JtvKeyStroke.of(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), cmQuit))
+		                .addItem(new JtvStatusItem(null, JtvKeyStroke.of(KeyEvent.VK_F3, InputEvent.ALT_DOWN_MASK), cmClose))
+		                .addItem(new JtvStatusItem(null, JtvKeyStroke.of(KeyEvent.VK_F10), cmMenu))
+		                .addItem(new JtvStatusItem(null, JtvKeyStroke.of(KeyEvent.VK_F5), cmZoom))
+		                .addItem(new JtvStatusItem(null, JtvKeyStroke.of(KeyEvent.VK_F5, InputEvent.CTRL_DOWN_MASK), cmResize))
+        );
     }
 
     public static void main(String[] args) {

@@ -10,6 +10,7 @@ import static org.viktor44.jtvision.core.EventCodes.evMouse;
 import static org.viktor44.jtvision.core.EventCodes.evMouseDown;
 import static org.viktor44.jtvision.core.ViewFlags.ofSelectable;
 
+import java.awt.event.KeyEvent;
 import java.util.Random;
 
 import org.viktor44.jtvision.core.JtvColorAttr;
@@ -127,16 +128,16 @@ public class PuzzleView extends JtvView {
         int i = blankIndex();
         int x = i % 4, y = i / 4;
         switch (key) {
-            case JtvKey.kbDown:
+            case KeyEvent.VK_DOWN:
                 if (y > 0) { board[y][x] = board[y - 1][x]; board[y - 1][x] = ' '; bumpMoves(); }
                 break;
-            case JtvKey.kbUp:
+            case KeyEvent.VK_UP:
                 if (y < 3) { board[y][x] = board[y + 1][x]; board[y + 1][x] = ' '; bumpMoves(); }
                 break;
-            case JtvKey.kbRight:
+            case KeyEvent.VK_RIGHT:
                 if (x > 0) { board[y][x] = board[y][x - 1]; board[y][x - 1] = ' '; bumpMoves(); }
                 break;
-            case JtvKey.kbLeft:
+            case KeyEvent.VK_LEFT:
                 if (x < 3) { board[y][x] = board[y][x + 1]; board[y][x + 1] = ' '; bumpMoves(); }
                 break;
         }
@@ -151,10 +152,18 @@ public class PuzzleView extends JtvView {
         int x = lp.getX() / 3;
         int y = lp.getY();
         switch (y * 4 + x - i) {
-            case -4: moveKey(JtvKey.kbDown); break;
-            case -1: moveKey(JtvKey.kbRight); break;
-            case 1:  moveKey(JtvKey.kbLeft); break;
-            case 4:  moveKey(JtvKey.kbUp); break;
+            case -4:
+            	moveKey(KeyEvent.VK_DOWN);
+            	break;
+            case -1:
+            	moveKey(KeyEvent.VK_RIGHT);
+            	break;
+            case 1:
+            	moveKey(KeyEvent.VK_LEFT);
+            	break;
+            case 4:
+            	moveKey(KeyEvent.VK_UP);
+            	break;
         }
         drawView();
     }
@@ -164,10 +173,18 @@ public class PuzzleView extends JtvView {
         solved = false;
         do {
             switch (rand.nextInt(4)) {
-                case 0: moveKey(JtvKey.kbUp); break;
-                case 1: moveKey(JtvKey.kbDown); break;
-                case 2: moveKey(JtvKey.kbRight); break;
-                case 3: moveKey(JtvKey.kbLeft); break;
+                case 0: 
+                	moveKey(KeyEvent.VK_UP);
+                	break;
+                case 1:
+                	moveKey(KeyEvent.VK_DOWN);
+                	break;
+                case 2:
+                	moveKey(KeyEvent.VK_RIGHT);
+                	break;
+                case 3:
+                	moveKey(KeyEvent.VK_LEFT);
+                	break;
             }
         }
         while (moves++ <= 500);

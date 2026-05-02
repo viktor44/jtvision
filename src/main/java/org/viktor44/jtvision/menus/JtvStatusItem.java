@@ -4,6 +4,8 @@
  */
 package org.viktor44.jtvision.menus;
 
+import org.viktor44.jtvision.core.JtvKeyStroke;
+
 import lombok.Getter;
 
 /**
@@ -37,11 +39,10 @@ public class JtvStatusItem {
     private final String text;
 
 	/**
-     * The keyboard scan code (typically a function key or Alt+key) that
-     * triggers this item's command, or {@code 0} if the item has no hot key.
+     * The keystroke that triggers this item's command, or {@code null} if the item has no hot key.
      */
 	@Getter
-    private final int keyCode;
+    private final JtvKeyStroke keyStroke;
 
 	/**
      * The {@code cmXXXX} command constant posted as an {@code evCommand}
@@ -53,13 +54,13 @@ public class JtvStatusItem {
 	/**
      * Creates a status item.
      *
-     * @param aText    the label string, or {@code null} for a hidden hot-key item
-     * @param aKeyCode the hot-key scan code, or {@code 0}
-     * @param aCommand the command to generate on activation
+     * @param aText       the label string, or {@code null} for a hidden hot-key item
+     * @param aKeyStroke  the hot-key keystroke, or {@code null}
+     * @param aCommand    the command to generate on activation
      */
-    public JtvStatusItem(String aText, int aKeyCode, int aCommand) {
+    public JtvStatusItem(String aText, JtvKeyStroke aKeyStroke, int aCommand) {
         text = aText;
-        keyCode = aKeyCode;
+        keyStroke = aKeyStroke;
         command = aCommand;
     }
 }

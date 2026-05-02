@@ -11,10 +11,12 @@ import static org.viktor44.jtvision.core.EventCodes.evKeyDown;
 import static org.viktor44.jtvision.core.EventCodes.evMouseDown;
 import static org.viktor44.jtvision.core.ViewFlags.ofSelectable;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
 import org.viktor44.jtvision.core.JtvColorAttr;
 import org.viktor44.jtvision.core.JtvDrawBuffer;
 import org.viktor44.jtvision.core.JtvEvent;
-import org.viktor44.jtvision.core.JtvKey;
 import org.viktor44.jtvision.core.JtvPalette;
 import org.viktor44.jtvision.core.JtvPoint;
 import org.viktor44.jtvision.core.JtvRect;
@@ -234,7 +236,7 @@ public class JtvHelpViewer extends JtvScroller {
         switch (event.getWhat()) {
             case evKeyDown:
                 switch (event.getKeyDown().getKeyStroke()) {
-                    case JtvKey.kbTab:
+                    case KeyEvent.VK_TAB:
                         selected++;
                         if (selected > topic.getNumCrossRefs()) {
                             selected = 1;
@@ -245,7 +247,7 @@ public class JtvHelpViewer extends JtvScroller {
                         drawView();
                         clearEvent(event);
                         return;
-                    case JtvKey.kbShiftTab:
+                    case (InputEvent.SHIFT_DOWN_MASK << 16) | KeyEvent.VK_TAB:
                         selected--;
                         if (selected <= 0) {
                             selected = topic.getNumCrossRefs();
@@ -256,7 +258,7 @@ public class JtvHelpViewer extends JtvScroller {
                         drawView();
                         clearEvent(event);
                         return;
-                    case JtvKey.kbEnter:
+                    case KeyEvent.VK_ENTER:
                         if (selected > 0 && selected <= topic.getNumCrossRefs()) {
                             JtvHelpTopic.CrossRef ref = topic.getCrossRef(selected - 1);
                             if (ref != null) {
@@ -265,7 +267,7 @@ public class JtvHelpViewer extends JtvScroller {
                         }
                         clearEvent(event);
                         return;
-                    case JtvKey.kbEsc:
+                    case KeyEvent.VK_ESCAPE:
                         event.setWhat(evCommand);
                         event.getMessage().setCommand(cmClose);
                         putEvent(event);

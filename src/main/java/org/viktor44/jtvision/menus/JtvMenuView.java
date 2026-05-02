@@ -13,8 +13,10 @@ import static org.viktor44.jtvision.core.EventCodes.evMouseDown;
 import static org.viktor44.jtvision.core.EventCodes.evMouseMove;
 import static org.viktor44.jtvision.core.EventCodes.evMouseUp;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
 import org.viktor44.jtvision.core.JtvEvent;
-import org.viktor44.jtvision.core.JtvKey;
 import org.viktor44.jtvision.core.JtvPalette;
 import org.viktor44.jtvision.core.JtvPoint;
 import org.viktor44.jtvision.core.JtvRect;
@@ -174,7 +176,7 @@ public class JtvMenuView extends JtvView {
         int keyCode = e.getKeyDown().getKeyStroke();
         for (JtvMenuItem p : menu.getItems()) {
             if (p.getName() != null) {
-                if (p.getCommand() != 0 && p.getKeyCode() != JtvKey.kbNoKey && p.getKeyCode() == keyCode && !p.isDisabled()) {
+                if (p.getCommand() != 0 && p.getKeyStroke() != null && p.getKeyStroke().getKeyStroke() == keyCode && !p.isDisabled()) {
                     putEvent(e);
                     if (owner != null) {
                         JtvEvent commandEvent = new JtvEvent();
@@ -212,7 +214,7 @@ public class JtvMenuView extends JtvView {
         }
         for (JtvMenuItem p : searchMenu.getItems()) {
             if (p.getName() != null) {
-                if (p.getCommand() != 0 && p.getKeyCode() != JtvKey.kbNoKey && p.getKeyCode() == keyCode && !p.isDisabled()) {
+                if (p.getCommand() != 0 && p.getKeyStroke() != null && p.getKeyStroke().getKeyStroke() == keyCode && !p.isDisabled()) {
                     putEvent(sourceEvent);
                     if (owner != null) {
                         JtvEvent commandEvent = new JtvEvent();
@@ -310,34 +312,34 @@ public class JtvMenuView extends JtvView {
 
                 case evKeyDown:
                     switch (e.getKeyDown().getKeyCode()) {
-                        case JtvKey.kbUp:
-                        case JtvKey.kbDown:
+                        case KeyEvent.VK_UP:
+                        case KeyEvent.VK_DOWN:
                             if (size.getY() != 1) {
-                                trackKey(e.getKeyDown().getKeyCode() == JtvKey.kbDown);
-                            } else if (e.getKeyDown().getKeyCode() == JtvKey.kbDown) {
+                                trackKey(e.getKeyDown().getKeyCode() == KeyEvent.VK_DOWN);
+                            } else if (e.getKeyDown().getKeyCode() == KeyEvent.VK_DOWN) {
                                 autoSelect = true;
                             }
                             break;
-                        case JtvKey.kbLeft:
-                        case JtvKey.kbRight:
+                        case KeyEvent.VK_LEFT:
+                        case KeyEvent.VK_RIGHT:
                             if (size.getY() == 1) {
-                                trackKey(e.getKeyDown().getKeyCode() == JtvKey.kbRight);
+                                trackKey(e.getKeyDown().getKeyCode() == KeyEvent.VK_RIGHT);
                                 autoSelect = true;
                             } else if (parentMenu != null) {
                                 putEvent(e);
                                 return 0;
                             }
                             break;
-                        case JtvKey.kbHome:
-                        case JtvKey.kbEnd:
+                        case KeyEvent.VK_HOME:
+                        case KeyEvent.VK_END:
                             if (size.getY() != 1) {
                                 current = firstItem(menu);
-                                if (e.getKeyDown().getKeyCode() == JtvKey.kbEnd) {
+                                if (e.getKeyDown().getKeyCode() == KeyEvent.VK_END) {
                                     trackKey(false);
                                 }
                             }
                             break;
-                        case JtvKey.kbEnter:
+                        case KeyEvent.VK_ENTER:
                             if (current != null) {
                                 if (current.getCommand() != 0) {
                                     result = current.getCommand();
@@ -346,7 +348,7 @@ public class JtvMenuView extends JtvView {
                                 }
                             }
                             break;
-                        case JtvKey.kbEsc:
+                        case KeyEvent.VK_ESCAPE:
                             if (parentMenu != null && parentMenu.size.getY() == 1) {
                                 putEvent(e);
                             } else {
@@ -355,20 +357,29 @@ public class JtvMenuView extends JtvView {
                             exitRequested = true;
                             break;
                         default:
-                            // Check for hotkeys
                             if (menu != null) {
                                 for (JtvMenuItem p : menu.getItems()) {
-                                    if (p.getName() != null) {
-                                        char c = StringUtils.hotKey(p.getName());
-                                        int altCode = JtvKey.getAltCode(c);
-                                        if (altCode != 0 && altCode == e.getKeyDown().getKeyStroke()) {
-                                            current = p;
-                                            if (p.getCommand() != 0)
-                                                result = p.getCommand();
-                                            else
-                                                autoSelect = true;
-                                            break;
-                                        }
+                                    if (p.getName() == null || p.isDisabled()) continue;
+                                    char c = StringUtils.hotKey(p.getName());
+                                    if (c == 0) continue;
+                                    boolean match;
+                                    if (size.getY() == 1) {
+                                        // Menu bar: Alt+letter only
+                                        match = e.getKeyDown().getModifiers() == InputEvent.ALT_DOWN_MASK
+                                             && Character.toUpperCase(c) == e.getKeyDown().getKeyCode();
+                                    } else {
+                                        // Submenu box: bare letter (no modifiers) or Alt+letter
+                                        match = (e.getKeyDown().getModifiers() == InputEvent.ALT_DOWN_MASK
+                                              || e.getKeyDown().getModifiers() == 0)
+                                             && Character.toUpperCase(c) == e.getKeyDown().getKeyCode();
+                                    }
+                                    if (match) {
+                                        current = p;
+                                        if (p.getCommand() != 0)
+                                            result = p.getCommand();
+                                        else
+                                            autoSelect = true;
+                                        break;
                                     }
                                 }
                             }

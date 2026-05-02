@@ -1,0 +1,71 @@
+name: Nightly Build
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  check-commits:
+    runs-on: ubuntu-latest
+    outputs:
+      has_commits: ${{ steps.check.outputs.has_commits }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Check for commits in last 24 hours
+        id: check
+        run: |
+          if git log --since="24 hours ago" --oneline | grep -q .; then
+            echo "has_commits=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_commits=false" >> $GITHUB_OUTPUT
+          fi
+
+  test:
+    needs: check-commits
+    if: needs.check-commits.outputs.has_commits == 'true'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        java: ['8', '17', '25']
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-java@v5
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: 'zulu'
+
+      - name: Test
+        run: mvn clean package --batch-mode --no-transfer-progress
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-java@v5
+        with:
+          java-version: '8'
+          distribution: 'zulu'
+          server-id: central-sonatype
+          server-username: CENTRAL_REPO_USER
+          server-password: CENTRAL_REPO_PASSWORD
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: GPG_PASSPHRASE
+
+      - name: Deploy
+        env:
+          CENTRAL_REPO_USER: ${{ secrets.CENTRAL_REPO_USER }}
+          CENTRAL_REPO_PASSWORD: ${{ secrets.CENTRAL_REPO_PASSWORD }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          mvn deploy --batch-mode --no-transfer-progress -DskipTests -Dgpg.skip=false

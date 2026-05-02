@@ -10,10 +10,12 @@ import static org.viktor44.jtvision.core.EventCodes.evKeyDown;
 import static org.viktor44.jtvision.core.ViewFlags.gfGrowHiX;
 import static org.viktor44.jtvision.core.ViewFlags.ofPreProcess;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
 import org.viktor44.jtvision.core.JtvColorAttr;
 import org.viktor44.jtvision.core.JtvDrawBuffer;
 import org.viktor44.jtvision.core.JtvEvent;
-import org.viktor44.jtvision.core.JtvKey;
 import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.util.StringUtils;
 
@@ -175,8 +177,8 @@ public class JtvMenuBar extends JtvMenuView {
                 for (JtvMenuItem p : menu.getItems()) {
                     if (p.getName() != null) {
                         char c = StringUtils.hotKey(p.getName());
-                        int altCode = JtvKey.getAltCode(c);
-                        if (altCode != 0 && altCode == event.getKeyDown().getKeyStroke()) {
+                        if (c != 0 && event.getKeyDown().getModifiers() == InputEvent.ALT_DOWN_MASK
+                                && Character.toUpperCase(c) == event.getKeyDown().getKeyCode()) {
                             current = p;
                             menu.setDefaultItem(p);
                             event.setWhat(evCommand);
@@ -189,7 +191,7 @@ public class JtvMenuBar extends JtvMenuView {
                 }
             }
             // F10 activates menu bar
-            if (event.getKeyDown().getKeyCode() == JtvKey.kbF10) {
+            if (event.getKeyDown().getKeyCode() == KeyEvent.VK_F10) {
                 if (menu != null && !menu.getItems().isEmpty()) {
                     current = menu.getItems().get(0);
                     event.setWhat(evCommand);

@@ -10,6 +10,7 @@ import static org.viktor44.jtvision.core.EventCodes.evMouseDown;
 import static org.viktor44.jtvision.core.ViewFlags.ofSelectable;
 import static org.viktor44.jtvision.core.ViewFlags.sfSelected;
 
+import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.time.YearMonth;
 
@@ -103,9 +104,9 @@ public class CalendarView extends JtvView {
         } else if ((event.getWhat() & evKeyboard) != 0) {
             char ch = event.getKeyDown().getKeyChar();
             int kc = event.getKeyDown().getKeyCode();
-            if (ch == '+' || kc == org.viktor44.jtvision.core.JtvKey.kbDown) {
+            if (ch == '+' || kc == KeyEvent.VK_DOWN) {
                 addMonth(1); drawView();
-            } else if (ch == '-' || kc == org.viktor44.jtvision.core.JtvKey.kbUp) {
+            } else if (ch == '-' || kc == KeyEvent.VK_UP) {
                 addMonth(-1); drawView();
             }
         }

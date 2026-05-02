@@ -29,12 +29,15 @@ import static org.viktor44.jtvision.core.ViewFlags.sfVisible;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 
 import org.viktor44.jtvision.dialogs.JtvDialog;
 import org.viktor44.jtvision.menus.JtvMenu;
 import org.viktor44.jtvision.menus.JtvMenuBar;
 import org.viktor44.jtvision.menus.JtvStatusDef;
 import org.viktor44.jtvision.menus.JtvStatusItem;
+import org.viktor44.jtvision.core.JtvKeyStroke;
 import org.viktor44.jtvision.menus.JtvStatusLine;
 import org.viktor44.jtvision.platform.EventQueue;
 import org.viktor44.jtvision.platform.Screen;
@@ -306,16 +309,15 @@ public abstract class JtvProgram extends JtvGroup {
     @Override
     public void handleEvent(JtvEvent event) {
         if (event.getWhat() == evKeyDown) {
-            char c = JtvKey.getAltChar(event.getKeyDown().getKeyCode());
-            if (c >= '1' && c <= '9') {
+            int kc = event.getKeyDown().getKeyCode();
+            if (event.getKeyDown().getModifiers() == InputEvent.ALT_DOWN_MASK
+                    && kc >= KeyEvent.VK_1 && kc <= KeyEvent.VK_9) {
                 if (canMoveFocus()) {
-                    JtvEvent numEvent = new JtvEvent();
-                    numEvent.setWhat(evBroadcast);
-                    numEvent.getMessage().setCommand(cmSelectWindowNum);
-                    numEvent.getMessage().setInfoInt(c - '0');
-                    if (message(desktop, evBroadcast, cmSelectWindowNum, null) != null)
+                    if (message(desktop, evBroadcast, cmSelectWindowNum, kc - KeyEvent.VK_0) != null) {
                         clearEvent(event);
-                } else {
+                    }
+                }
+                else {
                     clearEvent(event);
                 }
             }
@@ -474,11 +476,11 @@ public abstract class JtvProgram extends JtvGroup {
         r = new JtvRect(r.getA().getX(), r.getB().getY() - 1, r.getB().getX(), r.getB().getY());
         String meta = JtvKey.getMetaKeyLabel();
         return new JtvStatusLine(r,
-            new JtvStatusDef(0, 0xFFFF, null)
-                .addItem(new JtvStatusItem("~" + meta + "-X~ Exit", JtvKey.kbAltX, cmQuit))
-                .addItem(new JtvStatusItem(null, JtvKey.kbF10, cmMenu))
-                .addItem(new JtvStatusItem(null, JtvKey.kbAltF3, cmClose))
-                .addItem(new JtvStatusItem(null, JtvKey.kbF5, cmZoom)));
+            new JtvStatusDef()
+                .addItem(new JtvStatusItem("~" + meta + "-X~ Exit", new JtvKeyStroke(KeyEvent.VK_X, InputEvent.ALT_DOWN_MASK), cmQuit))
+                .addItem(new JtvStatusItem(null, new JtvKeyStroke(KeyEvent.VK_F10, 0), cmMenu))
+                .addItem(new JtvStatusItem(null, new JtvKeyStroke(KeyEvent.VK_F3, InputEvent.ALT_DOWN_MASK), cmClose))
+                .addItem(new JtvStatusItem(null, new JtvKeyStroke(KeyEvent.VK_F5, 0), cmZoom)));
     }
 
     /** The current application's status line, or {@code null} if none. */
