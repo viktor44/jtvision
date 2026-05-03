@@ -18,6 +18,7 @@ jobs:
           distribution: 'graalvm'
 
       - name: Build
+        shell: cmd
         run: |
           set TARGET_DIR=examples\target
           call mvn.cmd -f "examples\pom.xml" clean package -DskipTests
