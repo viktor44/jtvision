@@ -16,6 +16,8 @@
 		status lines, and full keyboard/mouse input — cross-platform on Windows, macOS, and Linux.
 	</description>
 
+	<url>https://github.com/viktor44/jtvision</url>
+
 	<properties>
 		<java.version>8</java.version>
 		
