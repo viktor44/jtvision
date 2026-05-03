@@ -71,4 +71,4 @@ jobs:
             -Darguments="--batch-mode --no-transfer-progress -DskipTests" \
             -DreleaseVersion=${NEXT_RELEASE_VERSION} \
             -DdevelopmentVersion=${NEXT_DEVELOPMENT_VERSION} \
-            -Dusername=releaser@users.noreply.github.com
+            -Dusername=releaser
