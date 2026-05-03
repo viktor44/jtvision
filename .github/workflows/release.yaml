@@ -49,5 +49,6 @@ jobs:
         run: |
           CURRENT_VERSION="$(mvn org.apache.maven.plugins:maven-help-plugin:evaluate -Dexpression=project.version -q -DforceStdout)"
           echo "Current version is $CURRENT_VERSION" 
+          chmod +x ./.github/increment_version.sh
           NEXT_VERSION="$(./.github/increment_version.sh ${{ inputs.INCREMENT_VERSION }} $CURRENT_VERSION)"
           echo "New release chart version is $NEXT_VERSION"
