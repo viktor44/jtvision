@@ -38,7 +38,7 @@ jobs:
           7z a -tzip "%TARGET_DIR%\editor.zip" "%TARGET_DIR%\editor.exe"
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
           name: editor
           path: examples/target/editor.zip

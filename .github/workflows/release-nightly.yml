@@ -7,6 +7,7 @@ on:
 
 jobs:
   check-commits:
+    if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
     outputs:
       has_commits: ${{ steps.check.outputs.has_commits }}
@@ -26,7 +27,7 @@ jobs:
 
   test:
     needs: check-commits
-    if: needs.check-commits.outputs.has_commits == 'true'
+    if: github.event_name != 'schedule' || needs.check-commits.outputs.has_commits == 'true'
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
