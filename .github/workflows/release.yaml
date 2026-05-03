@@ -55,4 +55,10 @@ jobs:
           NEXT_RELEASE_VERSION="$(./.github/increment_version.sh ${{ inputs.INCREMENT_VERSION }} $CURRENT_VERSION)"
           echo "New release version is $NEXT_RELEASE_VERSION"
           NEXT_DEVELOPMENT_VERSION="$(./.github/increment_version.sh patch $NEXT_RELEASE_VERSION)-SNAPSHOT"
-          echo "New development version is $NEXT_DEVELOPMENT_VERSION"          
+          echo "New development version is $NEXT_DEVELOPMENT_VERSION"
+
+          mvn release:prepare release:perform \
+            --batch-mode --no-transfer-progress --show-version \
+            -DskipTests \
+            -DreleaseVersion=${NEXT_RELEASE_VERSION} \
+            -DdevelopmentVersion=${NEXT_DEVELOPMENT_VERSION}
