@@ -25,28 +25,3 @@ jobs:
 
       - name: Test
         run: mvn clean package --batch-mode --no-transfer-progress
-
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v6
-
-      - uses: actions/setup-java@v5
-        with:
-          java-version: '8'
-          distribution: 'zulu'
-          server-id: central-sonatype
-          server-username: CENTRAL_REPO_USER 
-          server-password: CENTRAL_REPO_PASSWORD
-          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-          gpg-passphrase: GPG_PASSPHRASE
-
-      - name: Deploy
-        env:
-          CENTRAL_REPO_USER: ${{ secrets.CENTRAL_REPO_USER }}
-          CENTRAL_REPO_PASSWORD: ${{ secrets.CENTRAL_REPO_PASSWORD }}
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-        run: |
-          mvn deploy --batch-mode --no-transfer-progress -DskipTests -Dgpg.skip=false

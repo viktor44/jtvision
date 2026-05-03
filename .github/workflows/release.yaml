@@ -1,0 +1,53 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      INCREMENT_VERSION:
+        description: "Increment version X.Y.Z: X - major, Y - minor, Z - patch"
+        type: choice
+        required: true
+        default: "minor"
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  publish-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branch
+        if: github.ref_name != github.event.repository.default_branch
+        run: |
+          MESSAGE="This action can be run on '${{ github.event.repository.default_branch }}' branch only"
+          echo ":x: $MESSAGE" >> $GITHUB_STEP_SUMMARY
+          echo $MESSAGE
+          exit 1
+
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: '0'
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          java-version: '8'
+          distribution: 'zulu'
+          server-id: central-sonatype
+          server-username: CENTRAL_REPO_USER
+          server-password: CENTRAL_REPO_PASSWORD
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: GPG_PASSPHRASE
+
+      - name: Deploy
+        env:
+          CENTRAL_REPO_USER: ${{ secrets.CENTRAL_REPO_USER }}
+          CENTRAL_REPO_PASSWORD: ${{ secrets.CENTRAL_REPO_PASSWORD }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          CURRENT_VERSION="$(mvn org.apache.maven.plugins:maven-help-plugin:evaluate -Dexpression=project.version -q -DforceStdout)"
+          echo "Current version is $CURRENT_VERSION" 
+          NEXT_VERSION="$(./.github/increment_version.sh ${{ inputs.INCREMENT_VERSION }} $CURRENT_VERSION)"
+          echo "New release chart version is $NEXT_VERSION"
