@@ -65,9 +65,19 @@ jobs:
           git config --global user.name 'Releaser'
           git config --global user.email 'releaser@users.noreply.github.com'
 
-          mvn release:prepare release:perform \
-            --batch-mode --no-transfer-progress --show-version \
-            -Darguments="--batch-mode --no-transfer-progress -DskipTests" \
-            -DreleaseVersion=${NEXT_RELEASE_VERSION} \
-            -DdevelopmentVersion=${NEXT_DEVELOPMENT_VERSION} \
-            -DpushChanges=false
+          mvn versions:set versions:commit \
+            --batch-mode --no-transfer-progress \
+            -DnewVersion=${NEXT_RELEASE_VERSION}
+          
+          git commit -am "Release version ${NEXT_RELEASE_VERSION}"
+          git tag -a "v${NEXT_RELEASE_VERSION}" -m "Release version ${NEXT_RELEASE_VERSION}"
+          
+          mvn deploy \
+            --batch-mode --no-transfer-progress \
+            -DskipTests -Dgpg.skip=false
+          mvn versions:set versions:commit \
+            --batch-mode --no-transfer-progress \
+            -DnewVersion=${NEXT_DEVELOPMENT_VERSION}
+
+          git commit -am "Start development of version ${NEXT_DEVELOPMENT_VERSION}"
+          git push origin HEAD:main --tags
