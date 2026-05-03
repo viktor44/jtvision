@@ -20,13 +20,18 @@ if [[ -z "$version" ]]; then
   exit 1
 fi
 
+# Remove -SNAPSHOT postfix if operation is none
+if [[ "$operation" == "none" ]]; then
+  version="${version%-SNAPSHOT}"
+fi
+
 # Build array from version string.
 a=( ${version//./ } )
 
 # If version string has the wrong number of members, show usage message.
 if [ ${#a[@]} -ne 3 ]; then
   echo "Error: Version string must be in the format major.minor.patch."
-  echo "usage: $(basename $0) {major|minor|patch} major.minor.patch"
+  echo "usage: $(basename $0) {major|minor|patch|none} major.minor.patch"
   exit 1
 fi
 
