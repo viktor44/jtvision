@@ -7,9 +7,9 @@ operation=$1
 version=$2
 
 # Validate operation input.
-if [[ "$operation" != "major" && "$operation" != "minor" && "$operation" != "patch" ]]; then
-  echo "Error: Invalid operation. Use 'major', 'minor', or 'patch'."
-  echo "usage: $(basename $0) {major|minor|patch} major.minor.patch"
+if [[ "$operation" != "major" && "$operation" != "minor" && "$operation" != "patch" && "$operation" != "none" ]]; then
+  echo "Error: Invalid operation. Use 'major', 'minor', 'patch', or 'none'."
+  echo "usage: $(basename $0) {major|minor|patch|none} major.minor.patch"
   exit 1
 fi
 
@@ -43,6 +43,9 @@ case $operation in
     ;;
   patch)
     ((a[2]++))
+    ;;
+  none)
+    # Return the current version unchanged
     ;;
 esac
 

@@ -7,8 +7,9 @@ on:
         description: "Increment version X.Y.Z: X - major, Y - minor, Z - patch"
         type: choice
         required: true
-        default: "minor"
+        default: "none"
         options:
+          - none
           - patch
           - minor
           - major
@@ -52,4 +53,4 @@ jobs:
           echo "Current version is $CURRENT_VERSION" 
           chmod +x ./.github/increment_version.sh
           NEXT_VERSION="$(./.github/increment_version.sh ${{ inputs.INCREMENT_VERSION }} $CURRENT_VERSION)"
-          echo "New release chart version is $NEXT_VERSION"
+          echo "New release version is $NEXT_VERSION"
