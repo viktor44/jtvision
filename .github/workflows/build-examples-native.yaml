@@ -20,6 +20,7 @@ jobs:
       - name: Build
         shell: cmd
         run: |
+          setlocal enabledelayedexpansion
           set TARGET_DIR=examples\target
           call mvn.cmd -f "examples\pom.xml" ^
             clean package ^
@@ -31,7 +32,7 @@ jobs:
               set CP=!CP!;%%f
           )
           
-          echo ZZZZZZ "%CP%"
+          echo ZZZZZZ "!CP!"
 
           echo === native-image: EditorApp ===
           "%JAVA_HOME%\bin\native-image" ^
