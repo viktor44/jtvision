@@ -20,7 +20,8 @@ jobs:
     
 #    permissions:
 #      contents: write
-    
+    permissions: write-all
+
     steps:
       - name: Check branch
         if: github.ref_name != github.event.repository.default_branch
@@ -69,4 +70,5 @@ jobs:
             --batch-mode --no-transfer-progress --show-version \
             -Darguments="--batch-mode --no-transfer-progress -DskipTests" \
             -DreleaseVersion=${NEXT_RELEASE_VERSION} \
-            -DdevelopmentVersion=${NEXT_DEVELOPMENT_VERSION}
+            -DdevelopmentVersion=${NEXT_DEVELOPMENT_VERSION} \
+            -Dusername=releaser@users.noreply.github.com
