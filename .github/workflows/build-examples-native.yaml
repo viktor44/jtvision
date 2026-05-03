@@ -31,7 +31,7 @@ jobs:
               set CP=!CP!;%%f
           )
           
-          echo ZZZZZZ "!CP!"
+          echo ZZZZZZ "%CP%"
 
           echo === native-image: EditorApp ===
           "%JAVA_HOME%\bin\native-image" ^
