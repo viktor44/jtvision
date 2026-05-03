@@ -47,6 +47,7 @@ jobs:
           CENTRAL_REPO_PASSWORD: ${{ secrets.CENTRAL_REPO_PASSWORD }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
         run: |
+          set -x;
           CURRENT_VERSION="$(mvn org.apache.maven.plugins:maven-help-plugin:evaluate -Dexpression=project.version -q -DforceStdout)"
           echo "Current version is $CURRENT_VERSION" 
           chmod +x ./.github/increment_version.sh
