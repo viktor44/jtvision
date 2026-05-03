@@ -64,11 +64,10 @@ jobs:
 
           git config --global user.name 'Releaser'
           git config --global user.email 'releaser@users.noreply.github.com'
-          git status
 
           mvn release:prepare release:perform \
             --batch-mode --no-transfer-progress --show-version \
             -Darguments="--batch-mode --no-transfer-progress -DskipTests" \
             -DreleaseVersion=${NEXT_RELEASE_VERSION} \
             -DdevelopmentVersion=${NEXT_DEVELOPMENT_VERSION} \
-            -Dusername=releaser
+            -DpushChanges=false
