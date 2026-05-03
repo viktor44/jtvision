@@ -21,7 +21,10 @@ jobs:
         shell: cmd
         run: |
           set TARGET_DIR=examples\target
-          call mvn.cmd -f "examples\pom.xml" clean package -DskipTests
+          call mvn.cmd -f "examples\pom.xml" ^
+            clean package ^
+            -DskipTests ^
+            --batch-mode --no-transfer-progress
           
           echo === Building native classpath ===
           for %%f in ("%TARGET_DIR%\lib\*.jar") do (
