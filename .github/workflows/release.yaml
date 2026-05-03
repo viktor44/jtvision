@@ -64,6 +64,6 @@ jobs:
 
           mvn release:prepare release:perform \
             --batch-mode --no-transfer-progress --show-version \
-            -Darguments="-DskipTests" \
+            -Darguments="--batch-mode --no-transfer-progress -DskipTests" \
             -DreleaseVersion=${NEXT_RELEASE_VERSION} \
             -DdevelopmentVersion=${NEXT_DEVELOPMENT_VERSION}
