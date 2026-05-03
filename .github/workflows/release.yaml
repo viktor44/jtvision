@@ -14,6 +14,9 @@ on:
           - minor
           - major
 
+permissions:
+  contents: write
+
 jobs:
   publish-release:
     runs-on: ubuntu-latest
@@ -55,6 +58,9 @@ jobs:
           echo "New release version is $NEXT_RELEASE_VERSION"
           NEXT_DEVELOPMENT_VERSION="$(./.github/increment_version.sh patch $NEXT_RELEASE_VERSION)-SNAPSHOT"
           echo "New development version is $NEXT_DEVELOPMENT_VERSION"
+
+          git config --global user.name 'Releaser'
+          git config --global user.email 'releaser@users.noreply.github.com'
 
           mvn release:prepare release:perform \
             --batch-mode --no-transfer-progress --show-version \
