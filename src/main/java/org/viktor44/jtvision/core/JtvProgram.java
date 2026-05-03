@@ -292,7 +292,7 @@ public abstract class JtvProgram extends JtvGroup {
         	}
             return Toolkit.getDefaultToolkit().getSystemClipboard();
         }
-        catch (UnsupportedOperationException e) {
+        catch (UnsupportedOperationException /* headless mode */ | NoSuchMethodError /* GraalVM */ e) {
             return new Clipboard("jtvision");
         }
     }

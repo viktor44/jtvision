@@ -12,7 +12,7 @@
 	<packaging>jar</packaging>
 
 	<description>
-		A Java text UI framework. Build terminal applications with windows, dialogs, menus, 
+		A Java text-based UI framework. Build terminal applications with windows, dialogs, menus, 
 		status lines, and full keyboard/mouse input — cross-platform on Windows, macOS, and Linux.
 	</description>
 

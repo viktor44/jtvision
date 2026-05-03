@@ -262,6 +262,12 @@ public class Screen {
         if (initialized) {
         	return;
         }
+        if (SystemUtils.IS_OS_WINDOWS) {
+            try {
+                Kernel32.SetConsoleOutputCP(65001);
+            } catch (Throwable ignored) {
+            }
+        }
         AnsiConsole.systemInstall();
         out = AnsiConsole.out();
 

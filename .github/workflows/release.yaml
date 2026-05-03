@@ -62,8 +62,8 @@ jobs:
           NEXT_DEVELOPMENT_VERSION="$(./.github/increment_version.sh patch $NEXT_RELEASE_VERSION)-SNAPSHOT"
           echo "New development version is $NEXT_DEVELOPMENT_VERSION"
 
-          git config --global user.name 'Releaser'
-          git config --global user.email 'releaser@users.noreply.github.com'
+          git config --global user.name 'viktor44'
+          git config --global user.email 'viktor44@users.noreply.github.com'
 
           mvn versions:set versions:commit \
             --batch-mode --no-transfer-progress \

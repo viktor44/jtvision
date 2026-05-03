@@ -1,0 +1,44 @@
+name: Build Examples
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-examples:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'graalvm'
+
+      - name: Build
+        run: |
+          set TARGET_DIR=examples\target
+          call mvn.cmd -f "examples\pom.xml" clean package -DskipTests
+          
+          echo === Building native classpath ===
+          for %%f in ("%TARGET_DIR%\lib\*.jar") do (
+              set CP=!CP!;%%f
+          )
+          
+          echo === native-image: EditorApp ===
+          "%JAVA_HOME%\bin\native-image" ^
+              -cp "!CP!" ^
+              --no-fallback ^
+              -H:Name=editor ^
+              -H:Path="%TARGET_DIR%" ^
+              org.viktor44.jtvision.examples.editor.EditorApp
+
+          7z a -tzip "%TARGET_DIR%\editor.zip" "%TARGET_DIR%\editor.exe"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: editor
+          path: examples/target/editor.zip
