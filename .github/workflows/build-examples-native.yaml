@@ -28,7 +28,7 @@ jobs:
           
           echo === Building native classpath ===
           for %%f in ("%TARGET_DIR%\lib\*.jar") do (
-              set CP="!CP!;%%f"
+              set CP=!CP!;%%f
           )
           
           echo ZZZZZZ "!CP!"
