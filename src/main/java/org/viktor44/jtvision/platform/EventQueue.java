@@ -4,7 +4,6 @@
  */
 package org.viktor44.jtvision.platform;
 
-import static org.viktor44.jtvision.core.EventCodes.evKeyDown;
 import static org.viktor44.jtvision.core.EventCodes.evKeyboard;
 import static org.viktor44.jtvision.core.EventCodes.evMouse;
 import static org.viktor44.jtvision.core.EventCodes.evMouseDown;
@@ -34,9 +33,10 @@ import org.fusesource.jansi.internal.Kernel32.MOUSE_EVENT_RECORD;
 import org.viktor44.jtvision.core.EventCodes;
 import org.viktor44.jtvision.core.JtvEvent;
 import org.viktor44.jtvision.core.JtvPoint;
-import org.viktor44.jtvision.core.KeyDownEvent;
 import org.viktor44.jtvision.core.MouseEvent;
 import org.viktor44.jtvision.util.SystemUtils;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Platform-level input event queue.
@@ -90,6 +90,7 @@ import org.viktor44.jtvision.util.SystemUtils;
  * @see Screen
  * @see JtvEvent
  */
+@Slf4j
 public class EventQueue {
 
     /**
@@ -992,8 +993,25 @@ public class EventQueue {
                 break;
             case 'P': pushKeyEvent(KeyEvent.VK_F1, 0, KeyEvent.CHAR_UNDEFINED); break;
             case 'Q': pushKeyEvent(KeyEvent.VK_F2, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 'R': pushKeyEvent(KeyEvent.VK_F3, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 'R':
+                // Ignore cursor-position reports (ESC [ row ; col R) — only treat bare ESC [ R as F3
+                if (paramStr.isEmpty()) {
+                    pushKeyEvent(KeyEvent.VK_F3, 0, KeyEvent.CHAR_UNDEFINED);
+                }
+                break;
             case 'S': pushKeyEvent(KeyEvent.VK_F4, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case '[': {
+                // Linux console F1-F5: ESC [ [ A-E
+                int lc = readByteWithTimeout(ESC_SEQUENCE_TIMEOUT_MS);
+                switch (lc) {
+                    case 'A': pushKeyEvent(KeyEvent.VK_F1, 0, KeyEvent.CHAR_UNDEFINED); break;
+                    case 'B': pushKeyEvent(KeyEvent.VK_F2, 0, KeyEvent.CHAR_UNDEFINED); break;
+                    case 'C': pushKeyEvent(KeyEvent.VK_F3, 0, KeyEvent.CHAR_UNDEFINED); break;
+                    case 'D': pushKeyEvent(KeyEvent.VK_F4, 0, KeyEvent.CHAR_UNDEFINED); break;
+                    case 'E': pushKeyEvent(KeyEvent.VK_F5, 0, KeyEvent.CHAR_UNDEFINED); break;
+                }
+                break;
+            }
         }
     }
 
@@ -1051,6 +1069,10 @@ public class EventQueue {
             case 4: pushKeyEvent(KeyEvent.VK_END, 0, KeyEvent.CHAR_UNDEFINED); break;
             case 5: pushKeyEvent(KeyEvent.VK_PAGE_UP, 0, KeyEvent.CHAR_UNDEFINED); break;
             case 6: pushKeyEvent(KeyEvent.VK_PAGE_DOWN, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 11: pushKeyEvent(KeyEvent.VK_F1, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 12: pushKeyEvent(KeyEvent.VK_F2, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 13: pushKeyEvent(KeyEvent.VK_F3, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 14: pushKeyEvent(KeyEvent.VK_F4, 0, KeyEvent.CHAR_UNDEFINED); break;
             case 15: pushKeyEvent(KeyEvent.VK_F5, 0, KeyEvent.CHAR_UNDEFINED); break;
             case 17: pushKeyEvent(KeyEvent.VK_F6, 0, KeyEvent.CHAR_UNDEFINED); break;
             case 18: pushKeyEvent(KeyEvent.VK_F7, 0, KeyEvent.CHAR_UNDEFINED); break;
