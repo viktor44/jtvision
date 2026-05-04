@@ -126,18 +126,27 @@ jobs:
 
           dir "%TARGET_DIR%"
 
-      - name: Upload examples
-        uses: actions/upload-artifact@v7
+      - name: Publish release
+        uses: softprops/action-gh-release@v3
         with:
-          name: examples-win
-          path: |
-            examples/target/demo.exe
-            examples/target/dir.exe
-            examples/target/editor.exe
-            examples/target/forms.exe
-            examples/target/mmenu.exe
-            examples/target/palette.exe
-          if-no-files-found: error
+          draft: true
+          prerelease: false
+#          tag_name: ${{ inputs.tag_name || github.ref_name }}
+          files: examples/target/examples-win.zip
+#          token: ${{ secrets.GH_TOKEN }}
+
+      # - name: Upload examples
+      #   uses: actions/upload-artifact@v7
+      #   with:
+      #     name: examples-win
+      #     path: |
+      #       examples/target/demo.exe
+      #       examples/target/dir.exe
+      #       examples/target/editor.exe
+      #       examples/target/forms.exe
+      #       examples/target/mmenu.exe
+      #       examples/target/palette.exe
+      #     if-no-files-found: error
 
   build-examples-macos:
     runs-on: macos-latest
@@ -397,6 +406,15 @@ jobs:
           7z a -tzip "$TARGET_DIR/examples-linux.zip" "$TARGET_DIR/demo" "$TARGET_DIR/dir" "$TARGET_DIR/editor" "$TARGET_DIR/forms" "$TARGET_DIR/mmenu" "$TARGET_DIR/palette"
 
           ls -l "$TARGET_DIR"
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v3
+        with:
+          draft: true
+          prerelease: false
+#          tag_name: ${{ inputs.tag_name || github.ref_name }}
+          files: examples/target/examples-linux.zip
+#          token: ${{ secrets.GH_TOKEN }}
 
       - name: Upload examples
         uses: actions/upload-artifact@v7
