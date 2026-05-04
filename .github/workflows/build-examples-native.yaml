@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-examples:
+  build-windows-examples:
     runs-on: windows-latest
 
     steps:
@@ -45,11 +45,63 @@ jobs:
             exit /b 1
           )
 
-          7z a -tzip editor.zip "%TARGET_DIR%\editor.exe"
+          rem 7z a -tzip editor.zip "%TARGET_DIR%\editor.exe"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: editor
-          path: editor.zip
+          name: editor-win
+          path: examples/target/editor.exe
           if-no-files-found: error
+
+  build-macos-examples:
+    runs-on: macos-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'graalvm'
+
+      - name: Build
+        shell: bash
+        run: |
+          export TARGET_DIR=examples/target
+          mvn -f "examples/pom.xml" \
+            clean package \
+            -DskipTests \
+            --batch-mode --no-transfer-progress
+          
+          echo === Building native classpath ===
+          CP=""
+          for jar in "$TARGET_DIR"/lib/*.jar; do
+              CP="$CP:$jar"
+          done
+          CP="${CP:1}"  # Remove leading colon
+          
+          echo === native-image: EditorApp ===
+          "$JAVA_HOME/bin/native-image" \
+              -cp "$CP" \
+              --no-fallback \
+              -H:Name=editor \
+              -H:Path="$TARGET_DIR" \
+              org.viktor44.jtvision.examples.editor.EditorApp
+          
+          if [ $? -ne 0 ]; then
+            echo "native-image build failed"
+            exit 1
+          fi
+          
+          ls -l "$TARGET_DIR"
+
+      # - name: Upload artifact
+      #   uses: actions/upload-artifact@v7
+      #   with:
+      #     name: editor-macos
+      #     path: examples/target/editor.exe
+      #     if-no-files-found: error
+      #     archive: true
