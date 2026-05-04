@@ -45,13 +45,31 @@ jobs:
             exit /b 1
           )
 
-          rem 7z a -tzip editor.zip "%TARGET_DIR%\editor.exe"
+          echo === native-image: DemoApp ===
+          "%JAVA_HOME%\bin\native-image" ^
+              -cp "!CP!" ^
+              --no-fallback ^
+              -H:Name=demo ^
+              -H:Path="%TARGET_DIR%" ^
+              org.viktor44.jtvision.examples.demo.DemoApp
 
-      - name: Upload artifact
+          if errorlevel 1 (
+            echo native-image build failed
+            exit /b 1
+          )
+
+      - name: Upload editor
         uses: actions/upload-artifact@v7
         with:
           name: editor-win
           path: examples/target/editor.exe
+          if-no-files-found: error
+
+      - name: Upload demo
+        uses: actions/upload-artifact@v7
+        with:
+          name: demo-win
+          path: examples/target/demo.exe
           if-no-files-found: error
 
   build-macos-examples:
@@ -95,13 +113,34 @@ jobs:
             echo "native-image build failed"
             exit 1
           fi
+
+          echo === native-image: DemoApp ===
+          "$JAVA_HOME/bin/native-image" \
+              -cp "$CP" \
+              --no-fallback \
+              -H:Name=demo \
+              -H:Path="$TARGET_DIR" \
+              org.viktor44.jtvision.examples.demo.DemoApp
+          
+          if [ $? -ne 0 ]; then
+            echo "native-image build failed"
+            exit 1
+          fi
           
           ls -l "$TARGET_DIR"
 
-      # - name: Upload artifact
-      #   uses: actions/upload-artifact@v7
-      #   with:
-      #     name: editor-macos
-      #     path: examples/target/editor.exe
-      #     if-no-files-found: error
-      #     archive: true
+      - name: Upload editor
+        uses: actions/upload-artifact@v7
+        with:
+          name: editor-macos
+          path: examples/target/editor
+          if-no-files-found: error
+          archive: true
+
+      - name: Upload demo
+        uses: actions/upload-artifact@v7
+        with:
+          name: demo-macos
+          path: examples/target/demo
+          if-no-files-found: error
+          archive: true
