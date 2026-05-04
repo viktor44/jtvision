@@ -41,12 +41,10 @@ jobs:
               -H:Name=demo ^
               -H:Path="%TARGET_DIR%" ^
               org.viktor44.jtvision.examples.demo.DemoApp
-
-          rem if errorlevel 1 (
-          rem   echo native-image build failed
-          rem   exit /b 1
-          rem )
-
+          if errorlevel 1 (
+            echo native-image build failed
+            exit /b 1
+          )
           echo === native-image: DirApp ===
           "%JAVA_HOME%\bin\native-image" ^
               -cp "!CP!" ^
@@ -271,18 +269,12 @@ jobs:
 
           ls -l "$TARGET_DIR"
 
-      - name: Upload examples
-        uses: actions/upload-artifact@v7
+      - name: Publish release
+        uses: softprops/action-gh-release@v3
         with:
-          name: examples-macos
-          path: |
-            examples/target/demo
-            examples/target/dir
-            examples/target/editor
-            examples/target/forms
-            examples/target/mmenu
-            examples/target/palette
-          if-no-files-found: error
+          draft: true
+          prerelease: false
+          files: examples/target/examples-macos.zip
 
   build-examples-linux:
     runs-on: ubuntu-latest
@@ -412,19 +404,4 @@ jobs:
         with:
           draft: true
           prerelease: false
-#          tag_name: ${{ inputs.tag_name || github.ref_name }}
           files: examples/target/examples-linux.zip
-#          token: ${{ secrets.GH_TOKEN }}
-
-      - name: Upload examples
-        uses: actions/upload-artifact@v7
-        with:
-          name: examples-linux
-          path: |
-            examples/target/demo
-            examples/target/dir
-            examples/target/editor
-            examples/target/forms
-            examples/target/mmenu
-            examples/target/palette
-          if-no-files-found: error
