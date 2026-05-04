@@ -32,8 +32,6 @@ jobs:
               set CP=!CP!;%%f
           )
           
-          echo ZZZZZZ "!CP!"
-
           echo === native-image: EditorApp ===
           "%JAVA_HOME%\bin\native-image" ^
               -cp "!CP!" ^
@@ -42,7 +40,12 @@ jobs:
               -H:Path="%TARGET_DIR%" ^
               org.viktor44.jtvision.examples.editor.EditorApp
 
-          7z a -tzip "%TARGET_DIR%\editor.zip" "%TARGET_DIR%\editor.exe"
+          if errorlevel 1 (
+            echo native-image build failed
+            exit /b 1
+          )
+
+          7z a -tzip editor.zip "%TARGET_DIR%\editor.exe"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7
