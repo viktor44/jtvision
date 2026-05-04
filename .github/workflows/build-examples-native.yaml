@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-windows-examples:
+  build-examples-windows:
     runs-on: windows-latest
 
     steps:
@@ -26,6 +26,11 @@ jobs:
             clean package ^
             -DskipTests ^
             --batch-mode --no-transfer-progress
+
+          echo === Building native classpath ===
+          for %%f in ("%TARGET_DIR%\lib\*.jar") do (
+              set CP=!CP!;%%f
+          )
 
           echo === native-image: DemoApp ===
           "%JAVA_HOME%\bin\native-image" ^
@@ -51,11 +56,6 @@ jobs:
           if errorlevel 1 (
             echo native-image build failed
             exit /b 1
-          )
-          
-          echo === Building native classpath ===
-          for %%f in ("%TARGET_DIR%\lib\*.jar") do (
-              set CP=!CP!;%%f
           )
           
           echo === native-image: EditorApp ===
@@ -112,41 +112,6 @@ jobs:
 
           dir "%TARGET_DIR%"
 
-      - name: Upload demo
-        uses: actions/upload-artifact@v7
-        with:
-          name: demo-win
-          path: examples/target/demo.exe
-          if-no-files-found: error
-
-      - name: Upload dir
-        uses: actions/upload-artifact@v7
-        with:
-          name: dir-win
-          path: examples/target/dir.exe
-          if-no-files-found: error
-
-      - name: Upload editor
-        uses: actions/upload-artifact@v7
-        with:
-          name: editor-win
-          path: examples/target/editor.exe
-          if-no-files-found: error
-
-      - name: Upload forms
-        uses: actions/upload-artifact@v7
-        with:
-          name: forms-win
-          path: examples/target/forms.exe
-          if-no-files-found: error
-
-      - name: Upload mmenu
-        uses: actions/upload-artifact@v7
-        with:
-          name: mmenu-win
-          path: examples/target/mmenu.exe
-          if-no-files-found: error
-
       - name: Upload examples
         uses: actions/upload-artifact@v7
         with:
@@ -160,7 +125,7 @@ jobs:
             examples/target/palette.exe
           if-no-files-found: error
 
-  build-macos-examples:
+  build-examples-macos:
     runs-on: macos-latest
 
     steps:
@@ -269,18 +234,132 @@ jobs:
           
           ls -l "$TARGET_DIR"
 
-      - name: Upload editor
-        uses: actions/upload-artifact@v7
-        with:
-          name: editor-macos
-          path: examples/target/editor
-          if-no-files-found: error
-          archive: true
-
       - name: Upload examples
         uses: actions/upload-artifact@v7
         with:
           name: examples-macos
+          path: |
+            examples/target/demo
+            examples/target/dir
+            examples/target/editor
+            examples/target/forms
+            examples/target/mmenu
+            examples/target/palette
+          if-no-files-found: error
+
+  build-examples-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'graalvm'
+
+      - name: Build
+        shell: bash
+        run: |
+          export TARGET_DIR=examples/target
+          mvn -f "examples/pom.xml" \
+            clean package \
+            -DskipTests \
+            --batch-mode --no-transfer-progress
+          
+          echo === Building native classpath ===
+          CP=""
+          for jar in "$TARGET_DIR"/lib/*.jar; do
+              CP="$CP:$jar"
+          done
+          CP="${CP:1}"  # Remove leading colon
+          
+          echo === native-image: DemoApp ===
+          "$JAVA_HOME/bin/native-image" \
+              -cp "$CP" \
+              --no-fallback \
+              -H:Name=demo \
+              -H:Path="$TARGET_DIR" \
+              org.viktor44.jtvision.examples.demo.DemoApp
+          
+          if [ $? -ne 0 ]; then
+            echo "native-image build failed"
+            exit 1
+          fi
+          
+          echo === native-image: DirApp ===
+          "$JAVA_HOME/bin/native-image" \
+              -cp "$CP" \
+              --no-fallback \
+              -H:Name=dir \
+              -H:Path="$TARGET_DIR" \
+              org.viktor44.jtvision.examples.dir.DirApp
+          
+          if [ $? -ne 0 ]; then
+            echo "native-image build failed"
+            exit 1
+          fi
+          
+          echo === native-image: EditorApp ===
+          "$JAVA_HOME/bin/native-image" \
+              -cp "$CP" \
+              --no-fallback \
+              -H:Name=editor \
+              -H:Path="$TARGET_DIR" \
+              org.viktor44.jtvision.examples.editor.EditorApp
+          
+          if [ $? -ne 0 ]; then
+            echo "native-image build failed"
+            exit 1
+          fi
+
+          echo === native-image: FormsApp ===
+          "$JAVA_HOME/bin/native-image" \
+              -cp "$CP" \
+              --no-fallback \
+              -H:Name=forms \
+              -H:Path="$TARGET_DIR" \
+              org.viktor44.jtvision.examples.forms.FormsApp
+          
+          if [ $? -ne 0 ]; then
+            echo "native-image build failed"
+            exit 1
+          fi
+          
+          echo === native-image: MultiMenuApp ===
+          "$JAVA_HOME/bin/native-image" \
+              -cp "$CP" \
+              --no-fallback \
+              -H:Name=mmenu \
+              -H:Path="$TARGET_DIR" \
+              org.viktor44.jtvision.examples.mmenu.MultiMenuApp
+          
+          if [ $? -ne 0 ]; then
+            echo "native-image build failed"
+            exit 1
+          fi
+          
+          echo === native-image: PaletteApp ===
+          "$JAVA_HOME/bin/native-image" \
+              -cp "$CP" \
+              --no-fallback \
+              -H:Name=palette \
+              -H:Path="$TARGET_DIR" \
+              org.viktor44.jtvision.examples.palette.PaletteApp
+          
+          if [ $? -ne 0 ]; then
+            echo "native-image build failed"
+            exit 1
+          fi
+          
+          ls -l "$TARGET_DIR"
+
+      - name: Upload examples
+        uses: actions/upload-artifact@v7
+        with:
+          name: examples-linux
           path: |
             examples/target/demo
             examples/target/dir
