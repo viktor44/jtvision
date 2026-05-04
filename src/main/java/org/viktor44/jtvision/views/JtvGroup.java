@@ -37,6 +37,8 @@ import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.core.JtvScreenCell;
 import org.viktor44.jtvision.platform.Screen;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * A container view that owns and manages an ordered list of child views.
  * <p>
@@ -70,6 +72,7 @@ import org.viktor44.jtvision.platform.Screen;
  * @see JtvView
  * @see JtvWindow
  */
+@Slf4j
 public class JtvGroup extends JtvView {
 
     /**
@@ -357,8 +360,8 @@ public class JtvGroup extends JtvView {
                         eventError(e);
                     }
                 }
-                catch (RuntimeException ex) {
-                    handleRuntimeException(ex);
+                catch (Throwable ex) {
+                    handleException(ex);
                 }
             }
             while (endState == 0);
@@ -375,7 +378,8 @@ public class JtvGroup extends JtvView {
      *
      * @param ex the runtime exception to report
      */
-    protected void handleRuntimeException(RuntimeException ex) {
+    protected void handleException(Throwable ex) {
+    	log.error("", ex);
         JtvEvent errorEvent = new JtvEvent();
         errorEvent.setWhat(evCommand);
         errorEvent.getMessage().setCommand(cmError);

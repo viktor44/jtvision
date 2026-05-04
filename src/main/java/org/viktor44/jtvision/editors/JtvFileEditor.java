@@ -44,6 +44,7 @@ import org.viktor44.jtvision.util.MessageBox;
 import org.viktor44.jtvision.views.JtvScrollBar;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * A file-backed editor that loads and saves text files.
@@ -57,6 +58,7 @@ import lombok.Getter;
  * Before the editor closes, {@link #valid(int)} prompts the user to save if the buffer
  * has been modified.
  */
+@Slf4j
 public class JtvFileEditor extends JtvEditor {
 
 	/** Search flag: match is case-sensitive. */
@@ -98,7 +100,7 @@ public class JtvFileEditor extends JtvEditor {
         super(bounds, hScrollBar, vScrollBar, indicator, 0x1000);
         this.fileName = normalizeFileName(fileName);
         if (!fileName.isEmpty()) {
-            loadFile();
+            isValid = loadFile();
         }
     }
 
@@ -133,8 +135,10 @@ public class JtvFileEditor extends JtvEditor {
             updateMetrics();
             drawView();
             return true;
-        } catch (IOException e) {
-            MessageBox.messageBox("Read error: " + fileName, 0x0001 | 0x0400);
+        }
+        catch (IOException ex) {
+        	log.error("Read error: {}", fileName, ex);
+            MessageBox.messageBox("Read error: " + fileName, mfError | mfOKButton);
             return false;
         }
     }

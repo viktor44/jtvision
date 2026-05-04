@@ -158,7 +158,7 @@ public final class MessageBox {
      * </pre>
      *
      * @param msg      the message string to display inside the dialog
-     * @param aOptions a bitmapped combination of one icon-type constant
+     * @param options a bitmapped combination of one icon-type constant
      *                 ({@code mfWarning}, {@code mfError}, {@code mfInformation},
      *                 or {@code mfConfirmation}) OR-ed with one or more button
      *                 constants ({@code mfYesButton}, {@code mfNoButton},
@@ -167,11 +167,11 @@ public final class MessageBox {
      *         ({@code cmYes}, {@code cmNo}, {@code cmOK}, or {@code cmCancel}),
      *         or {@code cmCancel} if no application is available
      */
-    public static int messageBox(String msg, int aOptions) {
+    public static int messageBox(String msg, int options) {
         JtvRect r = new JtvRect(0, 0, 40, 9);
         JtvRect dr = JtvProgram.getDesktop().getExtent();
         r.move((dr.getB().getX() - dr.getA().getX() - r.getB().getX()) / 2, (dr.getB().getY() - dr.getA().getY() - r.getB().getY()) / 2);
-        return messageBoxRect(r, msg, aOptions);
+        return messageBoxRect(r, msg, options);
     }
 
     /**
