@@ -35,7 +35,9 @@ jobs:
           echo === native-image: DemoApp ===
           "%JAVA_HOME%\bin\native-image" ^
               -cp "!CP!" ^
+              --future-defaults=all ^
               --no-fallback ^
+              -Os ^
               -H:Name=demo ^
               -H:Path="%TARGET_DIR%" ^
               org.viktor44.jtvision.examples.demo.DemoApp
@@ -48,7 +50,9 @@ jobs:
           echo === native-image: DirApp ===
           "%JAVA_HOME%\bin\native-image" ^
               -cp "!CP!" ^
+              --future-defaults=all ^
               --no-fallback ^
+              -Os ^
               -H:Name=dir ^
               -H:Path="%TARGET_DIR%" ^
               org.viktor44.jtvision.examples.dir.DirApp
@@ -61,7 +65,9 @@ jobs:
           echo === native-image: EditorApp ===
           "%JAVA_HOME%\bin\native-image" ^
               -cp "!CP!" ^
+              --future-defaults=all ^
               --no-fallback ^
+              -Os ^
               -H:Name=editor ^
               -H:Path="%TARGET_DIR%" ^
               org.viktor44.jtvision.examples.editor.EditorApp
@@ -74,7 +80,9 @@ jobs:
           echo === native-image: FormsApp ===
           "%JAVA_HOME%\bin\native-image" ^
               -cp "!CP!" ^
+              --future-defaults=all ^
               --no-fallback ^
+              -Os ^
               -H:Name=forms ^
               -H:Path="%TARGET_DIR%" ^
               org.viktor44.jtvision.examples.forms.FormsApp
@@ -87,7 +95,9 @@ jobs:
           echo === native-image: MultiMenuApp ===
           "%JAVA_HOME%\bin\native-image" ^
               -cp "!CP!" ^
+              --future-defaults=all ^
               --no-fallback ^
+              -Os ^
               -H:Name=mmenu ^
               -H:Path="%TARGET_DIR%" ^
               org.viktor44.jtvision.examples.mmenu.MultiMenuApp
@@ -100,7 +110,9 @@ jobs:
           echo === native-image: PaletteApp ===
           "%JAVA_HOME%\bin\native-image" ^
               -cp "!CP!" ^
+              --future-defaults=all ^
               --no-fallback ^
+              -Os ^
               -H:Name=palette ^
               -H:Path="%TARGET_DIR%" ^
               org.viktor44.jtvision.examples.palette.PaletteApp
@@ -109,6 +121,8 @@ jobs:
             echo native-image build failed
             exit /b 1
           )
+
+          7z a -tzip "%TARGET_DIR%\examples-win.zip" "%TARGET_DIR%\*.exe"
 
           dir "%TARGET_DIR%"
 
@@ -157,7 +171,9 @@ jobs:
           echo === native-image: DemoApp ===
           "$JAVA_HOME/bin/native-image" \
               -cp "$CP" \
+              --future-defaults=all \
               --no-fallback \
+              -Os \
               -H:Name=demo \
               -H:Path="$TARGET_DIR" \
               org.viktor44.jtvision.examples.demo.DemoApp
@@ -170,7 +186,9 @@ jobs:
           echo === native-image: DirApp ===
           "$JAVA_HOME/bin/native-image" \
               -cp "$CP" \
+              --future-defaults=all \
               --no-fallback \
+              -Os \
               -H:Name=dir \
               -H:Path="$TARGET_DIR" \
               org.viktor44.jtvision.examples.dir.DirApp
@@ -183,7 +201,9 @@ jobs:
           echo === native-image: EditorApp ===
           "$JAVA_HOME/bin/native-image" \
               -cp "$CP" \
+              --future-defaults=all \
               --no-fallback \
+              -Os \
               -H:Name=editor \
               -H:Path="$TARGET_DIR" \
               org.viktor44.jtvision.examples.editor.EditorApp
@@ -196,7 +216,9 @@ jobs:
           echo === native-image: FormsApp ===
           "$JAVA_HOME/bin/native-image" \
               -cp "$CP" \
+              --future-defaults=all \
               --no-fallback \
+              -Os \
               -H:Name=forms \
               -H:Path="$TARGET_DIR" \
               org.viktor44.jtvision.examples.forms.FormsApp
@@ -209,7 +231,9 @@ jobs:
           echo === native-image: MultiMenuApp ===
           "$JAVA_HOME/bin/native-image" \
               -cp "$CP" \
+              --future-defaults=all \
               --no-fallback \
+              -Os \
               -H:Name=mmenu \
               -H:Path="$TARGET_DIR" \
               org.viktor44.jtvision.examples.mmenu.MultiMenuApp
@@ -222,7 +246,9 @@ jobs:
           echo === native-image: PaletteApp ===
           "$JAVA_HOME/bin/native-image" \
               -cp "$CP" \
+              --future-defaults=all \
               --no-fallback \
+              -Os \
               -H:Name=palette \
               -H:Path="$TARGET_DIR" \
               org.viktor44.jtvision.examples.palette.PaletteApp
@@ -231,7 +257,9 @@ jobs:
             echo "native-image build failed"
             exit 1
           fi
-          
+
+          7z a -tzip "$TARGET_DIR/examples-macos.zip" "$TARGET_DIR/demo" "$TARGET_DIR/dir" "$TARGET_DIR/editor" "$TARGET_DIR/forms" "$TARGET_DIR/mmenu" "$TARGET_DIR/palette"
+
           ls -l "$TARGET_DIR"
 
       - name: Upload examples
@@ -279,7 +307,9 @@ jobs:
           echo === native-image: DemoApp ===
           "$JAVA_HOME/bin/native-image" \
               -cp "$CP" \
+              --future-defaults=all \
               --no-fallback \
+              -Os \
               -H:Name=demo \
               -H:Path="$TARGET_DIR" \
               org.viktor44.jtvision.examples.demo.DemoApp
@@ -292,7 +322,9 @@ jobs:
           echo === native-image: DirApp ===
           "$JAVA_HOME/bin/native-image" \
               -cp "$CP" \
+              --future-defaults=all \
               --no-fallback \
+              -Os \
               -H:Name=dir \
               -H:Path="$TARGET_DIR" \
               org.viktor44.jtvision.examples.dir.DirApp
@@ -305,7 +337,9 @@ jobs:
           echo === native-image: EditorApp ===
           "$JAVA_HOME/bin/native-image" \
               -cp "$CP" \
+              --future-defaults=all \
               --no-fallback \
+              -Os \
               -H:Name=editor \
               -H:Path="$TARGET_DIR" \
               org.viktor44.jtvision.examples.editor.EditorApp
@@ -318,7 +352,9 @@ jobs:
           echo === native-image: FormsApp ===
           "$JAVA_HOME/bin/native-image" \
               -cp "$CP" \
+              --future-defaults=all \
               --no-fallback \
+              -Os \
               -H:Name=forms \
               -H:Path="$TARGET_DIR" \
               org.viktor44.jtvision.examples.forms.FormsApp
@@ -331,7 +367,9 @@ jobs:
           echo === native-image: MultiMenuApp ===
           "$JAVA_HOME/bin/native-image" \
               -cp "$CP" \
+              --future-defaults=all \
               --no-fallback \
+              -Os \
               -H:Name=mmenu \
               -H:Path="$TARGET_DIR" \
               org.viktor44.jtvision.examples.mmenu.MultiMenuApp
@@ -344,7 +382,9 @@ jobs:
           echo === native-image: PaletteApp ===
           "$JAVA_HOME/bin/native-image" \
               -cp "$CP" \
+              --future-defaults=all \
               --no-fallback \
+              -Os \
               -H:Name=palette \
               -H:Path="$TARGET_DIR" \
               org.viktor44.jtvision.examples.palette.PaletteApp
@@ -354,6 +394,8 @@ jobs:
             exit 1
           fi
           
+          7z a -tzip "$TARGET_DIR/examples-linux.zip" "$TARGET_DIR/demo" "$TARGET_DIR/dir" "$TARGET_DIR/editor" "$TARGET_DIR/forms" "$TARGET_DIR/mmenu" "$TARGET_DIR/palette"
+
           ls -l "$TARGET_DIR"
 
       - name: Upload examples

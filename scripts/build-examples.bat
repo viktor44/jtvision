@@ -22,7 +22,9 @@ for %%f in ("%TARGET_DIR%\lib\*.jar") do (
 echo === native-image: EditorApp ===
 "%JAVA_HOME%\bin\native-image" ^
     -cp "!CP!" ^
+    --future-defaults=all ^
     --no-fallback ^
+    -Os ^
     -H:Name=editor ^
     -H:Path="%TARGET_DIR%" ^
     org.viktor44.jtvision.examples.editor.EditorApp
