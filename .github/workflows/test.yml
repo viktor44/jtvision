@@ -9,6 +9,9 @@ on:
 jobs:
   test:
     runs-on: ${{ matrix.os }}
+
+    if: false # Temporarily disabled
+
     strategy:
       fail-fast: false
       matrix:

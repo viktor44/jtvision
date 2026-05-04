@@ -37,7 +37,6 @@ import org.viktor44.jtvision.menus.JtvMenu;
 import org.viktor44.jtvision.menus.JtvMenuBar;
 import org.viktor44.jtvision.menus.JtvStatusDef;
 import org.viktor44.jtvision.menus.JtvStatusItem;
-import org.viktor44.jtvision.core.JtvKeyStroke;
 import org.viktor44.jtvision.menus.JtvStatusLine;
 import org.viktor44.jtvision.platform.EventQueue;
 import org.viktor44.jtvision.platform.Screen;
@@ -292,7 +291,7 @@ public abstract class JtvProgram extends JtvGroup {
         	}
             return Toolkit.getDefaultToolkit().getSystemClipboard();
         }
-        catch (UnsupportedOperationException /* headless mode */ | NoSuchMethodError /* GraalVM */ e) {
+        catch (UnsupportedOperationException /* headless mode */ | Error /* GraalVM */ e) {
             return new Clipboard("jtvision");
         }
     }

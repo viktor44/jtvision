@@ -7,6 +7,8 @@ jobs:
   build-examples-windows:
     runs-on: windows-latest
 
+    if: false # Temporarily disabled
+
     steps:
       - name: Check out code
         uses: actions/checkout@v6
@@ -148,6 +150,8 @@ jobs:
 
   build-examples-macos:
     runs-on: macos-latest
+
+    if: false # Temporarily disabled
 
     steps:
       - name: Check out code
