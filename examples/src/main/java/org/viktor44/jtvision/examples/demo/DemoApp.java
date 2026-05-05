@@ -310,7 +310,7 @@ public class DemoApp extends JtvApplication {
     }
 
     private void mouseOptions() {
-        int oldDelay = EventQueue.doubleDelay;
+        int oldDelay = EventQueue.getInstance().doubleDelay;
 
         JtvDialog d = new JtvDialog(new JtvRect(0, 0, 34, 12), "Mouse Options") {
             JtvScrollBar scrollBar;
@@ -320,7 +320,7 @@ public class DemoApp extends JtvApplication {
 
                 scrollBar = new JtvScrollBar(new JtvRect(3, 4, 30, 5));
                 scrollBar.setParams(
-                    Math.max(1, Math.min(20, EventQueue.doubleDelay / 55)),
+                    Math.max(1, Math.min(20, EventQueue.getInstance().doubleDelay / 55)),
                     1, 20, 20, 1);
                 scrollBar.setOptions(scrollBar.getOptions() | ofSelectable);
                 insert(scrollBar);
@@ -333,11 +333,11 @@ public class DemoApp extends JtvApplication {
                 public void handleEvent(JtvEvent event) {
                     super.handleEvent(event);
                     if (event.getWhat() == evBroadcast && event.getMessage().getCommand() == cmScrollBarChanged) {
-                    EventQueue.doubleDelay = scrollBar.getValue() * 55;
+                    EventQueue.getInstance().doubleDelay = scrollBar.getValue() * 55;
                     clearEvent(event);
                 } else if (event.getWhat() == evCommand &&
                            event.getMessage().getCommand() == org.viktor44.jtvision.core.CommandCodes.cmCancel) {
-                    EventQueue.doubleDelay = oldDelay;
+                    EventQueue.getInstance().doubleDelay = oldDelay;
                 }
             }
         };
@@ -355,7 +355,7 @@ public class DemoApp extends JtvApplication {
         if (getDesktop().execView(d) != cmCancel) {
             reverseMouseButtons = (boxes.getValue() & 1) != 0;
         } else {
-            EventQueue.doubleDelay = oldDelay;
+            EventQueue.getInstance().doubleDelay = oldDelay;
         }
         destroy(d);
     }

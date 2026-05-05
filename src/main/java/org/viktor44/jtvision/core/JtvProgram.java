@@ -230,10 +230,10 @@ public abstract class JtvProgram extends JtvGroup {
             pending.setWhat(evNothing);
         } 
         else {
-            EventQueue.waitForEvents(eventTimeoutMs);
-            EventQueue.getMouseEvent(event);
+            EventQueue.getInstance().waitForEvents(eventTimeoutMs);
+            EventQueue.getInstance().getMouseEvent(event);
             if (event.getWhat() == evNothing) {
-                EventQueue.getKeyEvent(event);
+                EventQueue.getInstance().getKeyEvent(event);
                 if (event.getWhat() == evNothing) {
                     idle();
                 }

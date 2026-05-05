@@ -39,13 +39,13 @@ import org.viktor44.jtvision.util.SystemUtils;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Platform-level input event queue.
+ * Platform-level input event queue (singleton).
  * <p>
  * EventQueue bridges raw terminal or Win32 console input into the
  * {@link JtvEvent} objects consumed by the JT Vision event loop
- * ({@code TProgram.getEvent}). It is a pure static utility class: all state
- * is held in static fields and all methods are static.
- * 
+ * ({@code TProgram.getEvent}). Obtain the single instance via
+ * {@link #getInstance()}.
+ *
  * <h3>Architecture</h3>
  * 
  * <b>Unix/macOS path:</b> Two daemon threads cooperate:
@@ -93,13 +93,41 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class EventQueue {
 
+    private static EventQueue INSTANCE;
+
+    protected EventQueue() {}
+
+    /**
+     * Initialises the singleton with the default {@code EventQueue} implementation.
+     * Must be called before {@link #getInstance()}.
+     */
+    public static void initInstance() {
+        INSTANCE = new EventQueue();
+        INSTANCE.init();
+    }
+
+    /**
+     * Initialises the singleton with a custom {@code EventQueue} subclass instance,
+     * allowing callers to substitute alternative implementations.
+     *
+     * @param instance the instance to use as the singleton; must not be {@code null}
+     */
+    public static void initInstance(EventQueue instance) {
+        INSTANCE = instance;
+    }
+
+    /** Returns the singleton {@code EventQueue} instance. */
+    public static EventQueue getInstance() {
+        return INSTANCE;
+    }
+
     /**
      * The main event queue shared between input-parsing threads and the
      * JT Vision event loop. Mouse and keyboard events are offered here
      * by the reader threads and dequeued by {@link #getMouseEvent} and
      * {@link #getKeyEvent}.
      */
-    private static final LinkedBlockingQueue<JtvEvent> eventQueue = new LinkedBlockingQueue<>();
+    private final LinkedBlockingQueue<JtvEvent> eventQueue = new LinkedBlockingQueue<>();
 
     /**
      * Intermediate byte queue (Unix only). {@link #readerLoop()} offers raw
@@ -107,39 +135,39 @@ public class EventQueue {
      * Decoupling the two loops allows {@link #readByteWithTimeout} to
      * implement the escape-sequence timeout without blocking the I/O thread.
      */
-    private static final LinkedBlockingQueue<Integer> byteQueue = new LinkedBlockingQueue<>();
+    private final LinkedBlockingQueue<Integer> byteQueue = new LinkedBlockingQueue<>();
 
     /**
      * The event-decoding thread (Unix: {@link #inputLoop()};
      * Windows: {@link #windowsEventLoop()}).
      */
-    private static Thread inputThread;
+    private Thread inputThread;
 
     /**
      * The raw-byte reader thread (Unix only: {@link #readerLoop()}).
      * On Windows this field is unused; the Windows event loop combines
      * reading and decoding.
      */
-    private static Thread readerThread;
+    private Thread readerThread;
 
     /**
      * {@code true} while the input threads are running. Set to {@code false}
      * by {@link #stopInputThreads(boolean)} to request orderly shutdown.
      */
-    private static volatile boolean running = false;
+    private volatile boolean running = false;
 
     /**
      * The terminal input stream (Unix only). Either {@code /dev/tty} or
      * {@code System.in}, opened by {@link #openInputStream()}.
      */
-    private static InputStream inputStream;
+    private InputStream inputStream;
 
     /**
      * {@code true} if {@link #inputStream} was opened by EventQueue and
      * should be closed on shutdown ({@code /dev/tty} case). {@code false}
      * when {@code System.in} is used — it must not be closed.
      */
-    private static boolean closeInputStreamOnStop = false;
+    private boolean closeInputStreamOnStop = false;
 
     /**
      * The Unix terminal device used for both raw input and {@code stty}
@@ -153,25 +181,25 @@ public class EventQueue {
      * is enabled. Restored verbatim by {@code stty} in
      * {@link #disableRawTerminalMode()}.
      */
-    private static String savedTerminalState;
+    private String savedTerminalState;
 
     /**
      * {@code true} after raw terminal mode has been successfully enabled.
      * Guards against double-enabling or double-disabling.
      */
-    private static boolean rawTerminalEnabled = false;
+    private boolean rawTerminalEnabled = false;
 
     /**
      * The Windows console input mode value saved before raw mode is enabled.
      * Restored by {@link #restoreWindowsInputMode()}.
      */
-    private static int savedWindowsInputMode;
+    private int savedWindowsInputMode;
 
     /**
      * {@code true} if {@link #savedWindowsInputMode} contains a valid
      * saved value that should be restored on shutdown.
      */
-    private static boolean windowsInputModeSaved = false;
+    private boolean windowsInputModeSaved = false;
 
     /**
      * Maximum time in milliseconds to wait for the next byte after receiving
@@ -247,14 +275,14 @@ public class EventQueue {
      * Windows to detect transitions between button-down and button-up, and
      * on Unix to track the last known cursor position for event coalescing.
      */
-    private static MouseEvent lastMouse = new MouseEvent();
+    private MouseEvent lastMouse = new MouseEvent();
 
     /**
      * Timestamp (milliseconds since epoch) of the most recent
      * {@code evMouseDown} event. Used together with {@link #clickCount} to
      * detect double-clicks on Unix.
      */
-    private static long lastClickTime = 0;
+    private long lastClickTime = 0;
 
     /**
      * Running count of successive clicks within the {@link #doubleDelay}
@@ -262,7 +290,7 @@ public class EventQueue {
      * to 2 on the second click, at which point the event receives
      * {@code meDoubleClick}.
      */
-    private static int clickCount = 0;
+    private int clickCount = 0;
 
     /**
      * Maximum time between two mouse-down events (in milliseconds) for them
@@ -270,7 +298,7 @@ public class EventQueue {
      * {@code DoubleDelay} variable (which measured eighteenths of a second;
      * the default of 8 ≈ 440 ms). Defaults to 400 ms.
      */
-    public static int doubleDelay = 400; // ms
+    public int doubleDelay = 400; // ms
 
     /**
      * Initialises the event queue and starts the input thread(s).
@@ -285,22 +313,22 @@ public class EventQueue {
      *       daemon threads.</li>
      * </ol>
      */
-    public static void init() {
+    protected void init() {
         if (running) return;
         enableRawTerminalMode();
         running = true;
         if (SystemUtils.IS_OS_WINDOWS) {
-            readerThread = new Thread(EventQueue::windowsEventLoop, "jvision-reader");
+            readerThread = new Thread(this::windowsEventLoop, "jvision-reader");
             readerThread.setDaemon(true);
             readerThread.start();
             return;
         }
         inputStream = openInputStream();
         byteQueue.clear();
-        readerThread = new Thread(EventQueue::readerLoop, "jvision-reader");
+        readerThread = new Thread(this::readerLoop, "jvision-reader");
         readerThread.setDaemon(true);
         readerThread.start();
-        inputThread = new Thread(EventQueue::inputLoop, "jvision-input");
+        inputThread = new Thread(this::inputLoop, "jvision-input");
         inputThread.setDaemon(true);
         inputThread.start();
     }
@@ -310,7 +338,7 @@ public class EventQueue {
      * state. Stops all input threads and calls
      * {@link #disableRawTerminalMode()}.
      */
-    public static void shutdown() {
+    public void shutdown() {
         stopInputThreads(true);
         disableRawTerminalMode();
     }
@@ -328,7 +356,7 @@ public class EventQueue {
      *
      * @param timeoutMs maximum wait time in milliseconds
      */
-    public static void waitForEvents(int timeoutMs) {
+    public void waitForEvents(int timeoutMs) {
         Screen.flushScreen();
 
         if (!eventQueue.isEmpty()) {
@@ -354,7 +382,7 @@ public class EventQueue {
      *
      * @param event the target event object to fill in
      */
-    public static void getMouseEvent(JtvEvent event) {
+    public void getMouseEvent(JtvEvent event) {
         JtvEvent queued = peekEvent(evMouse);
         if (queued == null) {
             event.setWhat(evNothing);
@@ -377,7 +405,7 @@ public class EventQueue {
      * @param event the target event object to fill in
      * @return {@code event} for convenience
      */
-    public static JtvEvent getKeyEvent(JtvEvent event) {
+    public JtvEvent getKeyEvent(JtvEvent event) {
         JtvEvent queued = peekEvent(evKeyboard);
         if (queued != null) {
             event.copyFrom(queued);
@@ -398,7 +426,7 @@ public class EventQueue {
      * @return the first matching event, removed from the queue, or
      *         {@code null}
      */
-    private static JtvEvent peekEvent(int mask) {
+    private JtvEvent peekEvent(int mask) {
         for (java.util.Iterator<JtvEvent> it = eventQueue.iterator(); it.hasNext(); ) {
             JtvEvent e = it.next();
             if ((e.getWhat() & mask) != 0) {
@@ -413,7 +441,7 @@ public class EventQueue {
      * No-op wake-up hint. The input threads run continuously, so no
      * explicit wake-up signal is needed.
      */
-    public static void wakeUp() {
+    public void wakeUp() {
         // No-op, the input thread is always running
     }
 
@@ -422,7 +450,7 @@ public class EventQueue {
      * Used before spawning a child process that needs normal terminal I/O.
      * Call {@link #resume()} to re-initialise afterwards.
      */
-    public static void suspend() {
+    public void suspend() {
         stopInputThreads(false);
         disableRawTerminalMode();
     }
@@ -431,7 +459,7 @@ public class EventQueue {
      * Re-initialises the event queue after a previous {@link #suspend()}.
      * If the queue is already running, does nothing.
      */
-    public static void resume() {
+    public void resume() {
         if (!running) {
             init();
         }
@@ -446,7 +474,7 @@ public class EventQueue {
      *                              stream; {@code false} to close only if
      *                              {@link #closeInputStreamOnStop} is set
      */
-    private static void stopInputThreads(boolean forceCloseInputStream) {
+    private void stopInputThreads(boolean forceCloseInputStream) {
         running = false;
 
         // Closing the stream unblocks readerLoop() even if no input arrives.
@@ -474,7 +502,7 @@ public class EventQueue {
      *
      * @param thread the thread to join
      */
-    private static void joinThread(Thread thread) {
+    private void joinThread(Thread thread) {
         if (thread == null || thread == Thread.currentThread()) {
             return;
         }
@@ -493,7 +521,7 @@ public class EventQueue {
      *
      * @return the opened {@link InputStream}
      */
-    private static InputStream openInputStream() {
+    private InputStream openInputStream() {
         if (ttyDevice.exists()) {
             try {
                 closeInputStreamOnStop = true;
@@ -515,7 +543,7 @@ public class EventQueue {
      * @param forceClose {@code true} to close regardless of
      *                   {@link #closeInputStreamOnStop}
      */
-    private static void closeInputStream(boolean forceClose) {
+    private void closeInputStream(boolean forceClose) {
         if (inputStream == null) {
             return;
         }
@@ -542,7 +570,7 @@ public class EventQueue {
      * {@code SetConsoleMode}.
      * Does nothing if raw mode is already active.
      */
-    private static void enableRawTerminalMode() {
+    private void enableRawTerminalMode() {
         if (rawTerminalEnabled) {
             return;
         }
@@ -573,7 +601,7 @@ public class EventQueue {
      * {@link #savedWindowsInputMode} value.
      * Does nothing if raw mode is not currently active.
      */
-    private static void disableRawTerminalMode() {
+    private void disableRawTerminalMode() {
         if (!rawTerminalEnabled) {
             return;
         }
@@ -605,7 +633,7 @@ public class EventQueue {
      *
      * @return {@code true} if the mode was set successfully
      */
-    private static boolean enableWindowsRawInput() {
+    private boolean enableWindowsRawInput() {
         try {
             long handle = Kernel32.GetStdHandle(Kernel32.STD_INPUT_HANDLE);
             int[] mode = new int[1];
@@ -636,7 +664,7 @@ public class EventQueue {
      * @return {@code true} if the mode was restored successfully or no save
      *         was pending
      */
-    private static boolean restoreWindowsInputMode() {
+    private boolean restoreWindowsInputMode() {
         if (!windowsInputModeSaved) {
             return true;
         }
@@ -658,7 +686,7 @@ public class EventQueue {
      * @param args the arguments to pass to {@code stty}
      * @return {@code true} on success
      */
-    private static boolean runStty(String... args) {
+    private boolean runStty(String... args) {
         return runSttyInternal(false, args) != null;
     }
 
@@ -670,7 +698,7 @@ public class EventQueue {
      * @param args the arguments to pass to {@code stty}
      * @return the trimmed stdout string, or {@code null} on failure
      */
-    private static String runSttyAndCapture(String... args) {
+    private String runSttyAndCapture(String... args) {
         String output = runSttyInternal(true, args);
         if (output == null) {
             return null;
@@ -690,7 +718,7 @@ public class EventQueue {
      *         {@code false} and the process succeeded, or {@code null} on
      *         failure
      */
-    private static String runSttyInternal(boolean captureOutput, String... args) {
+    private String runSttyInternal(boolean captureOutput, String... args) {
         if (!ttyDevice.exists()) {
             return null;
         }
@@ -739,7 +767,7 @@ public class EventQueue {
      * (returns -1), which happens when the stream is closed by
      * {@link #stopInputThreads}.
      */
-    private static void readerLoop() {
+    private void readerLoop() {
         try {
             while (running) {
                 int b = inputStream.read();
@@ -756,7 +784,7 @@ public class EventQueue {
      * leading byte to {@link #processInput(int)} for escape-sequence parsing
      * and event generation.
      */
-    private static void inputLoop() {
+    private void inputLoop() {
         try {
             while (running) {
                 Integer b = byteQueue.poll(50, java.util.concurrent.TimeUnit.MILLISECONDS);
@@ -795,7 +823,7 @@ public class EventQueue {
      * @param firstByte the first byte of the input sequence
      * @throws IOException if reading continuation bytes fails
      */
-    private static void processInput(int firstByte) throws IOException {
+    private void processInput(int firstByte) throws IOException {
         if (firstByte == 0x1B) {
             // Escape sequence
             int second = readByteWithTimeout(ESC_SEQUENCE_TIMEOUT_MS);
@@ -851,7 +879,7 @@ public class EventQueue {
      * @param firstByte the high byte that signalled a UTF-8 sequence
      * @throws IOException if reading continuation bytes fails
      */
-    private static void handleUtf8Input(int firstByte) throws IOException {
+    private void handleUtf8Input(int firstByte) throws IOException {
         String text = decodeUtf8Char(firstByte);
         if (text.isEmpty()) {
             return;
@@ -879,7 +907,7 @@ public class EventQueue {
      * @param codePoint the Unicode code point to test
      * @return the corresponding AWT {@code VK_*} code, or {@code 0}
      */
-    private static int macOptionCodeToAlt(int codePoint) {
+    private int macOptionCodeToAlt(int codePoint) {
         switch (codePoint) {
             case 0x2248: // Option+X on macOS US keyboard (≈)
             case 0x02DB: // Shift+Option+X on macOS US keyboard (˛)
@@ -899,7 +927,7 @@ public class EventQueue {
      * @return the decoded character as a {@link String}
      * @throws IOException propagated from {@link #readByteWithTimeout}
      */
-    private static String decodeUtf8Char(int firstByte) throws IOException {
+    private String decodeUtf8Char(int firstByte) throws IOException {
         int extraBytes = utf8ExtraByteCount(firstByte);
         if (extraBytes <= 0) {
             return new String(new byte[] {(byte) firstByte}, StandardCharsets.ISO_8859_1);
@@ -931,7 +959,7 @@ public class EventQueue {
      * @param firstByte the leading byte to inspect
      * @return the number of continuation bytes (0–3)
      */
-    private static int utf8ExtraByteCount(int firstByte) {
+    private int utf8ExtraByteCount(int firstByte) {
         if ((firstByte & 0xE0) == 0xC0) return 1;
         if ((firstByte & 0xF0) == 0xE0) return 2;
         if ((firstByte & 0xF8) == 0xF0) return 3;
@@ -956,7 +984,7 @@ public class EventQueue {
      *
      * @throws IOException if reading bytes fails
      */
-    private static void parseCSI() throws IOException {
+    private void parseCSI() throws IOException {
         StringBuilder params = new StringBuilder();
         int c;
         while (true) {
@@ -1015,7 +1043,7 @@ public class EventQueue {
         }
     }
 
-    private static int csiModifierToAwtModifiers(String paramStr) {
+    private int csiModifierToAwtModifiers(String paramStr) {
         int separator = paramStr.indexOf(';');
         if (separator < 0 || separator + 1 >= paramStr.length()) {
             return 0;
@@ -1043,7 +1071,7 @@ public class EventQueue {
      *
      * @param paramStr the parameter string before the {@code ~} final byte
      */
-    private static void parseCsiTilde(String paramStr) {
+    private void parseCsiTilde(String paramStr) {
         int code;
         int modifier = 1;
         int separator = paramStr.indexOf(';');
@@ -1100,7 +1128,7 @@ public class EventQueue {
      *
      * @param paramStr the numeric parameter before the {@code ^} final byte
      */
-    private static void parseCsiCaret(String paramStr) {
+    private void parseCsiCaret(String paramStr) {
         int code;
         try {
             code = Integer.parseInt(paramStr);
@@ -1120,7 +1148,7 @@ public class EventQueue {
      *
      * @throws IOException if reading the final byte fails
      */
-    private static void parseSS3() throws IOException {
+    private void parseSS3() throws IOException {
         int c = readByteWithTimeout(ESC_SEQUENCE_TIMEOUT_MS);
         if (c < 0) {
             return;
@@ -1144,7 +1172,7 @@ public class EventQueue {
      * @return the byte value (0–255), or {@code -1} on timeout/interrupt
      * @throws IOException never; declared for uniformity with callers
      */
-    private static int readByteWithTimeout(int timeoutMs) throws IOException {
+    private int readByteWithTimeout(int timeoutMs) throws IOException {
         try {
             Integer b = byteQueue.poll(timeoutMs, java.util.concurrent.TimeUnit.MILLISECONDS);
             return b == null ? -1 : b;
@@ -1165,7 +1193,7 @@ public class EventQueue {
      *                  {@code "button;x;y"})
      * @param finalChar {@code 'M'} for press/move, {@code 'm'} for release
      */
-    private static void parseSGRMouse(String params, char finalChar) {
+    private void parseSGRMouse(String params, char finalChar) {
         // params = "button;x;y"
         String[] parts = params.split(";");
         if (parts.length < 3) return;
@@ -1229,7 +1257,7 @@ public class EventQueue {
      * @return {@code mbLeftButton}, {@code mbMiddleButton},
      *         {@code mbRightButton}, or {@code 0} for unknown buttons
      */
-    private static int toButtonMask(int sgrButton) {
+    private int toButtonMask(int sgrButton) {
         switch (sgrButton) {
             case 0: return mbLeftButton;
             case 1: return mbMiddleButton;
@@ -1244,7 +1272,7 @@ public class EventQueue {
      *
      * @param ch the character byte following the ESC byte
      */
-    private static void pushAltKey(int ch) {
+    private void pushAltKey(int ch) {
         char upper = Character.toUpperCase((char) ch);
         int vk = (upper >= 'A' && upper <= 'Z') ? upper : 0;
         pushKeyEvent(vk, InputEvent.ALT_DOWN_MASK, KeyEvent.CHAR_UNDEFINED);
@@ -1260,7 +1288,7 @@ public class EventQueue {
      * @param keyChar   Unicode character produced by the keystroke, or
      *                  {@link KeyEvent#CHAR_UNDEFINED} for non-printable keys
      */
-    private static void pushKeyEvent(int keyCode, int modifiers, char keyChar) {
+    private void pushKeyEvent(int keyCode, int modifiers, char keyChar) {
         JtvEvent event = new JtvEvent();
         event.setKeyDownEvent(keyCode, modifiers, keyChar);
         eventQueue.offer(event);
@@ -1274,7 +1302,7 @@ public class EventQueue {
      * Exits when {@link #running} becomes {@code false} or a
      * {@code LinkageError} is thrown (Jansi unavailable).
      */
-    private static void windowsEventLoop() {
+    private void windowsEventLoop() {
         try {
             long handle = Kernel32.GetStdHandle(Kernel32.STD_INPUT_HANDLE);
             int[] count = new int[1];
@@ -1316,7 +1344,7 @@ public class EventQueue {
      *
      * @param ev the Windows key event record
      */
-    private static void handleWindowsKeyEvent(KEY_EVENT_RECORD ev) {
+    private void handleWindowsKeyEvent(KEY_EVENT_RECORD ev) {
         if (!ev.keyDown) return;
 
         int vk = ev.keyCode & 0xFFFF;
@@ -1374,7 +1402,7 @@ public class EventQueue {
      * @param winVk the Windows virtual-key code
      * @return the AWT {@code VK_*} constant, or {@code 0} if unmapped
      */
-    private static int winSpecialVkToAwtVk(int winVk) {
+    private int winSpecialVkToAwtVk(int winVk) {
         switch (winVk) {
             case 0x08: return KeyEvent.VK_BACK_SPACE;
             case 0x09: return KeyEvent.VK_TAB;
@@ -1414,7 +1442,7 @@ public class EventQueue {
      *
      * @param ev the Windows mouse event record
      */
-    private static void handleWindowsMouseEvent(MOUSE_EVENT_RECORD ev) {
+    private void handleWindowsMouseEvent(MOUSE_EVENT_RECORD ev) {
         int btnState = ev.buttonState;
         int buttons = 0;
         if ((btnState & MOUSE_EVENT_RECORD.FROM_LEFT_1ST_BUTTON_PRESSED) != 0) {

@@ -47,7 +47,7 @@ public class JtvApplication extends JtvProgram {
     /** Initialises the Screen and EventQueue platform subsystems. */
     private static boolean initPlatform() {
         Screen.init();
-        EventQueue.init();
+        EventQueue.initInstance();
         return true;
     }
 
@@ -58,7 +58,7 @@ public class JtvApplication extends JtvProgram {
     public void shutdown() {
         shutDown();
         Screen.shutdown();
-        EventQueue.shutdown();
+        EventQueue.getInstance().shutdown();
     }
 
     /**
@@ -66,7 +66,7 @@ public class JtvApplication extends JtvProgram {
      * Call {@link #resume()} to restore normal operation.
      */
     public void suspend() {
-        EventQueue.suspend();
+        EventQueue.getInstance().suspend();
         Screen.suspend();
     }
 
@@ -75,7 +75,7 @@ public class JtvApplication extends JtvProgram {
      */
     public void resume() {
         Screen.resume();
-        EventQueue.resume();
+        EventQueue.getInstance().resume();
     }
 
     /**

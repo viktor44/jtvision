@@ -30,14 +30,14 @@ public final class TestKeysApp {
         System.out.println("TestKeysApp - press any key (Ctrl+Q or Ctrl+C to quit).");
         System.out.println();
 
-        Runtime.getRuntime().addShutdownHook(new Thread(EventQueue::shutdown, "TestKeysApp-shutdown"));
-        EventQueue.init();
+        EventQueue.initInstance();
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> EventQueue.getInstance().shutdown(), "TestKeysApp-shutdown"));
 
         JtvEvent event = new JtvEvent();
         boolean running = true;
         while (running) {
-            EventQueue.waitForEvents(100);
-            EventQueue.getKeyEvent(event);
+            EventQueue.getInstance().waitForEvents(100);
+            EventQueue.getInstance().getKeyEvent(event);
             if (event.getWhat() != evKeyDown) continue;
 
             KeyDownEvent kd = event.getKeyDown();
@@ -53,7 +53,7 @@ public final class TestKeysApp {
             }
         }
 
-        EventQueue.shutdown();
+        EventQueue.getInstance().shutdown();
     }
 
     private static void report(int keyCode, int modifiers, char keyChar) {

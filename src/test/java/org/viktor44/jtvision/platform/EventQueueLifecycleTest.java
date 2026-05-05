@@ -15,10 +15,16 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.viktor44.jtvision.platform.EventQueue;
 
 public class EventQueueLifecycleTest {
+
+    @BeforeEach
+    void initEventQueue() {
+        EventQueue.initInstance();
+    }
 
     @AfterEach
     void resetEventQueueStatics() throws Exception {
@@ -66,7 +72,7 @@ public class EventQueueLifecycleTest {
 
         assertTrue(stream.awaitReadStarted(), "reader thread did not start blocking read");
 
-        EventQueue.shutdown();
+        EventQueue.getInstance().shutdown();
 
         assertTrue(stream.isClosed(), "shutdown should force-close input stream");
         assertTrue(waitUntilStopped(reader, 1200), "reader thread should stop after shutdown");
@@ -87,7 +93,7 @@ public class EventQueueLifecycleTest {
 
         assertTrue(stream.awaitReadStarted(), "reader thread did not start blocking read");
 
-        EventQueue.suspend();
+        EventQueue.getInstance().suspend();
 
         assertTrue(stream.isClosed(), "suspend should close tty input stream");
         assertTrue(waitUntilStopped(reader, 1200), "reader thread should stop after suspend");
@@ -117,25 +123,25 @@ public class EventQueueLifecycleTest {
     private static Object getStaticField(String name) throws Exception {
         Field field = EventQueue.class.getDeclaredField(name);
         field.setAccessible(true);
-        return field.get(null);
+        return field.get(EventQueue.getInstance());
     }
 
     private static void setStaticField(String name, Object value) throws Exception {
         Field field = EventQueue.class.getDeclaredField(name);
         field.setAccessible(true);
-        field.set(null, value);
+        field.set(EventQueue.getInstance(), value);
     }
 
     private static void setBooleanField(String name, boolean value) throws Exception {
         Field field = EventQueue.class.getDeclaredField(name);
         field.setAccessible(true);
-        field.setBoolean(null, value);
+        field.setBoolean(EventQueue.getInstance(), value);
     }
 
     private static void setIntField(String name, int value) throws Exception {
         Field field = EventQueue.class.getDeclaredField(name);
         field.setAccessible(true);
-        field.setInt(null, value);
+        field.setInt(EventQueue.getInstance(), value);
     }
 
     private static final class BlockingInputStream extends InputStream {
