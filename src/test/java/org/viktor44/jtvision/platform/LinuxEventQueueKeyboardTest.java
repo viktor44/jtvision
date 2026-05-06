@@ -35,7 +35,7 @@ import org.viktor44.jtvision.core.KeyDownEvent;
  * Restricted to Linux because the Unix reader/input-loop path is used.
  */
 @EnabledOnOs(OS.LINUX)
-class EventQueueKeyboardTest {
+class LinuxEventQueueKeyboardTest {
 
     private PipedOutputStream writer;
 
@@ -44,7 +44,7 @@ class EventQueueKeyboardTest {
         PipedInputStream pipeIn = new PipedInputStream();
         writer = new PipedOutputStream(pipeIn);
 
-        EventQueue.initInstance(new EventQueue() {
+        EventQueue.initInstance(new LinuxEventQueue() {
             @Override
             protected InputStream openInputStream() { return pipeIn; }
             @Override

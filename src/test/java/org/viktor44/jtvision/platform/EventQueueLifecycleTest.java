@@ -23,12 +23,12 @@ public class EventQueueLifecycleTest {
 
     @BeforeEach
     void initEventQueue() {
-        EventQueue.initInstance(new EventQueue());
+        EventQueue.initInstance(new LinuxEventQueue());
     }
 
     @AfterEach
     void resetEventQueueStatics() throws Exception {
-        InputStream inputStream = (InputStream) getStaticField("inputStream");
+        InputStream inputStream = (InputStream) getField("inputStream");
         if (inputStream != null) {
             try {
                 inputStream.close();
@@ -36,8 +36,8 @@ public class EventQueueLifecycleTest {
             }
         }
 
-        Thread inputThread = (Thread) getStaticField("inputThread");
-        Thread readerThread = (Thread) getStaticField("readerThread");
+        Thread inputThread = (Thread) getField("inputThread");
+        Thread readerThread = (Thread) getField("readerThread");
 
         if (inputThread != null) {
             inputThread.interrupt();
@@ -48,15 +48,15 @@ public class EventQueueLifecycleTest {
             readerThread.join(500);
         }
 
-        setStaticField("inputThread", null);
-        setStaticField("readerThread", null);
-        setStaticField("inputStream", null);
-        setStaticField("savedTerminalState", null);
+        setField("inputThread", null);
+        setField("readerThread", null);
+        setField("inputStream", null);
+        setField("savedTerminalState", null);
         setBooleanField("running", false);
         setBooleanField("closeInputStreamOnStop", false);
         setBooleanField("rawTerminalEnabled", false);
-        setBooleanField("windowsInputModeSaved", false);
-        setIntField("savedWindowsInputMode", 0);
+        setBooleanFieldIfExists("windowsInputModeSaved", false);
+        setIntFieldIfExists("savedWindowsInputMode", 0);
     }
 
     @Test
@@ -64,8 +64,8 @@ public class EventQueueLifecycleTest {
         BlockingInputStream stream = new BlockingInputStream();
         Thread reader = startBlockedReader(stream);
 
-        setStaticField("inputStream", stream);
-        setStaticField("readerThread", reader);
+        setField("inputStream", stream);
+        setField("readerThread", reader);
         setBooleanField("closeInputStreamOnStop", false);
         setBooleanField("running", true);
         setBooleanField("rawTerminalEnabled", false);
@@ -76,8 +76,8 @@ public class EventQueueLifecycleTest {
 
         assertTrue(stream.isClosed(), "shutdown should force-close input stream");
         assertTrue(waitUntilStopped(reader, 1200), "reader thread should stop after shutdown");
-        assertNull(getStaticField("readerThread"), "readerThread field should be cleared");
-        assertNull(getStaticField("inputStream"), "inputStream field should be cleared");
+        assertNull(getField("readerThread"), "readerThread field should be cleared");
+        assertNull(getField("inputStream"), "inputStream field should be cleared");
     }
 
     @Test
@@ -85,8 +85,8 @@ public class EventQueueLifecycleTest {
         BlockingInputStream stream = new BlockingInputStream();
         Thread reader = startBlockedReader(stream);
 
-        setStaticField("inputStream", stream);
-        setStaticField("readerThread", reader);
+        setField("inputStream", stream);
+        setField("readerThread", reader);
         setBooleanField("closeInputStreamOnStop", true);
         setBooleanField("running", true);
         setBooleanField("rawTerminalEnabled", false);
@@ -97,8 +97,8 @@ public class EventQueueLifecycleTest {
 
         assertTrue(stream.isClosed(), "suspend should close tty input stream");
         assertTrue(waitUntilStopped(reader, 1200), "reader thread should stop after suspend");
-        assertNull(getStaticField("readerThread"), "readerThread field should be cleared");
-        assertNull(getStaticField("inputStream"), "inputStream field should be cleared");
+        assertNull(getField("readerThread"), "readerThread field should be cleared");
+        assertNull(getField("inputStream"), "inputStream field should be cleared");
     }
 
     private static Thread startBlockedReader(final BlockingInputStream stream) {
@@ -120,28 +120,51 @@ public class EventQueueLifecycleTest {
         return !thread.isAlive();
     }
 
-    private static Object getStaticField(String name) throws Exception {
-        Field field = EventQueue.class.getDeclaredField(name);
+    /** Searches the instance's class hierarchy for a field by name. */
+    private static Field findField(String name) throws NoSuchFieldException {
+        Class<?> clazz = EventQueue.getInstance().getClass();
+        while (clazz != null) {
+            try {
+                return clazz.getDeclaredField(name);
+            } catch (NoSuchFieldException e) {
+                clazz = clazz.getSuperclass();
+            }
+        }
+        throw new NoSuchFieldException(name);
+    }
+
+    private static Object getField(String name) throws Exception {
+        Field field = findField(name);
         field.setAccessible(true);
         return field.get(EventQueue.getInstance());
     }
 
-    private static void setStaticField(String name, Object value) throws Exception {
-        Field field = EventQueue.class.getDeclaredField(name);
+    private static void setField(String name, Object value) throws Exception {
+        Field field = findField(name);
         field.setAccessible(true);
         field.set(EventQueue.getInstance(), value);
     }
 
     private static void setBooleanField(String name, boolean value) throws Exception {
-        Field field = EventQueue.class.getDeclaredField(name);
+        Field field = findField(name);
         field.setAccessible(true);
         field.setBoolean(EventQueue.getInstance(), value);
     }
 
-    private static void setIntField(String name, int value) throws Exception {
-        Field field = EventQueue.class.getDeclaredField(name);
-        field.setAccessible(true);
-        field.setInt(EventQueue.getInstance(), value);
+    private static void setBooleanFieldIfExists(String name, boolean value) throws Exception {
+        try {
+            setBooleanField(name, value);
+        } catch (NoSuchFieldException ignored) {
+        }
+    }
+
+    private static void setIntFieldIfExists(String name, int value) throws Exception {
+        try {
+            Field field = findField(name);
+            field.setAccessible(true);
+            field.setInt(EventQueue.getInstance(), value);
+        } catch (NoSuchFieldException ignored) {
+        }
     }
 
     private static final class BlockingInputStream extends InputStream {
