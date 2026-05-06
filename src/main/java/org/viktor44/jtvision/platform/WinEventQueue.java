@@ -185,7 +185,7 @@ class WinEventQueue extends EventQueue {
      *
      * @param ev the Windows key event record
      */
-    private void handleWindowsKeyEvent(KEY_EVENT_RECORD ev) {
+    void handleWindowsKeyEvent(KEY_EVENT_RECORD ev) {
         if (!ev.keyDown) {
         	return;
         }

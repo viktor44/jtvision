@@ -699,7 +699,7 @@ public class DemoApp extends JtvApplication {
 		        		new JtvSubMenu("~W~indow")
 		                        .addItem(new JtvMenuItem("~R~esize/move", cmResize, JtvKeyStroke.of(KeyEvent.VK_F5, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+F5"))
 		                        .addItem(new JtvMenuItem("~Z~oom", cmZoom, JtvKeyStroke.of(KeyEvent.VK_F5), 0, "F5"))
-		                        .addItem(new JtvMenuItem("~N~ext", cmNext, JtvKeyStroke.of(KeyEvent.VK_F10), 0, "F6"))
+		                        .addItem(new JtvMenuItem("~N~ext", cmNext, JtvKeyStroke.of(KeyEvent.VK_F6), 0, "F6"))
 		                        .addItem(new JtvMenuItem("~C~lose", cmClose, JtvKeyStroke.of(KeyEvent.VK_F3, InputEvent.ALT_DOWN_MASK), 0, "Alt+F3"))
 		                        .addItem(new JtvMenuItem("~T~ile", cmTile))
 		                        .addItem(new JtvMenuItem("C~a~scade", cmCascade))
