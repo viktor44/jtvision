@@ -307,7 +307,7 @@ public class JtvCluster extends JtvView {
                     for (int i = 0; i < strings.size(); i++) {
                         char c = StringUtils.hotKey(strings.get(i));
                         if (event.getKeyDown().getKeyCode() != 0 && c != 0 &&
-                            ((event.getKeyDown().getModifiers() == InputEvent.ALT_DOWN_MASK
+                            ((event.getKeyDown().isAltDown()
                               && Character.toUpperCase(c) == event.getKeyDown().getKeyCode()) ||
                              ((state & sfFocused) != 0 &&
                               c == Character.toUpperCase(event.getKeyDown().getKeyChar())))) {

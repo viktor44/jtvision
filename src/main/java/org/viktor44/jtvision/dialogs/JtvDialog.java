@@ -270,17 +270,10 @@ public class JtvDialog extends JtvWindow {
     @Override
     public void handleEvent(JtvEvent event) {
         if (event.getWhat() == evKeyDown) {
-            switch (event.getKeyDown().getKeyStroke()) {
-                case KeyEvent.VK_TAB:
-                    focusNext(false);
-                    clearEvent(event);
-                    return;
-                case (InputEvent.SHIFT_DOWN_MASK << 16) | KeyEvent.VK_TAB:
-                    focusNext(true);
-                    clearEvent(event);
-                    return;
-                default:
-                    break;
+            if (event.getKeyDown().getKeyCode() == KeyEvent.VK_TAB) {
+                focusNext(event.getKeyDown().isShiftDown());
+                clearEvent(event);
+                return;
             }
         }
 

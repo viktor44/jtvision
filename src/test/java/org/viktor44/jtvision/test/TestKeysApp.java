@@ -47,7 +47,7 @@ public final class TestKeysApp {
 
             report(vk, mods, keyChar);
 
-            if ((mods & InputEvent.CTRL_DOWN_MASK) != 0 && (vk == KeyEvent.VK_Q)) {
+            if (kd.isCtrlDown() && (vk == KeyEvent.VK_Q)) {
                 System.out.print("(exit)\r\n");
                 running = false;
             }

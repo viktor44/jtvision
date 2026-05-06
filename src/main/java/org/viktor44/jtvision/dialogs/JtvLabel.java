@@ -142,8 +142,8 @@ public class JtvLabel extends JtvView {
         }
         else if (event.getWhat() == evKeyDown) {
             char c = StringUtils.hotKey(text);
-            if (c != 0 && event.getKeyDown().getKeyCode() != 0 &&
-                event.getKeyDown().getModifiers() == InputEvent.ALT_DOWN_MASK
+            if (c != 0 && event.getKeyDown().getKeyCode() != 0 
+            		&& event.getKeyDown().isAltDown()
                     && Character.toUpperCase(c) == event.getKeyDown().getKeyCode()) {
                 if (link != null) {
                     link.focus();

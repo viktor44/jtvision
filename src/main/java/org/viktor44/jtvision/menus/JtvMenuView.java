@@ -365,20 +365,21 @@ public class JtvMenuView extends JtvView {
                                     boolean match;
                                     if (size.getY() == 1) {
                                         // Menu bar: Alt+letter only
-                                        match = e.getKeyDown().getModifiers() == InputEvent.ALT_DOWN_MASK
-                                             && Character.toUpperCase(c) == e.getKeyDown().getKeyCode();
-                                    } else {
+                                        match = e.getKeyDown().isAltDown() && Character.toUpperCase(c) == e.getKeyDown().getKeyCode();
+                                    }
+                                    else {
                                         // Submenu box: bare letter (no modifiers) or Alt+letter
-                                        match = (e.getKeyDown().getModifiers() == InputEvent.ALT_DOWN_MASK
-                                              || e.getKeyDown().getModifiers() == 0)
+                                        match = (e.getKeyDown().isAltDown() || e.getKeyDown().getModifiers() == 0)
                                              && Character.toUpperCase(c) == e.getKeyDown().getKeyCode();
                                     }
                                     if (match) {
                                         current = p;
-                                        if (p.getCommand() != 0)
+                                        if (p.getCommand() != 0) {
                                             result = p.getCommand();
-                                        else
+                                        }
+                                        else {
                                             autoSelect = true;
+                                        }
                                         break;
                                     }
                                 }

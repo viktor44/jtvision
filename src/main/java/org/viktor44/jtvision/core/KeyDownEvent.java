@@ -51,6 +51,42 @@ public class KeyDownEvent {
 	@Getter
     private char keyChar = KeyEvent.CHAR_UNDEFINED;
 
+    /** Returns {@code true} if the Shift key was held at the time of the keystroke. */
+    public boolean isShiftDown() {
+    	return modifiers == InputEvent.SHIFT_DOWN_MASK;
+    }
+
+    /** Returns {@code true} if the Ctrl key was held at the time of the keystroke. */
+    public boolean isCtrlDown()  {
+    	return modifiers == InputEvent.CTRL_DOWN_MASK;
+    }
+
+    /** Returns {@code true} if the Ctrl+Shift keys was held at the time of the keystroke. */
+    public boolean isCtrlShiftDown()  {
+    	return (modifiers & InputEvent.CTRL_DOWN_MASK) != 0
+    			&& (modifiers & InputEvent.SHIFT_DOWN_MASK) != 0
+    	        && (modifiers & InputEvent.ALT_DOWN_MASK) == 0;
+    }
+
+    /** Returns {@code true} if the Ctrl+Alt+Shift keys was held at the time of the keystroke. */
+    public boolean isCtrlAltShiftDown()  {
+    	return (modifiers & InputEvent.CTRL_DOWN_MASK) != 0
+    			&& (modifiers & InputEvent.SHIFT_DOWN_MASK) != 0
+    	        && (modifiers & InputEvent.ALT_DOWN_MASK) != 0;
+    }
+
+    /** Returns {@code true} if the Alt key was held at the time of the keystroke. */
+    public boolean isAltDown() {
+    	return modifiers == InputEvent.ALT_DOWN_MASK;
+    }
+
+    /** Returns {@code true} if the Alt+Shift keys was held at the time of the keystroke. */
+    public boolean isAltShiftDown()  {
+    	return (modifiers & InputEvent.CTRL_DOWN_MASK) == 0
+    			&& (modifiers & InputEvent.SHIFT_DOWN_MASK) != 0
+    	        && (modifiers & InputEvent.ALT_DOWN_MASK) != 0;
+    }
+    
     /**
      * Returns the combined keystroke encoding {@code (modifiers << 16) | keyCode}.
      *

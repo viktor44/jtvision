@@ -235,22 +235,23 @@ public class JtvHelpViewer extends JtvScroller {
         super.handleEvent(event);
         switch (event.getWhat()) {
             case evKeyDown:
+                if (event.getKeyDown().isShiftDown() && event.getKeyDown().getKeyCode() == KeyEvent.VK_TAB) {
+                    selected--;
+                    if (selected <= 0) {
+                        selected = topic.getNumCrossRefs();
+                    }
+                    if (topic.getNumCrossRefs() != 0) {
+                        makeSelectVisible(selected - 1);
+                    }
+                    drawView();
+                    clearEvent(event);
+                    return;
+                }
                 switch (event.getKeyDown().getKeyStroke()) {
                     case KeyEvent.VK_TAB:
                         selected++;
                         if (selected > topic.getNumCrossRefs()) {
                             selected = 1;
-                        }
-                        if (topic.getNumCrossRefs() != 0) {
-                            makeSelectVisible(selected - 1);
-                        }
-                        drawView();
-                        clearEvent(event);
-                        return;
-                    case (InputEvent.SHIFT_DOWN_MASK << 16) | KeyEvent.VK_TAB:
-                        selected--;
-                        if (selected <= 0) {
-                            selected = topic.getNumCrossRefs();
                         }
                         if (topic.getNumCrossRefs() != 0) {
                             makeSelectVisible(selected - 1);

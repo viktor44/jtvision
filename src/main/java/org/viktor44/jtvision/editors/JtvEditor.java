@@ -64,6 +64,7 @@ import org.viktor44.jtvision.core.JtvPalette;
 import org.viktor44.jtvision.core.JtvPoint;
 import org.viktor44.jtvision.core.JtvProgram;
 import org.viktor44.jtvision.core.JtvRect;
+import org.viktor44.jtvision.core.KeyDownEvent;
 import org.viktor44.jtvision.views.JtvScrollBar;
 import org.viktor44.jtvision.views.JtvView;
 
@@ -1114,11 +1115,11 @@ public class JtvEditor extends JtvView {
         }
 
         if (event.getWhat() == evKeyDown) {
-            int stroke = event.getKeyDown().getKeyStroke();
-            if ((event.getKeyDown().getModifiers() & InputEvent.SHIFT_DOWN_MASK) != 0) {
+        	KeyDownEvent keyEvent = event.getKeyDown();
+            if (keyEvent.isShiftDown()) {
                 selectMode = 1;
             }
-            char keyChar = event.getKeyDown().getKeyChar();
+            char keyChar = keyEvent.getKeyChar();
             if (keyChar != KeyEvent.CHAR_UNDEFINED && keyChar >= 32) {
                 if (!readOnly) {
                     if (overwrite && !hasSelection() && curPtr < buffer.length() && buffer.charAt(curPtr) != '\n') {
@@ -1132,21 +1133,21 @@ public class JtvEditor extends JtvView {
             }
 
             // Compound shortcuts first; navigation keys ignore the Shift modifier (used for selection).
-            if (stroke == ((InputEvent.SHIFT_DOWN_MASK << 16) | KeyEvent.VK_DELETE)) {
+            if (keyEvent.isShiftDown() && keyEvent.getKeyCode() == KeyEvent.VK_DELETE) {
                 if (!readOnly) {
                 	clipCut();
                 }
             }
-            else if (stroke == ((InputEvent.CTRL_DOWN_MASK << 16) | KeyEvent.VK_INSERT)) {
+            else if (keyEvent.isCtrlDown() && keyEvent.getKeyCode() == KeyEvent.VK_INSERT) {
                 clipCopy();
             }
-            else if (stroke == ((InputEvent.SHIFT_DOWN_MASK << 16) | KeyEvent.VK_INSERT)) {
+            else if (keyEvent.isShiftDown() && keyEvent.getKeyCode() == KeyEvent.VK_INSERT) {
                 if (!readOnly) {
                 	clipPaste();
                 }
             }
             else {
-                switch (stroke & 0x0000FFFF) {
+                switch (keyEvent.getKeyCode()) {
                     case KeyEvent.VK_LEFT: 
                     	setCurPtr(prevChar(curPtr), selectMode);
                     	break;
@@ -1196,7 +1197,7 @@ public class JtvEditor extends JtvView {
                 }
             }
 
-            if ((event.getKeyDown().getModifiers() & InputEvent.SHIFT_DOWN_MASK) == 0) {
+            if (!keyEvent.isShiftDown()) {
                 selecting = false;
                 selStart = selEnd = curPtr;
             }

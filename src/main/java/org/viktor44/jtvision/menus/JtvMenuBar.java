@@ -177,7 +177,8 @@ public class JtvMenuBar extends JtvMenuView {
                 for (JtvMenuItem p : menu.getItems()) {
                     if (p.getName() != null) {
                         char c = StringUtils.hotKey(p.getName());
-                        if (c != 0 && event.getKeyDown().getModifiers() == InputEvent.ALT_DOWN_MASK
+                        if (c != 0 
+                        		&& event.getKeyDown().isAltDown()
                                 && Character.toUpperCase(c) == event.getKeyDown().getKeyCode()) {
                             current = p;
                             menu.setDefaultItem(p);

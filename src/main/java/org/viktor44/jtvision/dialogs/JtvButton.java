@@ -314,7 +314,7 @@ public class JtvButton extends JtvView {
             case evKeyDown:
                 if (event.getKeyDown().getKeyCode() != 0
                 		&&
-                    ((event.getKeyDown().getModifiers() == InputEvent.ALT_DOWN_MASK
+                    ((event.getKeyDown().isAltDown()
                       && Character.toUpperCase(c) == event.getKeyDown().getKeyCode()) ||
                      ((state & sfFocused) != 0 &&
                       event.getKeyDown().getKeyChar() == ' '))) {

@@ -35,6 +35,7 @@ import org.viktor44.jtvision.core.JtvPalette;
 import org.viktor44.jtvision.core.JtvPoint;
 import org.viktor44.jtvision.core.JtvProgram;
 import org.viktor44.jtvision.core.JtvRect;
+import org.viktor44.jtvision.core.KeyDownEvent;
 import org.viktor44.jtvision.views.JtvView;
 
 import lombok.Getter;
@@ -295,19 +296,23 @@ public class JtvInputLine extends JtvView {
                 break;
             }
             case evKeyDown: {
-                int kc = event.getKeyDown().getKeyStroke();
+                KeyDownEvent keyEvent = event.getKeyDown();
+                int keyCode = keyEvent.getKeyCode();
                 boolean extendBlock = false;
 
-                if (kc == ((InputEvent.SHIFT_DOWN_MASK << 16) | KeyEvent.VK_DELETE)) {
+                if (keyEvent.isShiftDown() && keyCode == KeyEvent.VK_DELETE) {
                     clipCut();
-                } else if (kc == ((InputEvent.CTRL_DOWN_MASK << 16) | KeyEvent.VK_INSERT)) {
+                } 
+                else if (keyEvent.isCtrlDown() && keyCode == KeyEvent.VK_INSERT) {
                     clipCopy();
-                } else if (kc == ((InputEvent.SHIFT_DOWN_MASK << 16) | KeyEvent.VK_INSERT)) {
+                }
+                else if (keyEvent.isShiftDown() && keyCode == KeyEvent.VK_INSERT) {
                     clipPaste();
-                } else {
+                }
+                else {
                     // Check for shift+cursor keys
-                    if ((event.getKeyDown().getModifiers() & InputEvent.SHIFT_DOWN_MASK) != 0
-                    		&& (kc == KeyEvent.VK_LEFT || kc == KeyEvent.VK_RIGHT || kc == KeyEvent.VK_HOME || kc == KeyEvent.VK_END)) {
+                    if (keyEvent.isShiftDown()
+                    		&& (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_HOME || keyCode == KeyEvent.VK_END)) {
                         if (curPos == selEnd) {
                             anchor = selStart;
                         }
@@ -320,7 +325,7 @@ public class JtvInputLine extends JtvView {
                         extendBlock = true;
                     }
 
-                    switch (kc) {
+                    switch (keyCode) {
                         case KeyEvent.VK_LEFT:
                             if (curPos > 0) curPos--;
                             break;
@@ -355,7 +360,7 @@ public class JtvInputLine extends JtvView {
                             setState(sfCursorIns, (state & sfCursorIns) == 0);
                             break;
                         default:
-                            char keyChar = event.getKeyDown().getKeyChar();
+                            char keyChar = keyEvent.getKeyChar();
                             if (keyChar != KeyEvent.CHAR_UNDEFINED && keyChar >= 32) {
                                 deleteSelect();
                                 if ((state & sfCursorIns) != 0 && curPos < data.length()) {
@@ -372,7 +377,7 @@ public class JtvInputLine extends JtvView {
                             }
                             else {
                                 // Ctrl+Y - clear line
-                                if (event.getKeyDown().getKeyChar() == 25) {
+                                if (keyEvent.getKeyChar() == 25) {
                                     data = "";
                                     curPos = 0;
                                 }

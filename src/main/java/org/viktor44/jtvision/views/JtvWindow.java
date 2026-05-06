@@ -347,15 +347,9 @@ public class JtvWindow extends JtvGroup {
             }
         }
         else if (event.getWhat() == evKeyDown) {
-            switch (event.getKeyDown().getKeyStroke()) {
-                case KeyEvent.VK_TAB:
-                    focusNext(false);
-                    clearEvent(event);
-                    break;
-                case (InputEvent.SHIFT_DOWN_MASK << 16) | KeyEvent.VK_TAB:
-                    focusNext(true);
-                    clearEvent(event);
-                    break;
+            if (event.getKeyDown().getKeyCode() == KeyEvent.VK_TAB) {
+                focusNext(event.getKeyDown().isShiftDown());
+                clearEvent(event);
             }
         }
         else if (event.getWhat() == evBroadcast

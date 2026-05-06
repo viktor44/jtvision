@@ -138,7 +138,7 @@ public class JtvHistory extends JtvView {
             clearEvent(event);
         } else if (event.getWhat() == evKeyDown) {
             if (event.getKeyDown().getKeyCode() == KeyEvent.VK_DOWN &&
-                (event.getKeyDown().getModifiers() & InputEvent.ALT_DOWN_MASK) != 0) {
+                event.getKeyDown().isAltDown()) {
                 showHistory();
                 clearEvent(event);
             }

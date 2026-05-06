@@ -1622,9 +1622,9 @@ public class JtvView {
                 else if (kc == KeyEvent.VK_PAGE_UP) { p = new JtvPoint(p.getX(), limits.getA().getY()); }
                 else if (kc == KeyEvent.VK_PAGE_DOWN) { p = new JtvPoint(p.getX(), limits.getB().getY() - s.getY()); }
 
-                if ((mode & dmDragMove) != 0 && (event.getKeyDown().getModifiers() & InputEvent.SHIFT_DOWN_MASK) == 0)
+                if ((mode & dmDragMove) != 0 && !event.getKeyDown().isShiftDown())
                     p = p.add(delta);
-                else if ((mode & dmDragGrow) != 0 && (event.getKeyDown().getModifiers() & InputEvent.SHIFT_DOWN_MASK) != 0)
+                else if ((mode & dmDragGrow) != 0 && event.getKeyDown().isShiftDown())
                     s = s.add(delta);
 
                 moveGrow(p, s, limits, minSize, maxSize, mode);

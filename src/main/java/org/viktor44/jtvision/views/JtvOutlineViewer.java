@@ -546,55 +546,55 @@ public abstract class JtvOutlineViewer extends JtvScroller {
         }
 
         if (event.getWhat() == evKeyDown) {
-            switch (event.getKeyDown().getKeyStroke()) {
-                case KeyEvent.VK_UP:
-                case KeyEvent.VK_LEFT:
-                    newFocus--;
-                    break;
-                case KeyEvent.VK_DOWN:
-                case KeyEvent.VK_RIGHT:
-                    newFocus++;
-                    break;
-                case KeyEvent.VK_PAGE_DOWN:
-                    newFocus += size.getY() - 1;
-                    break;
-                case KeyEvent.VK_PAGE_UP:
-                    newFocus -= size.getY() - 1;
-                    break;
-                case KeyEvent.VK_HOME:
-                    newFocus = delta.getY();
-                    break;
-                case KeyEvent.VK_END:
-                    newFocus = delta.getY() + size.getY() - 1;
-                    break;
-                case (InputEvent.CTRL_DOWN_MASK << 16) | KeyEvent.VK_PAGE_UP:
-                    newFocus = 0;
-                    break;
-                case (InputEvent.CTRL_DOWN_MASK << 16) | KeyEvent.VK_PAGE_DOWN:
-                    newFocus = limit.getY() - 1;
-                    break;
-                case KeyEvent.VK_ENTER:
-                    selected(newFocus);
-                    break;
-                default:
-                    char ch = event.getKeyDown().getKeyChar();
-                    if (ch == '-' || ch == '+') {
-                        JtvNode cur = getNode(newFocus);
-                        if (cur != null) {
-                            adjust(cur, ch == '+');
-                            update();
+            if (event.getKeyDown().isCtrlDown() && event.getKeyDown().getKeyCode() == KeyEvent.VK_PAGE_UP) {
+                newFocus = 0;
+            } else if (event.getKeyDown().isCtrlDown() && event.getKeyDown().getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
+                newFocus = limit.getY() - 1;
+            } else {
+                switch (event.getKeyDown().getKeyStroke()) {
+                    case KeyEvent.VK_UP:
+                    case KeyEvent.VK_LEFT:
+                        newFocus--;
+                        break;
+                    case KeyEvent.VK_DOWN:
+                    case KeyEvent.VK_RIGHT:
+                        newFocus++;
+                        break;
+                    case KeyEvent.VK_PAGE_DOWN:
+                        newFocus += size.getY() - 1;
+                        break;
+                    case KeyEvent.VK_PAGE_UP:
+                        newFocus -= size.getY() - 1;
+                        break;
+                    case KeyEvent.VK_HOME:
+                        newFocus = delta.getY();
+                        break;
+                    case KeyEvent.VK_END:
+                        newFocus = delta.getY() + size.getY() - 1;
+                        break;
+                    case KeyEvent.VK_ENTER:
+                        selected(newFocus);
+                        break;
+                    default:
+                        char ch = event.getKeyDown().getKeyChar();
+                        if (ch == '-' || ch == '+') {
+                            JtvNode cur = getNode(newFocus);
+                            if (cur != null) {
+                                adjust(cur, ch == '+');
+                                update();
+                            }
                         }
-                    }
-                    else if (ch == '*') {
-                        JtvNode cur = getNode(newFocus);
-                        if (cur != null) {
-                            expandAll(cur);
-                            update();
+                        else if (ch == '*') {
+                            JtvNode cur = getNode(newFocus);
+                            if (cur != null) {
+                                expandAll(cur);
+                                update();
+                            }
                         }
-                    }
-                    else {
-                        return;
-                    }
+                        else {
+                            return;
+                        }
+                }
             }
             clearEvent(event);
             adjustFocus(newFocus);

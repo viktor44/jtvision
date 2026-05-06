@@ -309,7 +309,7 @@ public abstract class JtvProgram extends JtvGroup {
     public void handleEvent(JtvEvent event) {
         if (event.getWhat() == evKeyDown) {
             int kc = event.getKeyDown().getKeyCode();
-            if (event.getKeyDown().getModifiers() == InputEvent.ALT_DOWN_MASK
+            if (event.getKeyDown().isAltDown()
                     && kc >= KeyEvent.VK_1 && kc <= KeyEvent.VK_9) {
                 if (canMoveFocus()) {
                     if (message(desktop, evBroadcast, cmSelectWindowNum, kc - KeyEvent.VK_0) != null) {
