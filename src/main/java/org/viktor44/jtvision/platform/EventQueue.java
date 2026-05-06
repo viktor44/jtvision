@@ -24,6 +24,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.fusesource.jansi.internal.Kernel32;
@@ -112,7 +114,7 @@ public class EventQueue {
      *
      * @param instance the instance to use as the singleton; must not be {@code null}
      */
-    public static void initInstance(EventQueue instance) {
+    static void initInstance(EventQueue instance) {
         INSTANCE = instance;
     }
 
@@ -521,7 +523,7 @@ public class EventQueue {
      *
      * @return the opened {@link InputStream}
      */
-    private InputStream openInputStream() {
+    protected InputStream openInputStream() {
         if (ttyDevice.exists()) {
             try {
                 closeInputStreamOnStop = true;
@@ -570,7 +572,7 @@ public class EventQueue {
      * {@code SetConsoleMode}.
      * Does nothing if raw mode is already active.
      */
-    private void enableRawTerminalMode() {
+    protected void enableRawTerminalMode() {
         if (rawTerminalEnabled) {
             return;
         }
@@ -601,7 +603,7 @@ public class EventQueue {
      * {@link #savedWindowsInputMode} value.
      * Does nothing if raw mode is not currently active.
      */
-    private void disableRawTerminalMode() {
+    protected void disableRawTerminalMode() {
         if (!rawTerminalEnabled) {
             return;
         }
@@ -791,6 +793,10 @@ public class EventQueue {
                 if (b == null) {
                 	continue;
                 }
+//                if (true) {
+//                	printInput(b);
+//                	continue;
+//                }
                 processInput(b);
             }
         }
@@ -801,7 +807,25 @@ public class EventQueue {
         }
     }
 
-    /**
+    private void printInput(int first) throws IOException {
+    	List<Integer> input = new ArrayList<>();
+    	input.add(first);
+    	while (true) {
+    		int next = readByteWithTimeout(ESC_SEQUENCE_TIMEOUT_MS);
+    		if (next < 0) {
+    			break;
+    		}
+    		input.add(next);
+    	}
+		
+   		log.info("Keyboard input {}", input);
+   		if (first == 'q' - 'a' + 1) {
+   			log.info("(exit)");
+   			System.exit(0);
+   		}
+	}
+
+	/**
      * Parses one input byte (or the start of a multi-byte sequence) and
      * pushes zero or more {@link JtvEvent} objects into {@link #eventQueue}.
      * <p>
@@ -811,10 +835,10 @@ public class EventQueue {
      *       Reads the next byte with a {@link #ESC_SEQUENCE_TIMEOUT_MS}
      *       timeout: {@code [} → CSI sequence, {@code O} → SS3 sequence,
      *       timeout/other → plain Escape or Alt+key.</li>
-     *   <li>{@code '\r'} / {@code '\n'} — Enter key.</li>
-     *   <li>{@code '\t'} — Tab key.</li>
-     *   <li>{@code 127} / {@code 8} — Backspace key.</li>
-     *   <li>{@code < 32} — Ctrl+letter combination.</li>
+     *   <li>{@code 9} ({@code '\t'}) — Tab key ({@link KeyEvent#VK_TAB}).</li>
+     *   <li>{@code 13} ({@code '\r'}) / {@code 10} ({@code '\n'}) — Enter key ({@link KeyEvent#VK_ENTER}).</li>
+     *   <li>{@code 127} — Backspace key.</li>
+     *   <li>{@code < 32} (except 9, 10, 13) — Ctrl+letter combination.</li>
      *   <li>High bit set ({@code >= 0x80}) — start of a UTF-8 multi-byte
      *       character, handled by {@link #handleUtf8Input}.</li>
      *   <li>All other values — printable ASCII character.</li>
@@ -842,17 +866,19 @@ public class EventQueue {
                 pushAltKey(second);
             }
         }
-        else if (firstByte == '\r' || firstByte == '\n') {
-            pushKeyEvent(KeyEvent.VK_ENTER, 0, '\n');
-        }
-        else if (firstByte == '\t') {
+        else if (firstByte == 9) {
             pushKeyEvent(KeyEvent.VK_TAB, 0, '\t');
         }
-        else if (firstByte == 127 || firstByte == 8) {
+        else if (firstByte == 13 || firstByte == 10) {
+            pushKeyEvent(KeyEvent.VK_ENTER, 0, '\r');
+        }
+        else if (firstByte == 127) {
             pushKeyEvent(KeyEvent.VK_BACK_SPACE, 0, KeyEvent.CHAR_UNDEFINED);
         }
         else if (firstByte < 32) {
-            // Ctrl+letter: ASCII control char (1..26) → VK_A..VK_Z
+            // Ctrl+letter: ASCII control char (1..26, except 9 and 13/10) → VK_A..VK_Z with CTRL modifier.
+            // Ctrl+H (0x08) kept as distinct Ctrl+letter event.
+            // Bytes 9 (Tab) and 13/10 (Enter) are handled above and do NOT reach this branch.
             int vk = (firstByte >= 1 && firstByte <= 26) ? (KeyEvent.VK_A - 1 + firstByte) : 0;
             pushKeyEvent(vk, InputEvent.CTRL_DOWN_MASK, (char) firstByte);
         }
@@ -1019,15 +1045,17 @@ public class EventQueue {
             case '^':
                 parseCsiCaret(paramStr);
                 break;
-            case 'P': pushKeyEvent(KeyEvent.VK_F1, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 'Q': pushKeyEvent(KeyEvent.VK_F2, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 'P': pushKeyEvent(KeyEvent.VK_F1, modifiers, KeyEvent.CHAR_UNDEFINED); break;
+            case 'Q': pushKeyEvent(KeyEvent.VK_F2, modifiers, KeyEvent.CHAR_UNDEFINED); break;
             case 'R':
-                // Ignore cursor-position reports (ESC [ row ; col R) — only treat bare ESC [ R as F3
+                // Cursor-position reports are "row;col R" — treat only bare or "1;N" forms as F3
                 if (paramStr.isEmpty()) {
                     pushKeyEvent(KeyEvent.VK_F3, 0, KeyEvent.CHAR_UNDEFINED);
+                } else if (paramStr.startsWith("1;")) {
+                    pushKeyEvent(KeyEvent.VK_F3, modifiers, KeyEvent.CHAR_UNDEFINED);
                 }
                 break;
-            case 'S': pushKeyEvent(KeyEvent.VK_F4, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 'S': pushKeyEvent(KeyEvent.VK_F4, modifiers, KeyEvent.CHAR_UNDEFINED); break;
             case '[': {
                 // Linux console F1-F5: ESC [ [ A-E
                 int lc = readByteWithTimeout(ESC_SEQUENCE_TIMEOUT_MS);
@@ -1090,35 +1118,31 @@ public class EventQueue {
             return;
         }
 
+        int m = modifier - 1;
+        int awtModifiers = 0;
+        if (m > 0) {
+            if ((m & 1) != 0) awtModifiers |= InputEvent.SHIFT_DOWN_MASK;
+            if ((m & 2) != 0) awtModifiers |= InputEvent.ALT_DOWN_MASK;
+            if ((m & 4) != 0) awtModifiers |= InputEvent.CTRL_DOWN_MASK;
+        }
+
         switch (code) {
-            case 1: pushKeyEvent(KeyEvent.VK_HOME, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 2: pushKeyEvent(KeyEvent.VK_INSERT, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 3: pushKeyEvent(KeyEvent.VK_DELETE, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 4: pushKeyEvent(KeyEvent.VK_END, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 5: pushKeyEvent(KeyEvent.VK_PAGE_UP, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 6: pushKeyEvent(KeyEvent.VK_PAGE_DOWN, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 11: pushKeyEvent(KeyEvent.VK_F1, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 12: pushKeyEvent(KeyEvent.VK_F2, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 13: pushKeyEvent(KeyEvent.VK_F3, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 14: pushKeyEvent(KeyEvent.VK_F4, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 15: pushKeyEvent(KeyEvent.VK_F5, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 17: pushKeyEvent(KeyEvent.VK_F6, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 18: pushKeyEvent(KeyEvent.VK_F7, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 19: pushKeyEvent(KeyEvent.VK_F8, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 20: pushKeyEvent(KeyEvent.VK_F9, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 21: pushKeyEvent(KeyEvent.VK_F10, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 105:
-                if (modifier == 2) {
-                    pushKeyEvent(KeyEvent.VK_INSERT, InputEvent.SHIFT_DOWN_MASK, KeyEvent.CHAR_UNDEFINED);
-                }
-                break;
-            case 102:
-                if (modifier == 2) {
-                    pushKeyEvent(KeyEvent.VK_DELETE, InputEvent.SHIFT_DOWN_MASK, KeyEvent.CHAR_UNDEFINED);
-                } else if (modifier == 5) {
-                    pushKeyEvent(KeyEvent.VK_DELETE, InputEvent.CTRL_DOWN_MASK, KeyEvent.CHAR_UNDEFINED);
-                }
-                break;
+            case 1: pushKeyEvent(KeyEvent.VK_HOME,      awtModifiers, KeyEvent.CHAR_UNDEFINED); break;
+            case 2: pushKeyEvent(KeyEvent.VK_INSERT,    awtModifiers, KeyEvent.CHAR_UNDEFINED); break;
+            case 3: pushKeyEvent(KeyEvent.VK_DELETE,    awtModifiers, KeyEvent.CHAR_UNDEFINED); break;
+            case 4: pushKeyEvent(KeyEvent.VK_END,       awtModifiers, KeyEvent.CHAR_UNDEFINED); break;
+            case 5: pushKeyEvent(KeyEvent.VK_PAGE_UP,   awtModifiers, KeyEvent.CHAR_UNDEFINED); break;
+            case 6: pushKeyEvent(KeyEvent.VK_PAGE_DOWN, awtModifiers, KeyEvent.CHAR_UNDEFINED); break;
+            case 11: pushKeyEvent(KeyEvent.VK_F1,  awtModifiers, KeyEvent.CHAR_UNDEFINED); break;
+            case 12: pushKeyEvent(KeyEvent.VK_F2,  awtModifiers, KeyEvent.CHAR_UNDEFINED); break;
+            case 13: pushKeyEvent(KeyEvent.VK_F3,  awtModifiers, KeyEvent.CHAR_UNDEFINED); break;
+            case 14: pushKeyEvent(KeyEvent.VK_F4,  awtModifiers, KeyEvent.CHAR_UNDEFINED); break;
+            case 15: pushKeyEvent(KeyEvent.VK_F5,  awtModifiers, KeyEvent.CHAR_UNDEFINED); break;
+            case 17: pushKeyEvent(KeyEvent.VK_F6,  awtModifiers, KeyEvent.CHAR_UNDEFINED); break;
+            case 18: pushKeyEvent(KeyEvent.VK_F7,  awtModifiers, KeyEvent.CHAR_UNDEFINED); break;
+            case 19: pushKeyEvent(KeyEvent.VK_F8,  awtModifiers, KeyEvent.CHAR_UNDEFINED); break;
+            case 20: pushKeyEvent(KeyEvent.VK_F9,  awtModifiers, KeyEvent.CHAR_UNDEFINED); break;
+            case 21: pushKeyEvent(KeyEvent.VK_F10, awtModifiers, KeyEvent.CHAR_UNDEFINED); break;
         }
     }
 
@@ -1154,12 +1178,19 @@ public class EventQueue {
             return;
         }
         switch (c) {
-            case 'P': pushKeyEvent(KeyEvent.VK_F1, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 'Q': pushKeyEvent(KeyEvent.VK_F2, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 'R': pushKeyEvent(KeyEvent.VK_F3, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 'S': pushKeyEvent(KeyEvent.VK_F4, 0, KeyEvent.CHAR_UNDEFINED); break;
+            // Function keys
+            case 'P': pushKeyEvent(KeyEvent.VK_F1,   0, KeyEvent.CHAR_UNDEFINED); break;
+            case 'Q': pushKeyEvent(KeyEvent.VK_F2,   0, KeyEvent.CHAR_UNDEFINED); break;
+            case 'R': pushKeyEvent(KeyEvent.VK_F3,   0, KeyEvent.CHAR_UNDEFINED); break;
+            case 'S': pushKeyEvent(KeyEvent.VK_F4,   0, KeyEvent.CHAR_UNDEFINED); break;
+            // Home/End
             case 'H': pushKeyEvent(KeyEvent.VK_HOME, 0, KeyEvent.CHAR_UNDEFINED); break;
-            case 'F': pushKeyEvent(KeyEvent.VK_END, 0, KeyEvent.CHAR_UNDEFINED); break;
+            case 'F': pushKeyEvent(KeyEvent.VK_END,  0, KeyEvent.CHAR_UNDEFINED); break;
+            // Ctrl+cursor keys (rxvt/urxvt: ESC O A/B/C/D)
+            case 'A': pushKeyEvent(KeyEvent.VK_UP,    InputEvent.CTRL_DOWN_MASK, KeyEvent.CHAR_UNDEFINED); break;
+            case 'B': pushKeyEvent(KeyEvent.VK_DOWN,  InputEvent.CTRL_DOWN_MASK, KeyEvent.CHAR_UNDEFINED); break;
+            case 'C': pushKeyEvent(KeyEvent.VK_RIGHT, InputEvent.CTRL_DOWN_MASK, KeyEvent.CHAR_UNDEFINED); break;
+            case 'D': pushKeyEvent(KeyEvent.VK_LEFT,  InputEvent.CTRL_DOWN_MASK, KeyEvent.CHAR_UNDEFINED); break;
         }
     }
 
@@ -1345,7 +1376,9 @@ public class EventQueue {
      * @param ev the Windows key event record
      */
     private void handleWindowsKeyEvent(KEY_EVENT_RECORD ev) {
-        if (!ev.keyDown) return;
+        if (!ev.keyDown) {
+        	return;
+        }
 
         int vk = ev.keyCode & 0xFFFF;
         char uc = ev.uchar;

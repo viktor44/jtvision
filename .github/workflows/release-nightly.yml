@@ -28,7 +28,7 @@ jobs:
   test:
     needs: check-commits
 
-    if: false # github.event_name != 'schedule' || needs.check-commits.outputs.has_commits == 'true'
+    if: github.event_name != 'schedule' || needs.check-commits.outputs.has_commits == 'true'
     
     runs-on: ${{ matrix.os }}
     strategy:
@@ -49,7 +49,7 @@ jobs:
         run: mvn clean package --batch-mode --no-transfer-progress
 
   deploy:
-  #  needs: test
+    needs: test
     runs-on: ubuntu-latest
 
     steps:

@@ -45,4 +45,14 @@ public class JtvKeyStroke {
 		return (modifiers << 16) | keyCode;
 	}
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        if ((modifiers & InputEvent.CTRL_DOWN_MASK)  != 0) sb.append("Ctrl+");
+        if ((modifiers & InputEvent.ALT_DOWN_MASK)   != 0) sb.append("Alt+");
+        if ((modifiers & InputEvent.SHIFT_DOWN_MASK) != 0) sb.append("Shift+");
+        sb.append(KeyEvent.getKeyText(keyCode));
+        return sb.toString();
+    }
+
 }

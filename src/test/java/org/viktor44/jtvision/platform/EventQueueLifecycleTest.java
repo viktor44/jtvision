@@ -23,7 +23,7 @@ public class EventQueueLifecycleTest {
 
     @BeforeEach
     void initEventQueue() {
-        EventQueue.initInstance();
+        EventQueue.initInstance(new EventQueue());
     }
 
     @AfterEach

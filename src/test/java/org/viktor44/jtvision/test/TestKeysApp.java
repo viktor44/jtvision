@@ -27,7 +27,7 @@ public final class TestKeysApp {
 
     public static void main(String[] args) {
         System.setProperty("java.awt.headless", "true");
-        System.out.println("TestKeysApp - press any key (Ctrl+Q or Ctrl+C to quit).");
+        System.out.println("TestKeysApp - press any key (Ctrl+Q to quit).");
         System.out.println();
 
         EventQueue.initInstance();
@@ -47,7 +47,7 @@ public final class TestKeysApp {
 
             report(vk, mods, keyChar);
 
-            if ((mods & InputEvent.CTRL_DOWN_MASK) != 0 && (vk == KeyEvent.VK_Q || vk == KeyEvent.VK_C)) {
+            if ((mods & InputEvent.CTRL_DOWN_MASK) != 0 && (vk == KeyEvent.VK_Q)) {
                 System.out.print("(exit)\r\n");
                 running = false;
             }

@@ -1146,7 +1146,7 @@ public class JtvEditor extends JtvView {
                 }
             }
             else {
-                switch (stroke) {
+                switch (stroke & 0x0000FFFF) {
                     case KeyEvent.VK_LEFT: 
                     	setCurPtr(prevChar(curPtr), selectMode);
                     	break;
