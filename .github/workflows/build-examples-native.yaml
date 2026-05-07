@@ -7,8 +7,6 @@ jobs:
   build-examples-windows:
     runs-on: windows-latest
 
-    if: false # Temporarily disabled
-
     steps:
       - name: Check out code
         uses: actions/checkout@v6
@@ -22,136 +20,20 @@ jobs:
       - name: Build
         shell: cmd
         run: |
-          setlocal enabledelayedexpansion
-          set TARGET_DIR=examples\target
-          call mvn.cmd -f "examples\pom.xml" ^
-            clean package ^
-            -DskipTests ^
-            --batch-mode --no-transfer-progress
-
-          echo === Building native classpath ===
-          for %%f in ("%TARGET_DIR%\lib\*.jar") do (
-              set CP=!CP!;%%f
-          )
-
-          echo === native-image: DemoApp ===
-          "%JAVA_HOME%\bin\native-image" ^
-              -cp "!CP!" ^
-              --future-defaults=all ^
-              --no-fallback ^
-              -Os ^
-              -H:Name=demo ^
-              -H:Path="%TARGET_DIR%" ^
-              org.viktor44.jtvision.examples.demo.DemoApp
-          if errorlevel 1 (
-            echo native-image build failed
-            exit /b 1
-          )
-          echo === native-image: DirApp ===
-          "%JAVA_HOME%\bin\native-image" ^
-              -cp "!CP!" ^
-              --future-defaults=all ^
-              --no-fallback ^
-              -Os ^
-              -H:Name=dir ^
-              -H:Path="%TARGET_DIR%" ^
-              org.viktor44.jtvision.examples.dir.DirApp
-
-          if errorlevel 1 (
-            echo native-image build failed
-            exit /b 1
-          )
-          
-          echo === native-image: EditorApp ===
-          "%JAVA_HOME%\bin\native-image" ^
-              -cp "!CP!" ^
-              --future-defaults=all ^
-              --no-fallback ^
-              -Os ^
-              -H:Name=editor ^
-              -H:Path="%TARGET_DIR%" ^
-              org.viktor44.jtvision.examples.editor.EditorApp
-
-          if errorlevel 1 (
-            echo native-image build failed
-            exit /b 1
-          )
-
-          echo === native-image: FormsApp ===
-          "%JAVA_HOME%\bin\native-image" ^
-              -cp "!CP!" ^
-              --future-defaults=all ^
-              --no-fallback ^
-              -Os ^
-              -H:Name=forms ^
-              -H:Path="%TARGET_DIR%" ^
-              org.viktor44.jtvision.examples.forms.FormsApp
-
-          if errorlevel 1 (
-            echo native-image build failed
-            exit /b 1
-          )
-
-          echo === native-image: MultiMenuApp ===
-          "%JAVA_HOME%\bin\native-image" ^
-              -cp "!CP!" ^
-              --future-defaults=all ^
-              --no-fallback ^
-              -Os ^
-              -H:Name=mmenu ^
-              -H:Path="%TARGET_DIR%" ^
-              org.viktor44.jtvision.examples.mmenu.MultiMenuApp
-
-          if errorlevel 1 (
-            echo native-image build failed
-            exit /b 1
-          )
-
-          echo === native-image: PaletteApp ===
-          "%JAVA_HOME%\bin\native-image" ^
-              -cp "!CP!" ^
-              --future-defaults=all ^
-              --no-fallback ^
-              -Os ^
-              -H:Name=palette ^
-              -H:Path="%TARGET_DIR%" ^
-              org.viktor44.jtvision.examples.palette.PaletteApp
-
-          if errorlevel 1 (
-            echo native-image build failed
-            exit /b 1
-          )
-
-          7z a -tzip "%TARGET_DIR%\examples-win.zip" "%TARGET_DIR%\*.exe"
-
-          dir "%TARGET_DIR%"
+          scripts\build-examples.bat
+          cd examples\target
+          7z a -tzip examples-win.zip *.exe
+          dir
 
       - name: Publish release
         uses: softprops/action-gh-release@v3
         with:
           draft: true
           prerelease: false
-#          tag_name: ${{ inputs.tag_name || github.ref_name }}
           files: examples/target/examples-win.zip
-#          token: ${{ secrets.GH_TOKEN }}
-
-      # - name: Upload examples
-      #   uses: actions/upload-artifact@v7
-      #   with:
-      #     name: examples-win
-      #     path: |
-      #       examples/target/demo.exe
-      #       examples/target/dir.exe
-      #       examples/target/editor.exe
-      #       examples/target/forms.exe
-      #       examples/target/mmenu.exe
-      #       examples/target/palette.exe
-      #     if-no-files-found: error
 
   build-examples-macos:
     runs-on: macos-latest
-
-    if: false # Temporarily disabled
 
     steps:
       - name: Check out code
@@ -166,112 +48,11 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          export TARGET_DIR=examples/target
-          mvn -f "examples/pom.xml" \
-            clean package \
-            -DskipTests \
-            --batch-mode --no-transfer-progress
-          
-          echo === Building native classpath ===
-          CP=""
-          for jar in "$TARGET_DIR"/lib/*.jar; do
-              CP="$CP:$jar"
-          done
-          CP="${CP:1}"  # Remove leading colon
-          
-          echo === native-image: DemoApp ===
-          "$JAVA_HOME/bin/native-image" \
-              -cp "$CP" \
-              --future-defaults=all \
-              --no-fallback \
-              -Os \
-              -H:Name=demo \
-              -H:Path="$TARGET_DIR" \
-              org.viktor44.jtvision.examples.demo.DemoApp
-          
-          if [ $? -ne 0 ]; then
-            echo "native-image build failed"
-            exit 1
-          fi
-          
-          echo === native-image: DirApp ===
-          "$JAVA_HOME/bin/native-image" \
-              -cp "$CP" \
-              --future-defaults=all \
-              --no-fallback \
-              -Os \
-              -H:Name=dir \
-              -H:Path="$TARGET_DIR" \
-              org.viktor44.jtvision.examples.dir.DirApp
-          
-          if [ $? -ne 0 ]; then
-            echo "native-image build failed"
-            exit 1
-          fi
-          
-          echo === native-image: EditorApp ===
-          "$JAVA_HOME/bin/native-image" \
-              -cp "$CP" \
-              --future-defaults=all \
-              --no-fallback \
-              -Os \
-              -H:Name=editor \
-              -H:Path="$TARGET_DIR" \
-              org.viktor44.jtvision.examples.editor.EditorApp
-          
-          if [ $? -ne 0 ]; then
-            echo "native-image build failed"
-            exit 1
-          fi
+          scripts/build-examples.sh
+          cd examples/target
+          7z a -tzip examples-macos.zip demo dir editor forms mmenu palette
 
-          echo === native-image: FormsApp ===
-          "$JAVA_HOME/bin/native-image" \
-              -cp "$CP" \
-              --future-defaults=all \
-              --no-fallback \
-              -Os \
-              -H:Name=forms \
-              -H:Path="$TARGET_DIR" \
-              org.viktor44.jtvision.examples.forms.FormsApp
-          
-          if [ $? -ne 0 ]; then
-            echo "native-image build failed"
-            exit 1
-          fi
-          
-          echo === native-image: MultiMenuApp ===
-          "$JAVA_HOME/bin/native-image" \
-              -cp "$CP" \
-              --future-defaults=all \
-              --no-fallback \
-              -Os \
-              -H:Name=mmenu \
-              -H:Path="$TARGET_DIR" \
-              org.viktor44.jtvision.examples.mmenu.MultiMenuApp
-          
-          if [ $? -ne 0 ]; then
-            echo "native-image build failed"
-            exit 1
-          fi
-          
-          echo === native-image: PaletteApp ===
-          "$JAVA_HOME/bin/native-image" \
-              -cp "$CP" \
-              --future-defaults=all \
-              --no-fallback \
-              -Os \
-              -H:Name=palette \
-              -H:Path="$TARGET_DIR" \
-              org.viktor44.jtvision.examples.palette.PaletteApp
-          
-          if [ $? -ne 0 ]; then
-            echo "native-image build failed"
-            exit 1
-          fi
-
-          7z a -tzip "$TARGET_DIR/examples-macos.zip" "$TARGET_DIR/demo" "$TARGET_DIR/dir" "$TARGET_DIR/editor" "$TARGET_DIR/forms" "$TARGET_DIR/mmenu" "$TARGET_DIR/palette"
-
-          ls -l "$TARGET_DIR"
+          ls -l
 
       - name: Publish release
         uses: softprops/action-gh-release@v3
@@ -296,112 +77,11 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          export TARGET_DIR=examples/target
-          mvn -f "examples/pom.xml" \
-            clean package \
-            -DskipTests \
-            --batch-mode --no-transfer-progress
-          
-          echo === Building native classpath ===
-          CP=""
-          for jar in "$TARGET_DIR"/lib/*.jar; do
-              CP="$CP:$jar"
-          done
-          CP="${CP:1}"  # Remove leading colon
-          
-          echo === native-image: DemoApp ===
-          "$JAVA_HOME/bin/native-image" \
-              -cp "$CP" \
-              --future-defaults=all \
-              --no-fallback \
-              -Os \
-              -H:Name=demo \
-              -H:Path="$TARGET_DIR" \
-              org.viktor44.jtvision.examples.demo.DemoApp
-          
-          if [ $? -ne 0 ]; then
-            echo "native-image build failed"
-            exit 1
-          fi
-          
-          echo === native-image: DirApp ===
-          "$JAVA_HOME/bin/native-image" \
-              -cp "$CP" \
-              --future-defaults=all \
-              --no-fallback \
-              -Os \
-              -H:Name=dir \
-              -H:Path="$TARGET_DIR" \
-              org.viktor44.jtvision.examples.dir.DirApp
-          
-          if [ $? -ne 0 ]; then
-            echo "native-image build failed"
-            exit 1
-          fi
-          
-          echo === native-image: EditorApp ===
-          "$JAVA_HOME/bin/native-image" \
-              -cp "$CP" \
-              --future-defaults=all \
-              --no-fallback \
-              -Os \
-              -H:Name=editor \
-              -H:Path="$TARGET_DIR" \
-              org.viktor44.jtvision.examples.editor.EditorApp
-          
-          if [ $? -ne 0 ]; then
-            echo "native-image build failed"
-            exit 1
-          fi
+          scripts/build-examples.sh
+          cd examples/target
+          7z a -tzip examples-linux.zip demo dir editor forms mmenu palette
 
-          echo === native-image: FormsApp ===
-          "$JAVA_HOME/bin/native-image" \
-              -cp "$CP" \
-              --future-defaults=all \
-              --no-fallback \
-              -Os \
-              -H:Name=forms \
-              -H:Path="$TARGET_DIR" \
-              org.viktor44.jtvision.examples.forms.FormsApp
-          
-          if [ $? -ne 0 ]; then
-            echo "native-image build failed"
-            exit 1
-          fi
-          
-          echo === native-image: MultiMenuApp ===
-          "$JAVA_HOME/bin/native-image" \
-              -cp "$CP" \
-              --future-defaults=all \
-              --no-fallback \
-              -Os \
-              -H:Name=mmenu \
-              -H:Path="$TARGET_DIR" \
-              org.viktor44.jtvision.examples.mmenu.MultiMenuApp
-          
-          if [ $? -ne 0 ]; then
-            echo "native-image build failed"
-            exit 1
-          fi
-          
-          echo === native-image: PaletteApp ===
-          "$JAVA_HOME/bin/native-image" \
-              -cp "$CP" \
-              --future-defaults=all \
-              --no-fallback \
-              -Os \
-              -H:Name=palette \
-              -H:Path="$TARGET_DIR" \
-              org.viktor44.jtvision.examples.palette.PaletteApp
-          
-          if [ $? -ne 0 ]; then
-            echo "native-image build failed"
-            exit 1
-          fi
-          
-          7z a -tzip "$TARGET_DIR/examples-linux.zip" "$TARGET_DIR/demo" "$TARGET_DIR/dir" "$TARGET_DIR/editor" "$TARGET_DIR/forms" "$TARGET_DIR/mmenu" "$TARGET_DIR/palette"
-
-          ls -l "$TARGET_DIR"
+          ls -l
 
       - name: Publish release
         uses: softprops/action-gh-release@v3

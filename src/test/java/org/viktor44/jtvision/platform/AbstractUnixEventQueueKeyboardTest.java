@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -80,6 +81,32 @@ abstract class AbstractUnixEventQueueKeyboardTest {
 
     static Stream<Arguments> commonKeySequences() {
         List<Arguments> args = new ArrayList<>();
+
+        // Printable ASCII 0-9
+        for (char c = '0'; c <= '9'; c++) {
+            args.add(of(JtvKeyStroke.of(c), c));
+        }
+
+        // Alt+0 through Alt+9 (ESC + digit)
+        for (char c = '0'; c <= '9'; c++) {
+            args.add(of(JtvKeyStroke.of(c, InputEvent.ALT_DOWN_MASK),
+                0x1B, c));
+        }
+
+        // Ctrl+0 through Ctrl+9 (xterm modifyOtherKeys: ESC [ 27 ; 5 ; code ~)
+        for (char c = '0'; c <= '9'; c++) {
+            args.addAll(modifyOtherKeysDigit(c, 5, InputEvent.CTRL_DOWN_MASK));
+        }
+
+        // Alt+Shift+0 through Alt+Shift+9 (xterm modifyOtherKeys: ESC [ 27 ; 4 ; code ~)
+        for (char c = '0'; c <= '9'; c++) {
+            args.addAll(modifyOtherKeysDigit(c, 4, InputEvent.ALT_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+        }
+
+        // Ctrl+Shift+0 through Ctrl+Shift+9 (xterm modifyOtherKeys: ESC [ 27 ; 6 ; code ~)
+        for (char c = '0'; c <= '9'; c++) {
+            args.addAll(modifyOtherKeysDigit(c, 6, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+        }
 
         // Printable ASCII a-z
         for (char c = 'a'; c <= 'z'; c++) {
@@ -192,6 +219,32 @@ abstract class AbstractUnixEventQueueKeyboardTest {
         args.add(of(JtvKeyStroke.of(KeyEvent.VK_F10, InputEvent.CTRL_DOWN_MASK),  0x1B, '[', '2', '1', ';', '5', '~'));
 
         return args.stream();
+    }
+
+    /**
+     * Builds an {@link Arguments} entry for xterm {@code modifyOtherKeys} encoding
+     * of a digit key: {@code ESC [ 27 ; modifier ; charCode ~}.
+     */
+    private static List<Arguments> modifyOtherKeysDigit(char digit, int xtermModifier, int awtModifiers) {
+        int ascii = (int) digit; // 48–57
+        String codeStr = Integer.toString(ascii);
+        // Build: ESC [ 2 7 ; <mod> ; <ascii digits...> ~
+        List<Integer> seq = new ArrayList<>();
+        seq.add(0x1B);
+        seq.add((int) '[');
+        seq.add((int) '2');
+        seq.add((int) '7');
+        seq.add((int) ';');
+        for (char mc : Integer.toString(xtermModifier).toCharArray()) {
+            seq.add((int) mc);
+        }
+        seq.add((int) ';');
+        for (char cc : codeStr.toCharArray()) {
+            seq.add((int) cc);
+        }
+        seq.add((int) '~');
+        int[] bytes = seq.stream().mapToInt(Integer::intValue).toArray();
+        return Collections.singletonList(of(JtvKeyStroke.of(digit, awtModifiers), bytes));
     }
 
     static Arguments of(JtvKeyStroke ks, int... bytes) {

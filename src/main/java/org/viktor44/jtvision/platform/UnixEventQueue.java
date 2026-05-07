@@ -587,6 +587,9 @@ abstract class UnixEventQueue extends EventQueue {
             }
         }
         switch (code) {
+            case 27:
+                parseModifyOtherKeys(paramStr);
+                return;
             case 1:
             	pushKeyEvent(KeyEvent.VK_HOME, awtModifiers, KeyEvent.CHAR_UNDEFINED);
             	break;
@@ -636,6 +639,48 @@ abstract class UnixEventQueue extends EventQueue {
             	pushKeyEvent(KeyEvent.VK_F10, awtModifiers, KeyEvent.CHAR_UNDEFINED);
             	break;
         }
+    }
+
+    /**
+     * Handles xterm {@code modifyOtherKeys} sequences:
+     * {@code ESC [ 27 ; modifier ; charCode ~}.
+     *
+     * <p>The modifier value follows the xterm convention (value − 1 is a
+     * bitmask: bit 0 = Shift, bit 1 = Alt, bit 2 = Ctrl). The charCode is
+     * the ASCII code of the key.
+     *
+     * @param paramStr the full parameter string, e.g. {@code "27;5;48"}
+     */
+    private void parseModifyOtherKeys(String paramStr) {
+        // Expected format: "27;modifier;charCode"
+        String[] parts = paramStr.split(";");
+        if (parts.length < 3) {
+            return;
+        }
+        int modifier;
+        int charCode;
+        try {
+            modifier = Integer.parseInt(parts[1]);
+            charCode = Integer.parseInt(parts[2]);
+        }
+        catch (NumberFormatException ignored) {
+            return;
+        }
+        int m = modifier - 1;
+        int awtModifiers = 0;
+        if (m > 0) {
+            if ((m & 1) != 0) {
+                awtModifiers |= InputEvent.SHIFT_DOWN_MASK;
+            }
+            if ((m & 2) != 0) {
+                awtModifiers |= InputEvent.ALT_DOWN_MASK;
+            }
+            if ((m & 4) != 0) {
+                awtModifiers |= InputEvent.CTRL_DOWN_MASK;
+            }
+        }
+        int vk = Character.toUpperCase(charCode);
+        pushKeyEvent(vk, awtModifiers, KeyEvent.CHAR_UNDEFINED);
     }
 
     /**
@@ -792,7 +837,16 @@ abstract class UnixEventQueue extends EventQueue {
      */
     private void pushAltKey(int ch) {
         char upper = Character.toUpperCase((char) ch);
-        int vk = (upper >= 'A' && upper <= 'Z') ? upper : 0;
+        int vk;
+        if (upper >= 'A' && upper <= 'Z') {
+            vk = upper;
+        }
+        else if (ch >= '0' && ch <= '9') {
+            vk = ch;
+        }
+        else {
+            vk = 0;
+        }
         pushKeyEvent(vk, InputEvent.ALT_DOWN_MASK, KeyEvent.CHAR_UNDEFINED);
     }
 }
