@@ -1,4 +1,4 @@
-/@echo off
+@echo off
 setlocal enabledelayedexpansion
 
 cd %~dp0..
@@ -15,41 +15,40 @@ for %%f in ("%TARGET_DIR%\lib\*.jar") do (
 )
 
 echo === native-image: DemoApp ===
-"%JAVA_HOME%\bin\native-image" ^
+call "%JAVA_HOME%\bin\native-image" ^
     -cp "!CP!" ^
     --future-defaults=all ^
     --no-fallback ^
     -Os ^
-    -H:Name=demo ^
-    -H:Path="%TARGET_DIR%" ^
+    -o "%TARGET_DIR%\demo" ^
     org.viktor44.jtvision.examples.demo.DemoApp
+
 if errorlevel 1 (
   echo native-image build failed
   exit /b 1
 )
 
 echo === native-image: DirApp ===
-"%JAVA_HOME%\bin\native-image" ^
+call "%JAVA_HOME%\bin\native-image" ^
     -cp "!CP!" ^
     --future-defaults=all ^
     --no-fallback ^
     -Os ^
-    -H:Name=dir ^
-    -H:Path="%TARGET_DIR%" ^
+    -o "%TARGET_DIR%\dir" ^
     org.viktor44.jtvision.examples.dir.DirApp
+
 if errorlevel 1 (
   echo native-image build failed
   exit /b 1
 )
 
 echo === native-image: EditorApp ===
-"%JAVA_HOME%\bin\native-image" ^
+call "%JAVA_HOME%\bin\native-image" ^
     -cp "!CP!" ^
     --future-defaults=all ^
     --no-fallback ^
     -Os ^
-    -H:Name=editor ^
-    -H:Path="%TARGET_DIR%" ^
+    -o "%TARGET_DIR%\editor" ^
     org.viktor44.jtvision.examples.editor.EditorApp
 if errorlevel 1 (
   echo native-image build failed
@@ -57,13 +56,12 @@ if errorlevel 1 (
 )
 
 echo === native-image: FormsApp ===
-"%JAVA_HOME%\bin\native-image" ^
+call "%JAVA_HOME%\bin\native-image" ^
     -cp "!CP!" ^
     --future-defaults=all ^
     --no-fallback ^
     -Os ^
-    -H:Name=forms ^
-    -H:Path="%TARGET_DIR%" ^
+    -o "%TARGET_DIR%\forms" ^
     org.viktor44.jtvision.examples.forms.FormsApp
 if errorlevel 1 (
   echo native-image build failed
@@ -71,13 +69,12 @@ if errorlevel 1 (
 )
 
 echo === native-image: MultiMenuApp ===
-"%JAVA_HOME%\bin\native-image" ^
+call "%JAVA_HOME%\bin\native-image" ^
     -cp "!CP!" ^
     --future-defaults=all ^
     --no-fallback ^
     -Os ^
-    -H:Name=mmenu ^
-    -H:Path="%TARGET_DIR%" ^
+    -o "%TARGET_DIR%\mmenu" ^
     org.viktor44.jtvision.examples.mmenu.MultiMenuApp
 if errorlevel 1 (
   echo native-image build failed
@@ -85,13 +82,12 @@ if errorlevel 1 (
 )
 
 echo === native-image: PaletteApp ===
-"%JAVA_HOME%\bin\native-image" ^
+call "%JAVA_HOME%\bin\native-image" ^
     -cp "!CP!" ^
     --future-defaults=all ^
     --no-fallback ^
     -Os ^
-    -H:Name=palette ^
-    -H:Path="%TARGET_DIR%" ^
+    -o "%TARGET_DIR%\palette" ^
     org.viktor44.jtvision.examples.palette.PaletteApp
 if errorlevel 1 (
   echo native-image build failed
