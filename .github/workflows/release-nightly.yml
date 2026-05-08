@@ -26,7 +26,8 @@ jobs:
           fi
 
   test:
-    if: github.event_name != 'schedule' || needs.check-commits.outputs.has_commits == 'true'
+    needs: check-commits
+    if: always() && (github.event_name != 'schedule' || needs.check-commits.outputs.has_commits == 'true')
     
     runs-on: ${{ matrix.os }}
     strategy:

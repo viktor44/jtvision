@@ -4,10 +4,24 @@ on:
   workflow_dispatch:
 
 jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      date: ${{ steps.date.outputs.date }}
+
+    steps:
+      - name: Get current date
+        id: date
+        run: |
+          TAG="examples-$(date +'%Y%m%d%H%M')"
+          echo "date=$TAG" >> $GITHUB_OUTPUT
+
   build-examples-windows:
+    needs: prepare
     runs-on: windows-latest
 
     steps:
+
       - name: Check out code
         uses: actions/checkout@v6
 
@@ -23,16 +37,17 @@ jobs:
           call scripts\build-examples.bat
           cd examples\target
           7z a -tzip examples-win.zip *.exe
-          dir
 
       - name: Publish release
         uses: softprops/action-gh-release@v3
         with:
           draft: true
           prerelease: false
+          tag_name: ${{ needs.prepare.outputs.date }}
           files: examples/target/examples-win.zip
 
   build-examples-macos:
+    needs: prepare
     runs-on: macos-latest
 
     steps:
@@ -52,16 +67,16 @@ jobs:
           cd examples/target
           7z a -tzip examples-macos.zip demo dir editor forms mmenu palette
 
-          ls -l
-
       - name: Publish release
         uses: softprops/action-gh-release@v3
         with:
           draft: true
           prerelease: false
+          tag_name: ${{ needs.prepare.outputs.date }}
           files: examples/target/examples-macos.zip
 
   build-examples-linux:
+    needs: prepare
     runs-on: ubuntu-latest
 
     steps:
@@ -81,11 +96,10 @@ jobs:
           cd examples/target
           7z a -tzip examples-linux.zip demo dir editor forms mmenu palette
 
-          ls -l
-
       - name: Publish release
         uses: softprops/action-gh-release@v3
         with:
           draft: true
           prerelease: false
+          tag_name: ${{ needs.prepare.outputs.date }}
           files: examples/target/examples-linux.zip
