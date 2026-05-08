@@ -20,7 +20,7 @@ jobs:
       - name: Build
         shell: cmd
         run: |
-          scripts\build-examples.bat
+          call scripts\build-examples.bat
           cd examples\target
           7z a -tzip examples-win.zip *.exe
           dir
