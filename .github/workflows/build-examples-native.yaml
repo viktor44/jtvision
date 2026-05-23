@@ -103,3 +103,32 @@ jobs:
           prerelease: false
           tag_name: ${{ needs.prepare.outputs.date }}
           files: examples/target/examples-linux.zip
+
+  build-examples-linux-aarch64:
+    needs: prepare
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'graalvm'
+
+      - name: Build
+        shell: bash
+        run: |
+          scripts/build-examples.sh
+          cd examples/target
+          7z a -tzip examples-linux-aarch64.zip demo dir editor forms mmenu palette
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v3
+        with:
+          draft: true
+          prerelease: false
+          tag_name: ${{ needs.prepare.outputs.date }}
+          files: examples/target/examples-linux-aarch64.zip
