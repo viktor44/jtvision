@@ -23,7 +23,7 @@ A Java text-based user interface framework inspired by the classic Turbo Vision 
 <dependency>
     <groupId>org.viktor44.jtvision</groupId>
     <artifactId>jtvision</artifactId>
-    <version>1.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
