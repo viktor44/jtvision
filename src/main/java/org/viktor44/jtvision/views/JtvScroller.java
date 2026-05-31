@@ -145,17 +145,6 @@ public class JtvScroller extends JtvView {
     }
 
     /**
-     * Clears the scroll bar references and calls the inherited
-     * {@link JtvView#shutDown()}.
-     */
-    @Override
-    public void shutDown() {
-        hScrollBar = null;
-        vScrollBar = null;
-        super.shutDown();
-    }
-
-    /**
      * Updates the bounding rectangle and refreshes the scroll bar ranges
      * via {@link #setLimit(int, int)} without triggering an immediate redraw
      * (uses the draw lock). Clears {@link #drawFlag} and redraws afterwards.

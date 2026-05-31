@@ -82,7 +82,6 @@ public class FormsApp extends JtvApplication {
                 d.getFileName(fileName);
                 openList(Paths.get(fileName.toString()));
             }
-            destroy(d);
         }
     }
 
@@ -90,7 +89,6 @@ public class FormsApp extends JtvApplication {
         JtvView d = validView(new JtvChangeDirDialog(0, 0));
         if (d != null) {
         	getDesktop().execView(d);
-            destroy(d);
         }
     }
 
@@ -141,14 +139,14 @@ public class FormsApp extends JtvApplication {
         return new JtvMenuBar(r)
                 .addItem(
                 		new JtvSubMenu("~\u2261~")
-                			.addItem(new JtvMenuItem("~A~bout...", cmAboutBox))
+                			.addItem("~A~bout...", cmAboutBox)
                 )
                 .addItem(
                 		new JtvSubMenu("~F~ile")
                 			.addItem(new JtvMenuItem("~O~pen list", cmListOpen, JtvKeyStroke.of(KeyEvent.VK_F3), 0, "F3"))
                 			.addItem(new JtvMenuItem("~S~ave", cmListSave, JtvKeyStroke.of(KeyEvent.VK_F2), 0, "F2"))
                 			.addSeparator()
-                			.addItem(new JtvMenuItem("~C~hange directory...", cmChgDir))
+                			.addItem("~C~hange directory...", cmChgDir)
                 			.addSeparator()
                 			.addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKeyStroke.of(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+Q"))
                 )

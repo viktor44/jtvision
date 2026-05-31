@@ -174,15 +174,6 @@ public abstract class JtvProgram extends JtvGroup {
         }
     }
 
-    /** Nulls the three subview references then delegates to {@code TGroup.shutDown()}. */
-    @Override
-    public void shutDown() {
-        statusLine = null;
-        menuBar = null;
-        desktop = null;
-        super.shutDown();
-    }
-
     /**
      * Returns {@code true} if keyboard focus can be moved away from the currently focused window
      * (i.e. the desktop accepts a {@code cmReleasedFocus} validation).
@@ -197,7 +188,7 @@ public abstract class JtvProgram extends JtvGroup {
      * Executes a dialog modally on the desktop.  Optionally transfers data to the dialog before
      * execution and retrieves the result afterward.
      *
-     * @param pD   the dialog to execute; destroyed after execution
+     * @param pD   the dialog to execute
      * @param data optional data object passed to {@code setDataFrom} / {@code getDataTo}, may be {@code null}
      * @return the command code that dismissed the dialog (e.g. {@code cmOK}, {@code cmCancel})
      */
@@ -209,7 +200,6 @@ public abstract class JtvProgram extends JtvGroup {
             if (c != cmCancel && data != null) {
                 pD.getDataTo(data);
             }
-            destroy(pD);
         }
         return c;
     }
@@ -400,7 +390,7 @@ public abstract class JtvProgram extends JtvGroup {
 
     /**
      * Validates a newly constructed view.  If {@code p} is {@code null} or fails
-     * {@code cmValid} validation it is destroyed and {@code null} is returned; otherwise
+     * {@code cmValid} validation, {@code null} is returned; otherwise
      * {@code p} is returned unchanged.
      *
      * @param p the view to validate
@@ -411,7 +401,6 @@ public abstract class JtvProgram extends JtvGroup {
         	return null;
         }
         if (!p.valid(cmValid)) {
-            destroy(p);
             return null;
         }
         return p;
@@ -419,7 +408,7 @@ public abstract class JtvProgram extends JtvGroup {
 
     /**
      * Validates and inserts {@code pWin} into the desktop.
-     * The window is destroyed and {@code null} returned if it fails validation or if focus
+     * Returns {@code null} if it fails validation or if focus
      * cannot be moved ({@link #canMoveFocus()} returns {@code false}).
      *
      * @param pWin the window to insert
@@ -430,9 +419,6 @@ public abstract class JtvProgram extends JtvGroup {
             if (canMoveFocus()) {
                 desktop.insert(pWin);
                 return pWin;
-            }
-            else {
-                destroy(pWin);
             }
         }
         return null;

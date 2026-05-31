@@ -130,10 +130,10 @@ public class ListDialog extends JtvDialog {
 
     private void editForm(PhoneRecord r, boolean isNew) {
         PhoneForm form = new PhoneForm();
-        form.loadFrom(r);
+        form.setDataFrom(r);
         int result = JtvProgram.getApplication().executeDialog(form, null);
         if (result != cmCancel) {
-            form.saveTo(r);
+            form.getDataTo(r);
             List<PhoneRecord> records = snapshotRecords();
             if (isNew) {
                 records.add(r);

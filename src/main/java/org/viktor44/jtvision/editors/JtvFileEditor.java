@@ -174,16 +174,12 @@ public class JtvFileEditor extends JtvEditor {
             d.getFileName(sb);
             String newName = sb.toString();
             if (newName == null || newName.trim().isEmpty()) {
-                JtvProgram.getDesktop().destroy(d);
                 return false;
             }
             fileName = normalizeFileName(newName);
             message(owner, evBroadcast, cmUpdateTitle, this);
-            boolean saved = saveFile();
-            JtvProgram.getDesktop().destroy(d);
-            return saved;
+            return saveFile();
         }
-        JtvProgram.getDesktop().destroy(d);
         return false;
     }
 

@@ -29,6 +29,7 @@ import static org.viktor44.jtvision.core.ViewFlags.sfSelected;
 import static org.viktor44.jtvision.core.ViewFlags.sfShadow;
 import static org.viktor44.jtvision.core.ViewFlags.sfVisible;
 
+import org.viktor44.jtvision.core.JtvColorAttr;
 import org.viktor44.jtvision.core.JtvCommandSet;
 import org.viktor44.jtvision.core.JtvDrawBuffer;
 import org.viktor44.jtvision.core.JtvEvent;
@@ -46,7 +47,7 @@ import lombok.extern.slf4j.Slf4j;
  * related views. It handles:
  * <ul>
  *   <li><b>Insertion and removal</b> — {@link #insert(JtvView)},
- *       {@link #remove(JtvView)}, {@link #destroy(JtvView)}.</li>
+ *       {@link #remove(JtvView)}.</li>
  *   <li><b>Event routing</b> — distributes events to children in three
  *       phases: {@code phPreProcess}, {@code phFocused}, {@code phPostProcess}.</li>
  *   <li><b>Focus management</b> — {@link #setCurrent(JtvView, int)},
@@ -140,45 +141,6 @@ public class JtvGroup extends JtvView {
         options = ofSelectable | ofBuffered;
         clip = getExtent();
         eventMask = 0xFFFF;
-    }
-
-    /**
-     * Hides and destroys all child views, releases the draw buffer,
-     * and then calls the inherited {@link JtvView#shutDown()}.
-     */
-    @Override
-    public void shutDown() {
-        if (last != null) {
-            JtvView p = last;
-            do {
-                p.hide();
-                p = p.prev();
-            }
-            while (p != last);
-
-            do {
-                JtvView t = p.prev();
-                destroy(p);
-                p = t;
-            }
-            while (last != null);
-        }
-        freeBuffer();
-        current = null;
-        super.shutDown();
-    }
-
-    /**
-     * Removes and shuts down a child view, freeing its resources.
-     * If {@code p} is {@code null} the call is ignored.
-     *
-     * @param p the child view to destroy
-     */
-    public void destroy(JtvView p) {
-        if (p != null) {
-            remove(p);
-            p.shutDown();
-        }
     }
 
     /**
@@ -533,13 +495,22 @@ public class JtvGroup extends JtvView {
     /**
      * Allocates the off-screen draw buffer if the group is exposed and
      * {@code ofBuffered} is set. The buffer is sized to hold the entire
-     * group ({@code width × height} cells).
+     * group ({@code width × height} cells) and pre-filled with the
+     * group's default background colour (palette entry 1) so that any
+     * cells not painted by child views render with the background
+     * instead of uninitialised (black) cells.
      */
     private void initBuffer() {
         if ((state & sfExposed) != 0 && (options & ofBuffered) != 0) {
             int sz = size.getX() * size.getY();
             if (sz > 0) {
                 buffer = new JtvDrawBuffer(sz);
+                JtvColorAttr c1 = mapColor(1);
+                JtvScreenCell[] data = buffer.getData();
+                JtvScreenCell bg = new JtvScreenCell(' ', c1);
+                for (int i = 0; i < data.length; i++) {
+                    data[i] = bg;
+                }
             }
         }
     }

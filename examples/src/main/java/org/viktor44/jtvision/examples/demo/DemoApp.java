@@ -296,7 +296,6 @@ public class DemoApp extends JtvApplication {
                 d.getFileName(fileName);
                 openEditor(fileName.toString());
             }
-            destroy(d);
         }
     }
 
@@ -305,7 +304,6 @@ public class DemoApp extends JtvApplication {
         if (d != null) {
             d.setHelpCtx(hcFCChDirDBox);
             getDesktop().execView(d);
-            destroy(d);
         }
     }
 
@@ -357,7 +355,6 @@ public class DemoApp extends JtvApplication {
         } else {
             EventQueue.getInstance().doubleDelay = oldDelay;
         }
-        destroy(d);
     }
 
     private static List<JtvColorGroup> appendGroup(List<JtvColorGroup> list, String name, String[] itemNames, int[] indexes) {
@@ -431,7 +428,6 @@ public class DemoApp extends JtvApplication {
                 JtvProgram.setAppPalette(palette);
                 setScreenMode(org.viktor44.jtvision.platform.Screen.screenMode);
             }
-            destroy(d);
         }
     }
 
@@ -439,7 +435,6 @@ public class DemoApp extends JtvApplication {
         ChangeBackgroundDialog d = (ChangeBackgroundDialog) validView(new ChangeBackgroundDialog(getDesktop().getBackground()));
         if (d != null) {
         	getDesktop().execView(d);
-            destroy(d);
         }
     }
 
@@ -574,7 +569,7 @@ public class DemoApp extends JtvApplication {
             }
         });
         for (JtvWindow w : windows) {
-        	getDesktop().destroy(w);
+        	getDesktop().remove(w);
         }
     }
 
@@ -655,7 +650,6 @@ public class DemoApp extends JtvApplication {
             JtvWindow w = new JtvHelpWindow(helpFile, getHelpCtx());
             if (validView(w) != null) {
                 execView(w);
-                destroy(w);
             }
         } catch (IOException e) {
             MessageBox.messageBox("Could not open help file", mfError | mfOKButton);
@@ -680,18 +674,18 @@ public class DemoApp extends JtvApplication {
         return new JtvMenuBar(r)
 		        .addItem(
 		        		new JtvSubMenu("~\u2261~")
-		                        .addItem(new JtvMenuItem("~A~bout...", cmAboutCmd))
+		                        .addItem("~A~bout...", cmAboutCmd)
 		                        .addSeparator()
-		                        .addItem(new JtvMenuItem("~P~uzzle", cmPuzzleCmd))
-		                        .addItem(new JtvMenuItem("Ca~l~endar", cmCalendarCmd))
-		                        .addItem(new JtvMenuItem("Ascii ~T~able", cmAsciiCmd))
-		                        .addItem(new JtvMenuItem("~C~alculator", cmCalcCmd))
+		                        .addItem("~P~uzzle", cmPuzzleCmd)
+		                        .addItem("Ca~l~endar", cmCalendarCmd)
+		                        .addItem("Ascii ~T~able", cmAsciiCmd)
+		                        .addItem("~C~alculator", cmCalcCmd)
 		                        .addItem(new JtvMenuItem("~E~vent Viewer", cmEventViewCmd, JtvKeyStroke.of(KeyEvent.VK_0, InputEvent.ALT_DOWN_MASK), 0, "Alt+0"))
 		        )
 		        .addItem(
 		        		new JtvSubMenu("~F~ile")
 		                        .addItem(new JtvMenuItem("~O~pen...", cmOpenCmd, JtvKeyStroke.of(KeyEvent.VK_F3), 0, "F3"))
-		                        .addItem(new JtvMenuItem("~C~hange Dir...", cmChDirCmd))
+		                        .addItem("~C~hange Dir...", cmChDirCmd)
 		                        .addSeparator()
 		                        .addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKeyStroke.of(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+Q"))
 		        )
@@ -701,18 +695,18 @@ public class DemoApp extends JtvApplication {
 		                        .addItem(new JtvMenuItem("~Z~oom", cmZoom, JtvKeyStroke.of(KeyEvent.VK_F5), 0, "F5"))
 		                        .addItem(new JtvMenuItem("~N~ext", cmNext, JtvKeyStroke.of(KeyEvent.VK_F6), 0, "F6"))
 		                        .addItem(new JtvMenuItem("~C~lose", cmClose, JtvKeyStroke.of(KeyEvent.VK_F3, InputEvent.ALT_DOWN_MASK), 0, "Alt+F3"))
-		                        .addItem(new JtvMenuItem("~T~ile", cmTile))
-		                        .addItem(new JtvMenuItem("C~a~scade", cmCascade))
+		                        .addItem("~T~ile", cmTile)
+		                        .addItem("C~a~scade", cmCascade)
 		        )
 		        .addItem(
 		        		new JtvSubMenu("~O~ptions")
-		                        .addItem(new JtvMenuItem("~M~ouse...", cmMouseCmd))
-		                        .addItem(new JtvMenuItem("~C~olors...", cmColorCmd))
-		                        .addItem(new JtvMenuItem("~B~ackground...", cmChBackground))
+		                        .addItem("~M~ouse...", cmMouseCmd)
+		                        .addItem("~C~olors...", cmColorCmd)
+		                        .addItem("~B~ackground...", cmChBackground)
 		                        .addItem(
 		                        		new JtvSubMenu("~D~esktop")
-		        		                        .addItem(new JtvMenuItem("~S~ave desktop", cmSaveCmd))
-		        		                        .addItem(new JtvMenuItem("~R~etrieve desktop", cmRestoreCmd))
+		        		                        .addItem("~S~ave desktop", cmSaveCmd)
+		        		                        .addItem("~R~etrieve desktop", cmRestoreCmd)
 		                        )                
 		        );
     }

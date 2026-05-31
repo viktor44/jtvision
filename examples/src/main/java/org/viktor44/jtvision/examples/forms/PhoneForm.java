@@ -61,14 +61,12 @@ public class PhoneForm extends JtvDialog {
 
         int x = inputCol;
         y += 3;
-        typeBoxes = new JtvCheckBoxes(new JtvRect(x, y, x + 14, y + 2),
-            new String[] { "Business", "Personal" });
+        typeBoxes = new JtvCheckBoxes(new JtvRect(x, y, x + 14, y + 2), new String[] { "Business", "Personal" });
         insert(typeBoxes);
         insert(new JtvLabel(new JtvRect(x, y - 1, x + labelWid, y), "~T~ype", typeBoxes));
 
         x += 15;
-        genderButtons = new JtvRadioButtons(new JtvRect(x, y, x + 12, y + 2),
-            new String[] { "Male", "Female" });
+        genderButtons = new JtvRadioButtons(new JtvRect(x, y, x + 12, y + 2), new String[] { "Male", "Female" });
         insert(genderButtons);
         insert(new JtvLabel(new JtvRect(x, y - 1, x + labelWid, y), "~G~ender", genderButtons));
 
@@ -83,7 +81,7 @@ public class PhoneForm extends JtvDialog {
         selectNext(false);
     }
 
-    public void loadFrom(PhoneRecord r) {
+    public void setDataFrom(PhoneRecord r) {
         nameField.setDataFrom(r.name);
         companyField.setDataFrom(r.company);
         remarksField.setDataFrom(r.remarks);
@@ -91,8 +89,8 @@ public class PhoneForm extends JtvDialog {
         typeBoxes.setValue(r.acquaintType);
         genderButtons.setValue(r.gender);
     }
-
-    public void saveTo(PhoneRecord r) {
+    
+    public void getDataTo(PhoneRecord r) {
         r.name = nameField.getData();
         r.company = companyField.getData();
         r.remarks = remarksField.getData();

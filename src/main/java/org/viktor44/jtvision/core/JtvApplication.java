@@ -52,11 +52,9 @@ public class JtvApplication extends JtvProgram {
     }
 
     /**
-     * Shuts down the application: calls {@link JtvProgram#shutDown()} then shuts down the
-     * Screen and EventQueue platform subsystems.
+     * Shuts down the application: shuts down the Screen and EventQueue platform subsystems.
      */
     public void shutdown() {
-        shutDown();
         Screen.shutdown();
         EventQueue.getInstance().shutdown();
     }

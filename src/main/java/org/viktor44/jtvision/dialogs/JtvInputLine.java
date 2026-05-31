@@ -114,11 +114,11 @@ public class JtvInputLine extends JtvView {
      *
      * @param bounds   the bounding rectangle (should be at least 3 characters wide to
      *                 accommodate scroll arrows and at least one character of text)
-     * @param aMaxLen  the maximum number of characters the field may hold
+     * @param maxLen  the maximum number of characters the field may hold
      */
-    public JtvInputLine(JtvRect bounds, int aMaxLen) {
+    public JtvInputLine(JtvRect bounds, int maxLen) {
         super(bounds);
-        maxLen = Math.max(aMaxLen - 1, 0);
+        this.maxLen = Math.max(maxLen - 1, 0);
         data = "";
         curPos = 0;
         firstPos = 0;

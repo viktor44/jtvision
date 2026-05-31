@@ -556,17 +556,6 @@ public class JtvListViewer extends JtvView {
     }
 
     /**
-     * Clears the scroll bar references and calls the inherited
-     * {@link JtvView#shutDown()}.
-     */
-    @Override
-    public void shutDown() {
-        hScrollBar = null;
-        vScrollBar = null;
-        super.shutDown();
-    }
-
-    /**
      * The index of the currently focused (keyboard-cursor) item.
      */
     public int getFocused() {

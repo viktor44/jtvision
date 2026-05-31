@@ -245,24 +245,13 @@ public class JtvWindow extends JtvGroup {
     /**
      * Validates and removes this window from its owner if
      * {@link #valid(int)} approves {@code cmClose}.
-     * Sets {@link #frame} to {@code null} before removal.
      */
     public void close() {
         if (valid(cmClose)) {
-            frame = null;
             if (owner != null) {
-                owner.destroy(this);
+                owner.remove(this);
             }
         }
-    }
-
-    /**
-     * Clears {@link #frame} and calls the inherited {@link JtvGroup#shutDown()}.
-     */
-    @Override
-    public void shutDown() {
-        frame = null;
-        super.shutDown();
     }
 
     /**

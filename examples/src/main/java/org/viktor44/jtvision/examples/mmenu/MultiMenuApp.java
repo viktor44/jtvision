@@ -68,16 +68,16 @@ public class MultiMenuApp extends JtvApplication {
                 .addItem(new JtvMenuItem("~N~ext menu", cmCycle))
                 .addItem(
                 		new JtvSubMenu("~M~enu One")
-			                    .addItem(new JtvMenuItem("~O~ne", cmOne))
-			                    .addItem(new JtvMenuItem("~T~wo", cmTwo))
-			                    .addItem(new JtvMenuItem("T~h~ree", cmThree))
+			                    .addItem("~O~ne", cmOne)
+			                    .addItem("~T~wo", cmTwo)
+			                    .addItem("T~h~ree", cmThree)
                 )
                 .addItem(
                 		new JtvSubMenu("~F~ile")
-			                    .addItem(new JtvMenuItem("~N~ew", cmNothing))
-			                    .addItem(new JtvMenuItem("~O~pen", cmNothing))
-			                    .addItem(new JtvMenuItem("~S~ave", cmNothing))
-			                    .addItem(new JtvMenuItem("S~a~ve all", cmNothing))
+			                    .addItem("~N~ew", cmNothing)
+			                    .addItem("~O~pen", cmNothing)
+			                    .addItem("~S~ave", cmNothing)
+			                    .addItem("S~a~ve all", cmNothing)
                 );
 
         // Menu Number Two
@@ -85,15 +85,15 @@ public class MultiMenuApp extends JtvApplication {
                 .addItem(new JtvMenuItem("~N~ext menu", cmCycle))
                 .addItem(
                 		new JtvSubMenu("~M~enu Two")
-			                    .addItem(new JtvMenuItem("~O~ne", cmOne))
-			                    .addItem(new JtvMenuItem("~T~wo", cmTwo))
-			                    .addItem(new JtvMenuItem("T~h~ree", cmThree))
+			                    .addItem("~O~ne", cmOne)
+			                    .addItem("~T~wo", cmTwo)
+			                    .addItem("T~h~ree", cmThree)
                 )
                 .addItem(
                 		new JtvSubMenu("~E~dit")
-			                    .addItem(new JtvMenuItem("Cu~t~", cmNothing))
-			                    .addItem(new JtvMenuItem("~C~opy", cmNothing))
-			                    .addItem(new JtvMenuItem("~P~aste", cmNothing))
+			                    .addItem("Cu~t~", cmNothing)
+			                    .addItem("~C~opy", cmNothing)
+			                    .addItem("~P~aste", cmNothing)
                 );
 
         // Menu Number Three
@@ -101,16 +101,16 @@ public class MultiMenuApp extends JtvApplication {
                 .addItem(new JtvMenuItem("~N~ext menu", cmCycle))
                 .addItem(
                 		new JtvSubMenu("~M~enu Three")
-			                    .addItem(new JtvMenuItem("~O~ne", cmOne))
-			                    .addItem(new JtvMenuItem("~T~wo", cmTwo))
-			                    .addItem(new JtvMenuItem("T~h~ree", cmThree))
+			                    .addItem("~O~ne", cmOne)
+			                    .addItem("~T~wo", cmTwo)
+			                    .addItem("T~h~ree", cmThree)
                 )
                 .addItem(
                 		new JtvSubMenu("~C~ompile")
-			                    .addItem(new JtvMenuItem("~C~ompile", cmNothing))
-			                    .addItem(new JtvMenuItem("~M~ake", cmNothing))
-			                    .addItem(new JtvMenuItem("~L~ink", cmNothing))
-			                    .addItem(new JtvMenuItem("~B~uild All", cmNothing))
+			                    .addItem("~C~ompile", cmNothing)
+			                    .addItem("~M~ake", cmNothing)
+			                    .addItem("~L~ink", cmNothing)
+			                    .addItem("~B~uild All", cmNothing)
                 );
 
         return new MultiMenu(r, menu1, menu2, menu3);

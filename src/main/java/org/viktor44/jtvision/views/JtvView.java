@@ -769,6 +769,15 @@ public class JtvView {
     }
 
     /**
+     * No-op data-import stub. Subclasses override to read their data
+     * from {@code rec}.
+     *
+     * @param rec the source data record
+     */
+    public void setDataFrom(Object rec) {
+    }
+
+    /**
      * Retrieves the next pending event by delegating to the owner group.
      * Returns an unchanged event (with type {@code evNothing}) if there
      * is no owner.
@@ -1216,15 +1225,6 @@ public class JtvView {
     }
 
     /**
-     * No-op data-import stub. Subclasses override to read their data
-     * from {@code rec}.
-     *
-     * @param rec the source data record
-     */
-    public void setDataFrom(Object rec) {
-    }
-
-    /**
      * Sets or clears one or more state bits and triggers the corresponding
      * side effects:
      * <ul>
@@ -1348,16 +1348,6 @@ public class JtvView {
      */
     public boolean containsMouse(JtvEvent event) {
         return (state & sfVisible) != 0 && mouseInView(event.getMouse().getWhere());
-    }
-
-    /**
-     * Hides the view and removes it from its owner group.
-     * After this call the view is no longer part of the view hierarchy.
-     */
-    public void shutDown() {
-        hide();
-        if (owner != null)
-            owner.remove(this);
     }
 
     // --- Write methods ---

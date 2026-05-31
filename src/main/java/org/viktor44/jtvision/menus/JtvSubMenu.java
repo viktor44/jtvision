@@ -76,6 +76,23 @@ public class JtvSubMenu extends JtvMenuItem {
         return this;
     }
 
+    /**
+     * Appends a new {@link JtvMenuItem} with the given name and command
+     * to this submenu's item list and returns {@code this} for chaining.
+     * <p>
+     * This is a convenience shorthand for
+     * {@code addItem(new JtvMenuItem(name, command))} for menu items
+     * that do not require a keystroke shortcut or help context.
+     *
+     * @param name    the display label for the menu item
+     *                (may contain {@code ~} hot-key markers, e.g. {@code "~O~pen"})
+     * @param command the command constant dispatched when the item is selected
+     * @return {@code this}
+     */
+    public JtvSubMenu addItem(String name, int command) {
+        return addItem(new JtvMenuItem(name, command));
+    }
+
     public JtvSubMenu addSeparator() {
         getSubMenu().addSeparator();
         return this;

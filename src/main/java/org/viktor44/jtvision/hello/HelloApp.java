@@ -49,7 +49,6 @@ public class HelloApp extends JtvApplication {
         d.insert(new JtvButton(new JtvRect(16, 8, 28, 10), "Cancel", cmCancel, bfNormal));
 
         getDesktop().execView(d);
-        destroy(d);
     }
 
     @Override

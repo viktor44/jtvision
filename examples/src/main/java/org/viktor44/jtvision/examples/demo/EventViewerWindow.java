@@ -57,7 +57,9 @@ public class EventViewerWindow extends JtvWindow {
     public void toggle() {
         stopped = !stopped;
         title = TITLES[stopped ? 1 : 0];
-        if (frame != null) frame.drawView();
+        if (frame != null) {
+        	frame.drawView();
+        }
     }
 
     public boolean isStopped() {

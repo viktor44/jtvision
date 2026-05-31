@@ -82,11 +82,11 @@ public class DirApp extends JtvApplication {
         return new JtvMenuBar(r)
 				.addItem(
 						new JtvSubMenu("~\u2261~")
-							.addItem(new JtvMenuItem("~A~bout...", cmAbout))
+							.addItem("~A~bout...", cmAbout)
 				)
 				.addItem(
 						new JtvSubMenu("~F~ile", JtvKeyStroke.of(KeyEvent.VK_F, InputEvent.ALT_DOWN_MASK))
-							.addItem(new JtvMenuItem("~N~ew Window...", cmDirTree))
+							.addItem("~N~ew Window...", cmDirTree)
 							.addSeparator()
 							.addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKeyStroke.of(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+Q"))
 				);

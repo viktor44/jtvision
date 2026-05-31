@@ -4,6 +4,7 @@
  */
 package org.viktor44.jtvision.examples.editor;
 
+import static org.viktor44.jtvision.core.CommandCodes.cmCancel;
 import static org.viktor44.jtvision.core.CommandCodes.cmCascade;
 import static org.viktor44.jtvision.core.CommandCodes.cmChangeDir;
 import static org.viktor44.jtvision.core.CommandCodes.cmClear;
@@ -30,7 +31,10 @@ import static org.viktor44.jtvision.core.CommandCodes.cmUndo;
 import static org.viktor44.jtvision.core.CommandCodes.cmZoom;
 import static org.viktor44.jtvision.core.EventCodes.evCommand;
 import static org.viktor44.jtvision.core.ViewFlags.bfDefault;
+import static org.viktor44.jtvision.core.ViewFlags.cdNormal;
+import static org.viktor44.jtvision.core.ViewFlags.fdOpenButton;
 import static org.viktor44.jtvision.core.ViewFlags.mfError;
+import static org.viktor44.jtvision.core.ViewFlags.mfInformation;
 import static org.viktor44.jtvision.core.ViewFlags.mfOKButton;
 import static org.viktor44.jtvision.core.ViewFlags.ofCentered;
 
@@ -41,16 +45,15 @@ import org.viktor44.jtvision.core.CommandCodes;
 import org.viktor44.jtvision.core.JtvApplication;
 import org.viktor44.jtvision.core.JtvCommandSet;
 import org.viktor44.jtvision.core.JtvEvent;
-import org.viktor44.jtvision.core.JtvKey;
 import org.viktor44.jtvision.core.JtvKeyStroke;
 import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.core.ViewFlags;
 import org.viktor44.jtvision.dialogs.JtvButton;
+import org.viktor44.jtvision.dialogs.JtvChangeDirDialog;
 import org.viktor44.jtvision.dialogs.JtvDialog;
 import org.viktor44.jtvision.dialogs.JtvFileDialog;
 import org.viktor44.jtvision.dialogs.JtvStaticText;
 import org.viktor44.jtvision.editors.JtvEditWindow;
-import org.viktor44.jtvision.menus.JtvMenu;
 import org.viktor44.jtvision.menus.JtvMenuBar;
 import org.viktor44.jtvision.menus.JtvMenuItem;
 import org.viktor44.jtvision.menus.JtvStatusDef;
@@ -102,15 +105,13 @@ public class EditorApp extends JtvApplication {
     }
 
     private void fileOpen() {
-        JtvFileDialog d = new JtvFileDialog(
-            "*.*", "Open file", "~N~ame", ViewFlags.fdOpenButton, 100);
+        JtvFileDialog d = new JtvFileDialog("*.*", "Open file", "~N~ame", fdOpenButton, 100);
         if (validView(d) != null) {
-            if (getDesktop().execView(d) != CommandCodes.cmCancel) {
+            if (getDesktop().execView(d) != cmCancel) {
                 StringBuilder name = new StringBuilder();
                 d.getFileName(name);
                 openEditor(name.toString());
             }
-            destroy(d);
         }
     }
 
@@ -119,11 +120,9 @@ public class EditorApp extends JtvApplication {
     }
 
     private void changeDir() {
-        JtvView d = validView(new org.viktor44.jtvision.dialogs.JtvChangeDirDialog(
-            org.viktor44.jtvision.core.ViewFlags.cdNormal, 0));
+        JtvView d = validView(new JtvChangeDirDialog(cdNormal, 0));
         if (d != null) {
         	getDesktop().execView(d);
-            destroy(d);
         }
     }
 
@@ -138,12 +137,11 @@ public class EditorApp extends JtvApplication {
                 case cmNew:
                     fileNew();
                     break;
-                case org.viktor44.jtvision.core.CommandCodes.cmChangeDir:
+                case cmChangeDir:
                     changeDir();
                     break;
                 case cmDosShell:
-                    MessageBox.messageBox("DOS shell is not implemented in this port.",
-                        org.viktor44.jtvision.core.ViewFlags.mfInformation | mfOKButton);
+                    MessageBox.messageBox("DOS shell is not implemented in this port.", mfInformation | mfOKButton);
                     break;
                 case cmAbout:
                     aboutBox();
@@ -169,16 +167,16 @@ public class EditorApp extends JtvApplication {
     protected JtvMenuBar initMenuBar(JtvRect r) {
         r = new JtvRect(r.getA().getX(), r.getA().getY(), r.getB().getX(), r.getA().getY() + 1);
         JtvMenuItem systemMenu = new JtvSubMenu("~\u2261~")
-        		.addItem(new JtvMenuItem("~A~bout...", cmAbout));
+        		.addItem("~A~bout...", cmAbout);
 
         JtvMenuItem fileMenu = new JtvSubMenu("~F~ile")
                 .addItem(new JtvMenuItem("~O~pen...", cmOpen, JtvKeyStroke.of(KeyEvent.VK_F3), 0, "F3"))
                 .addItem(new JtvMenuItem("~N~ew", cmNew, JtvKeyStroke.of(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+N"))
                 .addItem(new JtvMenuItem("~S~ave", cmSave, JtvKeyStroke.of(KeyEvent.VK_F2), 0, "F2"))
-                .addItem(new JtvMenuItem("S~a~ve as...", cmSaveAs))
+                .addItem("S~a~ve as...", cmSaveAs)
                 .addSeparator()
-                .addItem(new JtvMenuItem("~C~hange dir...", cmChangeDir))
-                .addItem(new JtvMenuItem("~D~OS shell", cmDosShell))
+                .addItem("~C~hange dir...", cmChangeDir)
+                .addItem("~D~OS shell", cmDosShell)
                 .addSeparator()
                 .addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKeyStroke.of(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+Q"));
 
@@ -192,15 +190,15 @@ public class EditorApp extends JtvApplication {
                 .addItem(new JtvMenuItem("~C~lear", cmClear, JtvKeyStroke.of(KeyEvent.VK_DELETE, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+Del"));
 
         JtvMenuItem searchMenu = new JtvSubMenu("~S~earch")
-                .addItem(new JtvMenuItem("~F~ind...", cmFind))
-                .addItem(new JtvMenuItem("~R~eplace...", cmReplace))
-                .addItem(new JtvMenuItem("~S~earch again", cmSearchAgain));
+                .addItem("~F~ind...", cmFind)
+                .addItem("~R~eplace...", cmReplace)
+                .addItem("~S~earch again", cmSearchAgain);
 
         JtvMenuItem windowMenu = new JtvSubMenu("~W~indow")
                 .addItem(new JtvMenuItem("~S~ize/move", cmResize, JtvKeyStroke.of(KeyEvent.VK_F5, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+F5"))
                 .addItem(new JtvMenuItem("~Z~oom", cmZoom, JtvKeyStroke.of(KeyEvent.VK_F5), 0, "F5"))
-                .addItem(new JtvMenuItem("~T~ile", cmTile))
-                .addItem(new JtvMenuItem("C~a~scade", cmCascade))
+                .addItem("~T~ile", cmTile)
+                .addItem("C~a~scade", cmCascade)
                 .addItem(new JtvMenuItem("~N~ext", cmNext, JtvKeyStroke.of(KeyEvent.VK_F6), 0, "F6"))
                 .addItem(new JtvMenuItem("~P~revious", cmPrev, JtvKeyStroke.of(KeyEvent.VK_F6, InputEvent.SHIFT_DOWN_MASK), 0, "Shift+F6"))
                 .addItem(new JtvMenuItem("~C~lose", cmClose, JtvKeyStroke.of(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+W"));

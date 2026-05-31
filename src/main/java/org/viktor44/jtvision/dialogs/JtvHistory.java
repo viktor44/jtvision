@@ -191,7 +191,6 @@ public class JtvHistory extends JtvView {
                     link.drawView();
                 }
             }
-            ((JtvGroup) owner).destroy(historyWindow);
         } else {
             String item = hist.get(hist.size() - 1);
             if (item != null) {

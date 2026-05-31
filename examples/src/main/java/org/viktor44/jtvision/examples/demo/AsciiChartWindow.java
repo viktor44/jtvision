@@ -61,8 +61,7 @@ public class AsciiChartWindow extends JtvWindow {
         growMode = 0;
         paletteIndex = wpGrayWindow;
 
-        JtvRect r = getExtent();
-        r.grow(-1, -1);
+        JtvRect r = getExtent().grow(-1, -1);
         JtvRect reportR = new JtvRect(r.getA().getX(), r.getB().getY() - 1, r.getB().getX(), r.getB().getY());
         TReport report = new TReport(reportR);
         report.setOptions(report.getOptions() | ofFramed);

@@ -322,8 +322,9 @@ public class JtvDialog extends JtvWindow {
      */
     @Override
     public boolean valid(int command) {
-        if (command == cmCancel)
+        if (command == cmCancel) {
             return true;
+        }
         return super.valid(command);
     }
 }
