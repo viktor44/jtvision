@@ -27,8 +27,6 @@ import static org.viktor44.jtvision.core.ViewFlags.sfDisabled;
 import static org.viktor44.jtvision.core.ViewFlags.sfFocused;
 import static org.viktor44.jtvision.core.ViewFlags.sfSelected;
 
-import java.awt.event.InputEvent;
-
 import org.viktor44.jtvision.core.JtvColorAttr;
 import org.viktor44.jtvision.core.JtvDrawBuffer;
 import org.viktor44.jtvision.core.JtvEvent;

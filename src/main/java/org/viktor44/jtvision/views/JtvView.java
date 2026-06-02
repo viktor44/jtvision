@@ -50,10 +50,6 @@ import static org.viktor44.jtvision.core.ViewFlags.sfSelected;
 import static org.viktor44.jtvision.core.ViewFlags.sfShadow;
 import static org.viktor44.jtvision.core.ViewFlags.sfVisible;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import org.viktor44.jtvision.core.JtvColorAttr;
@@ -164,7 +160,7 @@ public class JtvView {
      * The colour attribute used to highlight palette mapping errors.
      * Defaults to {@code 0xCF} (white on red).
      */
-    public static int errorAttr = 0xCF;
+    public static JtvColorAttr errorAttr = JtvColorAttr.WHITE_ON_LIGHT_RED;
 
     /**
      * Set to {@code true} whenever {@link #curCommandSet} changes, allowing
@@ -765,7 +761,7 @@ public class JtvView {
      *
      * @param rec the destination data record
      */
-    public void getDataTo(Object rec) {
+    public <T> void getDataTo(T rec) {
     }
 
     /**
@@ -993,14 +989,14 @@ public class JtvView {
                 color = p.get(index);
             }
             else {
-                return new JtvColorAttr(errorAttr);
+                return errorAttr;
             }
         }
         else {
             color = new JtvColorAttr(index);
         }
         if (color.getValue() == 0) {
-            return new JtvColorAttr(errorAttr);
+            return errorAttr;
         }
         if (owner != null) {
             return owner.mapColor(color.getValue());

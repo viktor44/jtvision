@@ -5,7 +5,6 @@
 package org.viktor44.jtvision.editors;
 
 import org.viktor44.jtvision.core.JtvEvent;
-import org.viktor44.jtvision.core.JtvPalette;
 import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.views.JtvScrollBar;
 

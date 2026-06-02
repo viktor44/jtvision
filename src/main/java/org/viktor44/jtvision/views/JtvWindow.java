@@ -33,9 +33,6 @@ import static org.viktor44.jtvision.core.ViewFlags.wpBlueWindow;
 import static org.viktor44.jtvision.core.ViewFlags.wpCyanWindow;
 import static org.viktor44.jtvision.core.ViewFlags.wpGrayWindow;
 
-import java.util.function.Function;
-
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import org.viktor44.jtvision.core.JtvCommandSet;

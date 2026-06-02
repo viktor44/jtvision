@@ -9,8 +9,6 @@ import static org.viktor44.jtvision.core.ViewFlags.sfActive;
 
 import org.junit.jupiter.api.Test;
 import org.viktor44.jtvision.core.JtvRect;
-import org.viktor44.jtvision.views.JtvFrame;
-import org.viktor44.jtvision.views.JtvWindow;
 
 public class JtvFrameTest {
 

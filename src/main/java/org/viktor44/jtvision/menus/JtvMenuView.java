@@ -13,7 +13,6 @@ import static org.viktor44.jtvision.core.EventCodes.evMouseDown;
 import static org.viktor44.jtvision.core.EventCodes.evMouseMove;
 import static org.viktor44.jtvision.core.EventCodes.evMouseUp;
 
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import org.viktor44.jtvision.core.JtvEvent;

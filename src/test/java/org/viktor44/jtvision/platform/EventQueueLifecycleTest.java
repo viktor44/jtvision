@@ -4,7 +4,6 @@
  */
 package org.viktor44.jtvision.platform;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -17,7 +16,6 @@ import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.viktor44.jtvision.platform.EventQueue;
 
 public class EventQueueLifecycleTest {
 

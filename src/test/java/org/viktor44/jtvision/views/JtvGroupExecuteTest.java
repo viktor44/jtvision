@@ -15,7 +15,6 @@ import static org.viktor44.jtvision.core.ViewFlags.sfModal;
 import org.junit.jupiter.api.Test;
 import org.viktor44.jtvision.core.JtvEvent;
 import org.viktor44.jtvision.core.JtvRect;
-import org.viktor44.jtvision.views.JtvGroup;
 
 public class JtvGroupExecuteTest {
 

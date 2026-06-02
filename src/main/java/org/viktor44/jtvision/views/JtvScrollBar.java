@@ -35,7 +35,6 @@ import java.awt.event.KeyEvent;
 
 import org.viktor44.jtvision.core.JtvDrawBuffer;
 import org.viktor44.jtvision.core.JtvEvent;
-import org.viktor44.jtvision.core.JtvKey;
 import org.viktor44.jtvision.core.JtvPalette;
 import org.viktor44.jtvision.core.JtvPoint;
 import org.viktor44.jtvision.core.JtvRect;

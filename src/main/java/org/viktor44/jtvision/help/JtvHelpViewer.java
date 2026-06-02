@@ -11,7 +11,6 @@ import static org.viktor44.jtvision.core.EventCodes.evKeyDown;
 import static org.viktor44.jtvision.core.EventCodes.evMouseDown;
 import static org.viktor44.jtvision.core.ViewFlags.ofSelectable;
 
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import org.viktor44.jtvision.core.JtvColorAttr;

@@ -49,6 +49,11 @@ public class JtvColorAttr {
     public static final int YELLOW = 0x0E;
     /** White / bright gray (0x0F). */
     public static final int WHITE = 0x0F;
+    
+    public static final JtvColorAttr LIGHT_GRAY_ON_BLACK        = new JtvColorAttr(LIGHT_GRAY, BLACK);
+    public static final JtvColorAttr WHITE_ON_WHITE             = new JtvColorAttr(WHITE, WHITE);
+    public static final JtvColorAttr WHITE_ON_LIGHT_RED         = new JtvColorAttr(WHITE, LIGHT_RED);
+    
 
     private final int value;
 

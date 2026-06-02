@@ -75,14 +75,4 @@ public class JtvBackground extends JtvView {
     public JtvPalette getPalette() {
         return cpBackground;
     }
-
-//    /** The character tiled across the background area. */
-//    public char getPattern() {
-//		return pattern;
-//	}
-//
-//    /** The character tiled across the background area. */
-//	public void setPattern(char pattern) {
-//		this.pattern = pattern;
-//	}
 }

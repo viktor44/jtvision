@@ -17,7 +17,7 @@ import org.viktor44.jtvision.core.JtvKeyStroke;
  * <pre>
  * JtvSubMenu file = new JtvSubMenu("~F~ile", JtvKeyStroke.altKey(KeyEvent.VK_F))
  *     .addItem(new JtvMenuItem("~O~pen", cmFileOpen, JtvKeyStroke.of(KeyEvent.VK_F3)))
- *     .addItem(new JtvMenuItem("~S~ave", cmFileSave, JtvKeyStroke.of(KeyEvent.VK_F2)))
+ *     .addItem("~S~ave", cmFileSave)
  *     .addSeparator()
  *     .addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKeyStroke.altKey(KeyEvent.VK_X)));
  * </pre>

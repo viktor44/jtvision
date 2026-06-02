@@ -15,7 +15,6 @@ import static org.viktor44.jtvision.core.ViewFlags.ofPreProcess;
 import org.viktor44.jtvision.core.JtvColorAttr;
 import org.viktor44.jtvision.core.JtvDrawBuffer;
 import org.viktor44.jtvision.core.JtvEvent;
-import java.awt.event.InputEvent;
 import org.viktor44.jtvision.core.JtvPalette;
 import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.util.StringUtils;

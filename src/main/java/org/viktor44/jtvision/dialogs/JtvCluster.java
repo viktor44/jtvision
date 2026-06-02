@@ -15,7 +15,6 @@ import static org.viktor44.jtvision.core.ViewFlags.ofSelectable;
 import static org.viktor44.jtvision.core.ViewFlags.sfFocused;
 import static org.viktor44.jtvision.core.ViewFlags.sfSelected;
 
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;

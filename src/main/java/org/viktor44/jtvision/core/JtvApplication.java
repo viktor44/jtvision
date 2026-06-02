@@ -10,8 +10,6 @@ import static org.viktor44.jtvision.core.EventCodes.evCommand;
 import static org.viktor44.jtvision.core.ViewFlags.ofTileable;
 import static org.viktor44.jtvision.core.ViewFlags.sfVisible;
 
-import org.viktor44.jtvision.menus.JtvMenuBar;
-import org.viktor44.jtvision.menus.JtvStatusLine;
 import org.viktor44.jtvision.platform.EventQueue;
 import org.viktor44.jtvision.platform.Screen;
 
@@ -46,6 +44,15 @@ public class JtvApplication extends JtvProgram {
 
     /** Initialises the Screen and EventQueue platform subsystems. */
     private static boolean initPlatform() {
+        Runtime.getRuntime().addShutdownHook(
+                new Thread(
+                        () -> {
+                            Screen.shutdown();
+                            EventQueue.getInstance().shutdown();
+                        },
+                        "jtvision-terminal-restore"
+                )
+        );
         Screen.init();
         EventQueue.initInstance();
         return true;
@@ -55,6 +62,18 @@ public class JtvApplication extends JtvProgram {
      * Shuts down the application: shuts down the Screen and EventQueue platform subsystems.
      */
     public void shutdown() {
+        shutdownPlatform();
+    }
+
+    /**
+     * Statically shuts down the platform subsystems (Screen and EventQueue).
+     * <p>
+     * This is useful when the application fails to start (e.g. during framework
+     * initialisation) and no {@code JtvApplication} instance is available to call
+     * {@link #shutdown()} on.  Each subsystem's shutdown method is a no-op when
+     * not initialised, so calling this is always safe.
+     */
+    public static void shutdownPlatform() {
         Screen.shutdown();
         EventQueue.getInstance().shutdown();
     }

@@ -24,13 +24,11 @@ import static org.viktor44.jtvision.core.ViewFlags.sfSelected;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import org.viktor44.jtvision.core.JtvColorAttr;
 import org.viktor44.jtvision.core.JtvDrawBuffer;
 import org.viktor44.jtvision.core.JtvEvent;
-import org.viktor44.jtvision.core.JtvKey;
 import org.viktor44.jtvision.core.JtvPalette;
 import org.viktor44.jtvision.core.JtvPoint;
 import org.viktor44.jtvision.core.JtvProgram;

@@ -20,7 +20,6 @@ import static org.viktor44.jtvision.core.ViewFlags.wfClose;
 import static org.viktor44.jtvision.core.ViewFlags.wfMove;
 import static org.viktor44.jtvision.core.ViewFlags.wnNoNumber;
 
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import org.viktor44.jtvision.core.JtvEvent;

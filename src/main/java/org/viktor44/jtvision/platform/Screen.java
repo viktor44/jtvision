@@ -4,17 +4,16 @@
  */
 package org.viktor44.jtvision.platform;
 
-import org.fusesource.jansi.Ansi;
+import java.io.PrintStream;
+
 import org.fusesource.jansi.AnsiConsole;
 import org.fusesource.jansi.internal.CLibrary;
 import org.fusesource.jansi.internal.CLibrary.WinSize;
+import org.fusesource.jansi.internal.Kernel32;
 import org.viktor44.jtvision.core.JtvColorAttr;
 import org.viktor44.jtvision.core.JtvScreenCell;
 import org.viktor44.jtvision.util.SystemUtils;
 import org.viktor44.jtvision.views.JtvView;
-import org.fusesource.jansi.internal.Kernel32;
-
-import java.io.PrintStream;
 
 /**
  * Low-level terminal screen manager for the jtvision TUI framework.
@@ -278,7 +277,7 @@ public class Screen {
         lastBuffer = new JtvScreenCell[size];
         for (int i = 0; i < size; i++) {
             screenBuffer[i] = new JtvScreenCell();
-            lastBuffer[i] = new JtvScreenCell('\0', new JtvColorAttr(0xFF));
+            lastBuffer[i] = new JtvScreenCell('\0', JtvColorAttr.WHITE_ON_WHITE);
         }
 
         // Enter alternate screen buffer, hide cursor, enable mouse reporting
@@ -306,7 +305,9 @@ public class Screen {
      * sets {@link #initialized} to {@code false}.
      */
     public static void shutdown() {
-        if (!initialized) return;
+        if (!initialized) {
+            return;
+        }
 
         // Disable mouse reporting, show cursor, leave alternate screen
         out.print("\033[?1006l");
@@ -406,7 +407,7 @@ public class Screen {
         lastBuffer = new JtvScreenCell[size];
         for (int i = 0; i < size; i++) {
             screenBuffer[i] = new JtvScreenCell();
-            lastBuffer[i] = new JtvScreenCell('\0', new JtvColorAttr(0xFF));
+            lastBuffer[i] = new JtvScreenCell('\0', JtvColorAttr.WHITE_ON_WHITE);
         }
     }
 
@@ -443,7 +444,7 @@ public class Screen {
         }
 
         StringBuilder sb = new StringBuilder(screenWidth * screenHeight * 4);
-        JtvColorAttr lastAttr = new JtvColorAttr(0xFF);
+        JtvColorAttr lastAttr = JtvColorAttr.WHITE_ON_WHITE;
         boolean hadCellChanges = false;
 
         for (int y = 0; y < screenHeight; y++) {
@@ -462,7 +463,7 @@ public class Screen {
                     if (needPos) {
                         sb.append("\033[").append(y + 1).append(';').append(x + 1).append('H');
                         needPos = false;
-                        lastAttr = new JtvColorAttr(0xFF);
+                        lastAttr = JtvColorAttr.WHITE_ON_WHITE;
                     }
 
                     if (!cell.getAttr().equals(lastAttr)) {
@@ -588,7 +589,7 @@ public class Screen {
      */
     public static void invalidate() {
         if (lastBuffer != null) {
-            JtvScreenCell sentinel = new JtvScreenCell('\0', new JtvColorAttr(0xFF));
+            JtvScreenCell sentinel = new JtvScreenCell('\0', JtvColorAttr.WHITE_ON_WHITE);
             for (int i = 0; i < lastBuffer.length; i++) {
                 lastBuffer[i] = sentinel;
             }

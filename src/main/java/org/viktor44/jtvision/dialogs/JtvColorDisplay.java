@@ -60,9 +60,9 @@ public class JtvColorDisplay extends JtvView {
      */
     @Override
     public void draw() {
-        JtvColorAttr c = hasColorRef() ? colorArray[colorIndex] : new JtvColorAttr(errorAttr);
+        JtvColorAttr c = hasColorRef() ? colorArray[colorIndex] : errorAttr;
         if (c.getValue() == 0) {
-            c = new JtvColorAttr(errorAttr);
+            c = errorAttr;
         }
         JtvDrawBuffer b = new JtvDrawBuffer();
         int len = Math.max(1, text.length());

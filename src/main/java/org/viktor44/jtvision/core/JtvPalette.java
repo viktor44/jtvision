@@ -37,19 +37,6 @@ public class JtvPalette {
     }
 
     /**
-     * Constructs a palette from a string whose characters encode color attribute bytes.
-     * Each character's low byte is stored as a palette entry.
-     *
-     * @param source palette encoded as a string of attribute characters
-     */
-    public JtvPalette(String source) {
-        data = new JtvColorAttr[source.length()];
-        for (int i = 0; i < source.length(); i++) {
-            data[i] = new JtvColorAttr(source.charAt(i) & 0xFF);
-        }
-    }
-
-    /**
      * Copy constructor.
      *
      * @param other the palette to copy

@@ -21,7 +21,6 @@ import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.dialogs.JtvButton;
 import org.viktor44.jtvision.dialogs.JtvDialog;
 import org.viktor44.jtvision.dialogs.JtvStaticText;
-import org.viktor44.jtvision.menus.JtvMenu;
 import org.viktor44.jtvision.menus.JtvMenuBar;
 import org.viktor44.jtvision.menus.JtvMenuItem;
 import org.viktor44.jtvision.menus.JtvStatusDef;

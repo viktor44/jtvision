@@ -25,7 +25,7 @@ public class JtvScreenCell {
     /** Constructs a cell with a space character and the default attribute (light-gray on black). */
     public JtvScreenCell() {
         this.ch = ' ';
-        this.attr = new JtvColorAttr(0x07);
+        this.attr = JtvColorAttr.LIGHT_GRAY_ON_BLACK;
     }
 
     /**

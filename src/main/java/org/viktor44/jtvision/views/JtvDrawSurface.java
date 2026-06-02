@@ -4,7 +4,6 @@
  */
 package org.viktor44.jtvision.views;
 
-import org.viktor44.jtvision.core.JtvColorAttr;
 import org.viktor44.jtvision.core.JtvPoint;
 import org.viktor44.jtvision.core.JtvScreenCell;
 

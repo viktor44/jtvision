@@ -11,17 +11,13 @@ import static org.viktor44.jtvision.core.EventCodes.evBroadcast;
 import static org.viktor44.jtvision.core.EventCodes.evKeyDown;
 import static org.viktor44.jtvision.core.EventCodes.evMouseDown;
 import static org.viktor44.jtvision.core.ViewFlags.ofPostProcess;
-import static org.viktor44.jtvision.core.ViewFlags.sfFocused;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-
-import org.viktor44.jtvision.core.JtvColorAttr;
 import org.viktor44.jtvision.core.JtvDrawBuffer;
 import org.viktor44.jtvision.core.JtvEvent;
 import org.viktor44.jtvision.core.JtvPalette;
