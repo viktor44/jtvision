@@ -188,26 +188,6 @@ public class JtvGroup extends JtvView {
     }
 
     /**
-     * Returns the total data record size of all child views by summing
-     * each child's {@link JtvView#dataSize()}.
-     *
-     * @return the combined data size in bytes
-     */
-    @Override
-    public int dataSize() {
-        int total = 0;
-        if (last != null) {
-            JtvView v = last;
-            do {
-                total += v.dataSize();
-                v = v.prev();
-            }
-            while (v != last);
-        }
-        return total;
-    }
-
-    /**
      * Removes a child view from this group without destroying it.
      * <p>
      * The view is temporarily hidden, unlinked, its {@link JtvView#owner}

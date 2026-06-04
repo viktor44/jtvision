@@ -112,18 +112,6 @@ public class JtvCluster extends JtvView {
     }
 
     /**
-     * Returns the size in bytes of the data transferred by {@link #getDataTo} and
-     * {@link #setDataFrom}. Returns 2 (short) for compatibility with the original
-     * Turbo Vision Pascal implementation.
-     *
-     * @return data record size in bytes
-     */
-    @Override
-    public int dataSize() {
-        return 2;
-    }
-
-    /**
      * Reads the cluster's current value into a record object.
      * Callers should read the {@link #value} field directly in this implementation.
      *

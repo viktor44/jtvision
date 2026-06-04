@@ -150,16 +150,6 @@ public class JtvFileList extends JtvSortedListBox {
     }
 
     /**
-     * Returns 0 — the file list does not participate in data transfer.
-     *
-     * @return 0
-     */
-    @Override
-    public int dataSize() {
-        return 0;
-    }
-
-    /**
      * Does nothing — data transfer is not implemented for this control.
      *
      * @param rec unused

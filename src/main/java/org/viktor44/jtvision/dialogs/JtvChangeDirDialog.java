@@ -127,16 +127,6 @@ public class JtvChangeDirDialog extends JtvDialog {
     }
 
     /**
-     * Returns 0 — this dialog does not participate in standard data transfer.
-     *
-     * @return 0
-     */
-    @Override
-    public int dataSize() {
-        return 0;
-    }
-
-    /**
      * Does nothing — data transfer is not implemented for this dialog.
      *
      * @param rec unused

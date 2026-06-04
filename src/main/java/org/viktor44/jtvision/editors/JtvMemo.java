@@ -70,17 +70,6 @@ public class JtvMemo extends JtvEditor {
     }
 
     /**
-     * Returns the number of bytes that {@link #getDataTo} / {@link #setDataFrom} will
-     * transfer.  Equals the current buffer length plus one (for a null terminator).
-     *
-     * @return data transfer size in bytes
-     */
-    @Override
-    public int dataSize() {
-        return buffer.length() + 1;
-    }
-
-    /**
      * Handles events by delegating to the inherited {@link JtvEditor} handler.
      *
      * @param event the event to handle

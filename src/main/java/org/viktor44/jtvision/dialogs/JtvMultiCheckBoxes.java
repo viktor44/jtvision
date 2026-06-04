@@ -67,16 +67,6 @@ public class JtvMultiCheckBoxes extends JtvCluster {
     }
 
     /**
-     * Returns 4 — data is stored as a 32-bit integer to accommodate multi-bit items.
-     *
-     * @return 4
-     */
-    @Override
-    public int dataSize() {
-        return 4;
-    }
-
-    /**
      * Returns the current state index for item {@code item} by extracting the relevant
      * bits from {@link JtvCluster#value}.
      *

@@ -174,16 +174,6 @@ public class JtvColorDialog extends JtvDialog {
     }
 
     /**
-     * Returns the number of bytes needed to store the palette, used by data transfer.
-     *
-     * @return the palette length, or 0 if no palette
-     */
-    @Override
-    public int dataSize() {
-        return pal != null ? pal.length() : 0;
-    }
-
-    /**
      * Copies the current (edited) palette into the caller-supplied {@link JtvPalette} record
      * after saving the current group/item selection indices to the static
      * {@link #colorIndexes}.

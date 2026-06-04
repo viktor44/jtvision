@@ -133,4 +133,8 @@ public class JtvStaticText extends JtvView {
     public String getText() {
         return text != null ? text : "";
     }
+    public void setText(String text) {
+        this.text = text;
+        drawView();
+    }
 }

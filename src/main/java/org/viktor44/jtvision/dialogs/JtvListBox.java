@@ -90,16 +90,6 @@ public class JtvListBox extends JtvListViewer {
     }
 
     /**
-     * Returns 2 — the data record size (the focused-item index is stored as a short).
-     *
-     * @return 2
-     */
-    @Override
-    public int dataSize() {
-        return 2;
-    }
-
-    /**
      * Reads the focused item index. Callers should read the {@code focused} field directly.
      *
      * @param rec the destination record (unused)

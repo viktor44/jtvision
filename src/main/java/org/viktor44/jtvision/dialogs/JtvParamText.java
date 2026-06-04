@@ -13,9 +13,6 @@ import org.viktor44.jtvision.core.JtvRect;
  * similar to {@link String#format}. The text string is treated as a format template
  * and the parameters supplied via {@link #setParams(Object...)} are merged into it
  * when the view is drawn.
- * <p>
- * Because users never change the parameters interactively, {@link #dataSize()} returns
- * 0 and data transfer is not supported.
  */
 public class JtvParamText extends JtvStaticText {
 
@@ -63,15 +60,5 @@ public class JtvParamText extends JtvStaticText {
     public void setParams(Object... params) {
         this.params = params;
         drawView();
-    }
-
-    /**
-     * Returns 0 because parameterised text views do not participate in data transfer.
-     *
-     * @return 0
-     */
-    @Override
-    public int dataSize() {
-        return 0;
     }
 }

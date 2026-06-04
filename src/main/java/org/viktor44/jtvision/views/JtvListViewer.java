@@ -255,7 +255,7 @@ public class JtvListViewer extends JtvView {
 
                 b.moveChar(curCol, ' ', color, colWidth);
                 if (item < range) {
-                    String text = getText(item, 255);
+                    String text = getText(item, indent + colWidth);
                     if (text != null) {
                         b.moveStr(curCol + 1, text, color, colWidth - 2, indent);
                     }
@@ -450,6 +450,18 @@ public class JtvListViewer extends JtvView {
             }
             else if (kc == KeyEvent.VK_LEFT && numCols > 1) {
             	newItem = focused - size.getY();
+            }
+            else if (kc == KeyEvent.VK_RIGHT && hScrollBar != null) {
+            	hScrollBar.setValue(hScrollBar.getValue() + hScrollBar.getArStep());
+            	drawView();
+            	clearEvent(event);
+            	return;
+            }
+            else if (kc == KeyEvent.VK_LEFT && hScrollBar != null) {
+            	hScrollBar.setValue(hScrollBar.getValue() - hScrollBar.getArStep());
+            	drawView();
+            	clearEvent(event);
+            	return;
             }
             else if (kc == KeyEvent.VK_PAGE_DOWN) {
             	newItem = focused + size.getY() * numCols;

@@ -169,16 +169,6 @@ public class JtvInputLine extends JtvView {
     }
 
     /**
-     * Returns the data record size: {@code maxLen + 1} bytes (one byte per character plus NUL).
-     *
-     * @return data record size in bytes
-     */
-    @Override
-    public int dataSize() {
-        return maxLen + 1;
-    }
-
-    /**
      * Reads the field's current text. Callers should read the {@link #data} field directly
      * in this implementation.
      *
@@ -308,8 +298,11 @@ public class JtvInputLine extends JtvView {
                     clipPaste();
                 }
                 else {
-                    // Check for shift+cursor keys
-                    if (keyEvent.isShiftDown()
+                    char keyChar = keyEvent.getKeyChar();
+                    boolean printable = keyChar != KeyEvent.CHAR_UNDEFINED && keyChar >= 32;
+
+                    // Check for shift+cursor keys (only for non-printable keys)
+                    if (!printable && keyEvent.isShiftDown()
                     		&& (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_HOME || keyCode == KeyEvent.VK_END)) {
                         if (curPos == selEnd) {
                             anchor = selStart;
@@ -323,7 +316,21 @@ public class JtvInputLine extends JtvView {
                         extendBlock = true;
                     }
 
-                    switch (keyCode) {
+                    if (printable) {
+                        deleteSelect();
+                        if ((state & sfCursorIns) != 0 && curPos < data.length()) {
+                            // Overwrite mode
+                            data = data.substring(0, curPos) + data.substring(curPos + 1);
+                        }
+                        if (data.length() + 1 <= maxLen) {
+                            if (firstPos > curPos) {
+                                firstPos = curPos;
+                            }
+                            data = data.substring(0, curPos) + keyChar + data.substring(curPos);
+                            curPos++;
+                        }
+                    }
+                    else switch (keyCode) {
                         case KeyEvent.VK_LEFT:
                             if (curPos > 0) curPos--;
                             break;
@@ -358,30 +365,13 @@ public class JtvInputLine extends JtvView {
                             setState(sfCursorIns, (state & sfCursorIns) == 0);
                             break;
                         default:
-                            char keyChar = keyEvent.getKeyChar();
-                            if (keyChar != KeyEvent.CHAR_UNDEFINED && keyChar >= 32) {
-                                deleteSelect();
-                                if ((state & sfCursorIns) != 0 && curPos < data.length()) {
-                                    // Overwrite mode
-                                    data = data.substring(0, curPos) + data.substring(curPos + 1);
-                                }
-                                if (data.length() + 1 <= maxLen) {
-                                    if (firstPos > curPos) {
-                                        firstPos = curPos;
-                                    }
-                                    data = data.substring(0, curPos) + keyChar + data.substring(curPos);
-                                    curPos++;
-                                }
+                            // Ctrl+Y - clear line
+                            if (keyEvent.getKeyChar() == 25) {
+                                data = "";
+                                curPos = 0;
                             }
                             else {
-                                // Ctrl+Y - clear line
-                                if (keyEvent.getKeyChar() == 25) {
-                                    data = "";
-                                    curPos = 0;
-                                }
-                                else {
-                                    return; // Not handled
-                                }
+                                return; // Not handled
                             }
                     }
 

@@ -424,17 +424,6 @@ public class JtvView {
     }
 
     /**
-     * Returns the number of bytes used by this view's data record
-     * for {@link #getDataTo}/{@link #setDataFrom} transfers.
-     * The base implementation returns {@code 0}.
-     *
-     * @return the data record size in bytes
-     */
-    public int dataSize() {
-        return 0;
-    }
-
-    /**
      * Disables every command in {@code commands} from {@link #curCommandSet}
      * and sets {@link #commandSetChanged} if any were previously enabled.
      *
