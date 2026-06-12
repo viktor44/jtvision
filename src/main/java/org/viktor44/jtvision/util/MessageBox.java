@@ -30,11 +30,11 @@ import org.viktor44.jtvision.dialogs.JtvStaticText;
  * four public factory methods:
  * <ul>
  *   <li>{@link #messageBox(String, int)} — a centred 40×9 notification dialog.</li>
- *   <li>{@link #messageBoxRect(JtvRect, String, int)} — the same dialog at an
+ *   <li>{@link #messageBox(JtvRect, String, int)} — the same dialog at an
  *       explicit bounding rectangle.</li>
  *   <li>{@link #inputBox(String, String, int)} — a centred 40×8 single-line
  *       input dialog.</li>
- *   <li>{@link #inputBoxRect(JtvRect, String, String, int)} — the same input
+ *   <li>{@link #inputBox(JtvRect, String, String, int)} — the same input
  *       dialog at an explicit bounding rectangle.</li>
  * </ul>
  *
@@ -147,7 +147,7 @@ public final class MessageBox {
      * <p>
      * Computes a centred {@link JtvRect} of size 40×9 relative to
      * {@link JtvProgram#desktop} and delegates to
-     * {@link #messageBoxRect(JtvRect, String, int)}.
+     * {@link #messageBox(JtvRect, String, int)}.
      * <p>
      * Example usage:
      * <pre>
@@ -168,10 +168,10 @@ public final class MessageBox {
      *         or {@code cmCancel} if no application is available
      */
     public static int messageBox(String msg, int options) {
-        JtvRect r = new JtvRect(0, 0, 40, 9);
         JtvRect dr = JtvProgram.getDesktop().getExtent();
-        r.move((dr.getB().getX() - dr.getA().getX() - r.getB().getX()) / 2, (dr.getB().getY() - dr.getA().getY() - r.getB().getY()) / 2);
-        return messageBoxRect(r, msg, options);
+        int width = Math.max(40, (dr.getB().getX() - dr.getA().getX()) / 3);
+        JtvRect r = new JtvRect(0, 0, width, 9);
+        return messageBox(r, msg, options);
     }
 
     /**
@@ -195,7 +195,7 @@ public final class MessageBox {
      * @return the command code of the activating button, or {@code cmCancel}
      *         if no application is available
      */
-    public static int messageBoxRect(JtvRect r, String msg, int aOptions) {
+    public static int messageBox(JtvRect r, String msg, int aOptions) {
         int titleIdx = aOptions & 0x03;
         String title = titles[titleIdx];
 
@@ -211,10 +211,19 @@ public final class MessageBox {
         int buttonMask = aOptions & 0xFF00;
         int buttonCount = 0;
         int[] buttons = new int[4];
-        if ((buttonMask & mfYesButton) != 0) buttons[buttonCount++] = 0;
-        if ((buttonMask & mfNoButton) != 0) buttons[buttonCount++] = 1;
-        if ((buttonMask & mfOKButton) != 0) buttons[buttonCount++] = 2;
-        if ((buttonMask & mfCancelButton) != 0) buttons[buttonCount++] = 3;
+        
+        if ((buttonMask & mfYesButton) != 0) {
+            buttons[buttonCount++] = 0;
+        }
+        if ((buttonMask & mfNoButton) != 0) {
+            buttons[buttonCount++] = 1;
+        }
+        if ((buttonMask & mfOKButton) != 0) {
+            buttons[buttonCount++] = 2;
+        }
+        if ((buttonMask & mfCancelButton) != 0) {
+            buttons[buttonCount++] = 3;
+        }
 
         if (buttonCount == 0) {
             // Default to OK button
@@ -230,14 +239,18 @@ public final class MessageBox {
             int idx = buttons[i];
             int flags = (i == 0) ? bfDefault : bfNormal;
             JtvButton btn = new JtvButton(
-                new JtvRect(buttonX, buttonY, buttonX + 10, buttonY + 2),
-                buttonText[idx], buttonCommands[idx], flags);
+                    new JtvRect(buttonX, buttonY, buttonX + 10, buttonY + 2), 
+                    buttonText[idx], 
+                    buttonCommands[idx], 
+                    flags
+            );
             dialog.insert(btn);
             buttonX += 12;
         }
 
-        if (JtvProgram.getApplication() != null)
+        if (JtvProgram.getApplication() != null) {
             return JtvProgram.getApplication().executeDialog(dialog, null);
+        }
         return cmCancel;
     }
 
@@ -251,7 +264,7 @@ public final class MessageBox {
      * <p>
      * Computes a centred 40×8 bounding rectangle relative to
      * {@link JtvProgram#desktop} and delegates to
-     * {@link #inputBoxRect(JtvRect, String, String, int)}.
+     * {@link #inputBox(JtvRect, String, String, int)}.
      * <p>
      * Example usage:
      * <pre>
@@ -266,10 +279,10 @@ public final class MessageBox {
      *         pressed Cancel or no application is available
      */
     public static String inputBox(String title, String label, int maxLen) {
-        JtvRect r = new JtvRect(0, 0, 40, 8);
         JtvRect dr = JtvProgram.getDesktop().getExtent();
-        r.move((dr.getB().getX() - dr.getA().getX() - r.getB().getX()) / 2, (dr.getB().getY() - dr.getA().getY() - r.getB().getY()) / 2);
-        return inputBoxRect(r, title, label, maxLen);
+        int width = Math.max(40, (dr.getB().getX() - dr.getA().getX()) / 3);
+        JtvRect r = new JtvRect(0, 0, width, 9);
+        return inputBox(r, title, label, maxLen);
     }
 
     /**
@@ -297,7 +310,7 @@ public final class MessageBox {
      * @return the string entered by the user, or {@code null} if the dialog was
      *         cancelled or no application is available
      */
-    public static String inputBoxRect(JtvRect r, String title, String label, int maxLen) {
+    public static String inputBox(JtvRect r, String title, String label, int maxLen) {
         JtvDialog dialog = new JtvDialog(r, title);
         dialog.setOptions(dialog.getOptions() | ofCentered);
 
@@ -314,15 +327,14 @@ public final class MessageBox {
 
         // Add OK and Cancel buttons
         int btnX = (dialogWidth - 24) / 2;
-        dialog.insert(new JtvButton(
-            new JtvRect(btnX, 5, btnX + 10, 7), "~O~K", cmOK, bfDefault));
-        dialog.insert(new JtvButton(
-            new JtvRect(btnX + 12, 5, btnX + 22, 7), "Cancel", cmCancel, bfNormal));
+        dialog.insert(new JtvButton(new JtvRect(btnX, 5, btnX + 10, 7), "~O~K", cmOK, bfDefault));
+        dialog.insert(new JtvButton(new JtvRect(btnX + 12, 5, btnX + 22, 7), "Cancel", cmCancel, bfNormal));
 
         if (JtvProgram.getApplication() != null) {
             int result = JtvProgram.getApplication().executeDialog(dialog, null);
-            if (result != cmCancel)
+            if (result != cmCancel) {
                 return inputLine.getData();
+            }
         }
         return null;
     }

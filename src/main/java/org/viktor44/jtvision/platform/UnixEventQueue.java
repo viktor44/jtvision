@@ -78,6 +78,20 @@ abstract class UnixEventQueue extends EventQueue {
     private String savedTerminalState;
 
     /**
+     * {@code true} while we are inside a bracketed-paste sequence
+     * ({@code ESC[200~} received, waiting for {@code ESC[201~}).
+     * Characters arriving in this state are collected in
+     * {@link #pasteBuffer} instead of being dispatched as key events.
+     */
+    private volatile boolean inBracketedPaste = false;
+
+    /**
+     * Accumulates the pasted text between the bracketed-paste start
+     * marker ({@code ESC[200~}) and the end marker ({@code ESC[201~}).
+     */
+    private final StringBuilder pasteBuffer = new StringBuilder();
+
+    /**
      * Maximum time in milliseconds to wait for the next byte after receiving
      * an ESC character (0x1B). If no byte arrives within this window, the ESC
      * is treated as a standalone Escape keystroke.
@@ -315,6 +329,61 @@ abstract class UnixEventQueue extends EventQueue {
      * @throws IOException if reading continuation bytes fails
      */
     private void processInput(int firstByte) throws IOException {
+        // Inside a bracketed-paste sequence: collect bytes until ESC[201~
+        if (inBracketedPaste) {
+            if (firstByte == 0x1B) {
+                // Might be the end marker ESC[201~
+                int second = readByteWithTimeout(ESC_SEQUENCE_TIMEOUT_MS);
+                if (second == '[') {
+                    StringBuilder seq = new StringBuilder();
+                    int c;
+                    while (true) {
+                        c = readByteWithTimeout(ESC_SEQUENCE_TIMEOUT_MS);
+                        if (c < 0 || (c >= 0x40 && c <= 0x7E)) {
+                            break;
+                        }
+                        seq.append((char) c);
+                    }
+                    if (c == '~' && "201".equals(seq.toString())) {
+                        // End of bracketed paste
+                        inBracketedPaste = false;
+                        String text = pasteBuffer.toString();
+                        pasteBuffer.setLength(0);
+                        if (!text.isEmpty()) {
+                            pushPasteEvent(text);
+                        }
+                        return;
+                    }
+                    // Not the end marker — put the consumed bytes back into pasteBuffer
+                    pasteBuffer.append('\033').append('[').append(seq);
+                    if (c >= 0) {
+                        pasteBuffer.append((char) c);
+                    }
+                } else if (second >= 0) {
+                    pasteBuffer.append('\033').append((char) second);
+                } else {
+                    pasteBuffer.append('\033');
+                }
+            } else if ((firstByte & 0x80) != 0) {
+                // UTF-8 multi-byte character inside paste
+                String text = decodeUtf8Char(firstByte);
+                pasteBuffer.append(text);
+            } else {
+                // Normalize \r and \r\n to \n so the editor sees proper line breaks.
+                if (firstByte == '\r') {
+                    // Peek at the next byte: if it is \n, consume it (CRLF -> LF).
+                    Integer next = byteQueue.peek();
+                    if (next != null && next == '\n') {
+                        byteQueue.poll();
+                    }
+                    pasteBuffer.append('\n');
+                } else {
+                    pasteBuffer.append((char) firstByte);
+                }
+            }
+            return;
+        }
+
         if (firstByte == 0x1B) {
             int second = readByteWithTimeout(ESC_SEQUENCE_TIMEOUT_MS);
             if (second < 0) {
@@ -590,6 +659,14 @@ abstract class UnixEventQueue extends EventQueue {
             case 27:
                 parseModifyOtherKeys(paramStr);
                 return;
+            case 200:
+                // Bracketed paste start: ESC[200~
+                inBracketedPaste = true;
+                pasteBuffer.setLength(0);
+                return;
+            case 201:
+                // Bracketed paste end without matching start — ignore
+                return;
             case 1:
             	pushKeyEvent(KeyEvent.VK_HOME, awtModifiers, KeyEvent.CHAR_UNDEFINED);
             	break;
@@ -822,7 +899,7 @@ abstract class UnixEventQueue extends EventQueue {
             JtvEvent event = new JtvEvent();
             event.setWhat(eventWhat);
             event.setMouse(mouse);
-            lastMouse = new MouseEvent(new JtvPoint(where), 0, 0, mouse.getButtons(), 0);
+            lastMouse = new MouseEvent(where, 0, 0, mouse.getButtons(), 0);
             offerEvent(event);
         } 
         catch (NumberFormatException ignored) {

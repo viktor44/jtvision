@@ -40,16 +40,6 @@ public class JtvPoint {
     }
 
     /**
-     * Copy constructor.
-     *
-     * @param other point to copy
-     */
-    public JtvPoint(JtvPoint other) {
-        this.x = other.x;
-        this.y = other.y;
-    }
-
-    /**
      * Returns a new point that is the component-wise sum of this point and {@code other}.
      *
      * @param other the point to add

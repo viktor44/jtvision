@@ -902,9 +902,12 @@ public class JtvView {
     public void locate(JtvRect bounds) {
         JtvPoint min = getMinimumSize();
         JtvPoint max = getMaximumSize();
-        bounds.setB(new JtvPoint(
-            bounds.getA().getX() + range(bounds.getB().getX() - bounds.getA().getX(), min.getX(), max.getX()),
-            bounds.getA().getY() + range(bounds.getB().getY() - bounds.getA().getY(), min.getY(), max.getY())));
+        bounds.setB(
+                new JtvPoint(
+                        bounds.getAx() + range(bounds.getBx() - bounds.getAx(), min.getX(), max.getX()),
+                        bounds.getAy() + range(bounds.getBy() - bounds.getAy(), min.getY(), max.getY())
+                )
+        );
         JtvRect r = getBounds();
         if (!bounds.equals(r)) {
             changeBounds(bounds);
@@ -1167,8 +1170,8 @@ public class JtvView {
      * @param bounds the new bounding rectangle
      */
     public void setBounds(JtvRect bounds) {
-        origin = new JtvPoint(bounds.getA());
-        size = new JtvPoint(bounds.getB().getX() - bounds.getA().getX(), bounds.getB().getY() - bounds.getA().getY());
+        origin = bounds.getA();
+        size = new JtvPoint(bounds.getBx() - bounds.getAx(), bounds.getBy() - bounds.getAy());
     }
 
     /**
@@ -1290,7 +1293,7 @@ public class JtvView {
      */
     public JtvPoint getMaximumSize() {
         return ((growMode & gfFixed) == 0 && owner != null)
-                ? new JtvPoint(owner.size)
+                ? owner.size
                 : new JtvPoint(Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
 
@@ -1545,20 +1548,18 @@ public class JtvView {
 
         if (event.getWhat() == evMouseDown) {
             JtvPoint p;
-            JtvPoint downWhere = new JtvPoint(event.getMouse().getWhere());
+            JtvPoint downWhere = event.getMouse().getWhere();
             if ((mode & dmDragMove) != 0) {
                 p = origin.subtract(downWhere);
                 do {
                     JtvPoint moveWhere = event.getMouse().getWhere().add(p);
-                    moveGrow(moveWhere, new JtvPoint(size),
-                             limits, minSize, maxSize, mode);
+                    moveGrow(moveWhere, size, limits, minSize, maxSize, mode);
                 } while (mouseEvent(event, evMouseMove));
             } else if ((mode & dmDragGrow) != 0) {
                 p = size.subtract(downWhere);
                 do {
                     JtvPoint growWhere = event.getMouse().getWhere().add(p);
-                    moveGrow(new JtvPoint(origin), growWhere,
-                             limits, minSize, maxSize, mode);
+                    moveGrow(origin, growWhere, limits, minSize, maxSize, mode);
                 } while (mouseEvent(event, evMouseMove));
             } else if ((mode & dmDragGrowLeft) != 0) {
                 JtvRect start = getBounds();
@@ -1583,8 +1584,8 @@ public class JtvView {
             // Keyboard dragging
             JtvRect saveBounds = getBounds();
             do {
-                JtvPoint p = new JtvPoint(origin);
-                JtvPoint s = new JtvPoint(size);
+                JtvPoint p = origin;
+                JtvPoint s = size;
                 keyEvent(event);
                 int kc = event.getKeyDown().getKeyCode();
                 JtvPoint delta = new JtvPoint();
@@ -1649,7 +1650,9 @@ public class JtvView {
      * @return the clamped value
      */
     protected static int range(int val, int min, int max) {
-        if (min > max) min = max;
+        if (min > max) {
+            min = max;
+        }
         return Math.max(min, Math.min(max, val));
     }
 

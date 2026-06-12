@@ -44,6 +44,14 @@ public final class EventCodes {
     public static final int evKeyDown = 0x0010;
 
     /**
+     * Bracketed paste event: the terminal delivered clipboard content
+     * wrapped in {@code ESC[200~}…{@code ESC[201~}.  The pasted text
+     * is carried in the event's {@link MessageEvent#getInfoPtr()} as a
+     * {@code String}.
+     */
+    public static final int evPaste = 0x0040;
+
+    /**
      * Command event.
      */
     public static final int evCommand = 0x0100;
@@ -67,9 +75,9 @@ public final class EventCodes {
     public static final int evMouse = 0x002F;
 
     /**
-     * Keyboard event mask.
+     * Keyboard event mask (includes {@link #evKeyDown} and {@link #evPaste}).
      */
-    public static final int evKeyboard = 0x0010;
+    public static final int evKeyboard = evKeyDown | evPaste;
 
     /**
      * Message-family event mask ({@code 0xFF00}): command, broadcast, or user-defined message.

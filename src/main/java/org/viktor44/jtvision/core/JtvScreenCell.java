@@ -16,17 +16,14 @@ package org.viktor44.jtvision.core;
  */
 public class JtvScreenCell {
 
+    /** Default empty cell with a space character and the default attribute (light-gray on black). */
+	public static final JtvScreenCell EMPTY_CELL = new JtvScreenCell(' ', JtvColorAttr.LIGHT_GRAY_ON_BLACK);
+	
     /** The character to display in this cell. */
     private final char ch;
 
 	/** The color attribute: high nibble = background, low nibble = foreground. */
     private final JtvColorAttr attr;
-
-    /** Constructs a cell with a space character and the default attribute (light-gray on black). */
-    public JtvScreenCell() {
-        this.ch = ' ';
-        this.attr = JtvColorAttr.LIGHT_GRAY_ON_BLACK;
-    }
 
     /**
      * Constructs a cell with the given character and color attribute.

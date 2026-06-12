@@ -12,6 +12,7 @@ import static org.viktor44.jtvision.core.EventCodes.evKeyDown;
 import static org.viktor44.jtvision.core.EventCodes.evMouseAuto;
 import static org.viktor44.jtvision.core.EventCodes.evMouseDown;
 import static org.viktor44.jtvision.core.EventCodes.evMouseMove;
+import static org.viktor44.jtvision.core.EventCodes.evPaste;
 import static org.viktor44.jtvision.core.EventCodes.meDoubleClick;
 import static org.viktor44.jtvision.core.ViewFlags.ofFirstClick;
 import static org.viktor44.jtvision.core.ViewFlags.ofSelectable;
@@ -125,7 +126,7 @@ public class JtvInputLine extends JtvView {
         anchor = 0;
         state |= sfCursorVis;
         options |= ofSelectable | ofFirstClick;
-        eventMask |= evCommand;
+        eventMask |= evCommand | evPaste;
     }
 
     /**
@@ -283,6 +284,15 @@ public class JtvInputLine extends JtvView {
                 clearEvent(event);
                 break;
             }
+            case evPaste: {
+                Object payload = event.getMessage().getInfoPtr();
+                if (payload instanceof String) {
+                    insertPastedText((String) payload);
+                    drawView();
+                    clearEvent(event);
+                }
+                break;
+            }
             case evKeyDown: {
                 KeyDownEvent keyEvent = event.getKeyDown();
                 int keyCode = keyEvent.getKeyCode();
@@ -418,37 +428,50 @@ public class JtvInputLine extends JtvView {
         try {
             Transferable t = JtvProgram.getClipboard().getContents(null);
             if (t != null && t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                String text = (String) t.getTransferData(DataFlavor.stringFlavor);
-                deleteSelect();
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < text.length(); i++) {
-                    char c = text.charAt(i);
-                    if (c >= 32) {
-                    	sb.append(c);
-                    }
-                }
-                String filtered = sb.toString();
-                int available = maxLen - data.length();
-                if (available > 0) {
-                    String insert = filtered.length() > available ? filtered.substring(0, available) : filtered;
-                    data = data.substring(0, curPos) + insert + data.substring(curPos);
-                    curPos += insert.length();
-                }
-                selStart = selEnd = 0;
-                if (firstPos > curPos) {
-                    firstPos = curPos;
-                }
-                int minFirst = curPos - size.getX() + 2;
-                if (firstPos < minFirst) {
-                    firstPos = minFirst;
-                }
-                if (firstPos < 0) {
-                    firstPos = 0;
-                }
+                insertPastedText((String) t.getTransferData(DataFlavor.stringFlavor));
             }
         }
         catch (Exception e) {
             // ignore
+        }
+    }
+
+    /**
+     * Inserts pasted text into the input line, filtering out control
+     * characters (below ASCII 32). Used by both {@link #clipPaste()} and the
+     * bracketed-paste ({@code evPaste}) handler.
+     *
+     * @param text the raw pasted text
+     */
+    private void insertPastedText(String text) {
+        if (text == null || text.isEmpty()) {
+            return;
+        }
+        deleteSelect();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (c >= 32) {
+                sb.append(c);
+            }
+        }
+        String filtered = sb.toString();
+        int available = maxLen - data.length();
+        if (available > 0) {
+            String insert = filtered.length() > available ? filtered.substring(0, available) : filtered;
+            data = data.substring(0, curPos) + insert + data.substring(curPos);
+            curPos += insert.length();
+        }
+        selStart = selEnd = 0;
+        if (firstPos > curPos) {
+            firstPos = curPos;
+        }
+        int minFirst = curPos - size.getX() + 2;
+        if (firstPos < minFirst) {
+            firstPos = minFirst;
+        }
+        if (firstPos < 0) {
+            firstPos = 0;
         }
     }
 

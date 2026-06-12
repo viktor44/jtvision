@@ -321,7 +321,7 @@ class WinEventQueue extends EventQueue {
         JtvEvent event = new JtvEvent();
         event.setWhat(eventWhat);
         event.setMouse(mouse);
-        lastMouse = new MouseEvent(new JtvPoint(where), 0, 0, buttons, 0);
+        lastMouse = new MouseEvent(where, 0, 0, buttons, 0);
         offerEvent(event);
     }
 }

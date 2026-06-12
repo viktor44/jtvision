@@ -30,7 +30,7 @@ import org.viktor44.jtvision.views.JtvView;
  * The label highlights (changes colour) when its linked control has focus,
  * by listening to {@code cmReceivedFocus} and {@code cmReleasedFocus} broadcasts.
  * <p>
- * Use {@link JtvStaticText} or {@link JtvParamText} instead of TLabel when you only
+ * Use {@link JtvStaticText} instead of TLabel when you only
  * need to display text without linking it to another control.
  * 
  * <h3>Colour palette</h3>

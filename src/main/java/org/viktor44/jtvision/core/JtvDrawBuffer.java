@@ -43,7 +43,7 @@ public class JtvDrawBuffer {
     public JtvDrawBuffer(int size) {
         data = new JtvScreenCell[size];
         for (int i = 0; i < size; i++) {
-            data[i] = new JtvScreenCell();
+            data[i] = JtvScreenCell.EMPTY_CELL;
         }
     }
 

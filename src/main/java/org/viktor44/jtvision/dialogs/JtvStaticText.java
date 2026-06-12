@@ -23,8 +23,7 @@ import org.viktor44.jtvision.views.JtvView;
  * A line that begins with ASCII character 3 (Ctrl+C, {@code \x03}) is centred
  * horizontally within the view.
  * <p>
- * The text is retrieved via the virtual method {@link #getText()}, which subclasses
- * such as {@link JtvParamText} can override to supply dynamic content.
+ * The text is retrieved via the method {@link #getText()}
  * 
  * <h3>Colour palette</h3>
  * 

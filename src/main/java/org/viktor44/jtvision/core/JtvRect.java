@@ -4,6 +4,10 @@
  */
 package org.viktor44.jtvision.core;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * A rectangle defined by two {@link JtvPoint} corner coordinates.
  *
@@ -15,12 +19,17 @@ package org.viktor44.jtvision.core;
  * <p>The rectangle {@code [a=(2,2), b=(5,4)]} covers 3 columns × 2 rows and contains 6 cells.
  * A rectangle with {@code a == b} has no area ({@link #isEmpty()} returns {@code true}).
  */
+@EqualsAndHashCode
 public class JtvRect {
 
     /** Upper-left corner of the rectangle. */
+    @Getter
+    @Setter
     private JtvPoint a;
 
 	/** Lower-right corner of the rectangle (exclusive boundary). */
+    @Getter
+    @Setter
     private JtvPoint b;
 
     /** Returns a deep copy of this rectangle. */
@@ -54,8 +63,8 @@ public class JtvRect {
      * @param p2 lower-right corner
      */
     public JtvRect(JtvPoint p1, JtvPoint p2) {
-        a = new JtvPoint(p1);
-        b = new JtvPoint(p2);
+        a = p1;
+        b = p2;
     }
 
     /**
@@ -64,8 +73,8 @@ public class JtvRect {
      * @param other rectangle to copy
      */
     public JtvRect(JtvRect other) {
-        a = new JtvPoint(other.getA());
-        b = new JtvPoint(other.getB());
+        a = other.getA();
+        b = other.getB();
     }
 
     /**
@@ -103,8 +112,8 @@ public class JtvRect {
      * @return {@code this}, for chaining
      */
     public JtvRect intersect(JtvRect r) {
-        a = new JtvPoint(Math.max(a.getX(), r.getA().getX()), Math.max(a.getY(), r.getA().getY()));
-        b = new JtvPoint(Math.min(b.getX(), r.getB().getX()), Math.min(b.getY(), r.getB().getY()));
+        a = new JtvPoint(Math.max(getAx(), r.getAx()), Math.max(getAy(), r.getAy()));
+        b = new JtvPoint(Math.min(getBx(), r.getBx()), Math.min(getBy(), r.getBy()));
         return this;
     }
 
@@ -116,8 +125,8 @@ public class JtvRect {
      * @return {@code this}, for chaining
      */
     public JtvRect union(JtvRect r) {
-        a = new JtvPoint(Math.min(a.getX(), r.getA().getX()), Math.min(a.getY(), r.getA().getY()));
-        b = new JtvPoint(Math.max(b.getX(), r.getB().getX()), Math.max(b.getY(), r.getB().getY()));
+        a = new JtvPoint(Math.min(getAx(), r.getAx()), Math.min(getAy(), r.getAy()));
+        b = new JtvPoint(Math.max(getBx(), r.getBx()), Math.max(getBy(), r.getBy()));
         return this;
     }
 
@@ -148,45 +157,28 @@ public class JtvRect {
      * @param other source rectangle
      */
     public void assign(JtvRect other) {
-        a = new JtvPoint(other.getA());
-        b = new JtvPoint(other.getB());
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof JtvRect)) return false;
-        JtvRect other = (JtvRect) obj;
-        return a.equals(other.getA()) && b.equals(other.getB());
-    }
-
-    @Override
-    public int hashCode() {
-        return 31 * a.hashCode() + b.hashCode();
+        a = other.getA();
+        b = other.getB();
     }
 
     @Override
     public String toString() {
         return "[" + a + ", " + b + "]";
     }
-
-    /** Upper-left corner of the rectangle. */
-    public JtvPoint getA() {
-		return a;
-	}
-
-    /** Upper-left corner of the rectangle. */
-	public void setA(JtvPoint a) {
-		this.a = a;
-	}
-
-	/** Lower-right corner of the rectangle (exclusive boundary). */
-	public JtvPoint getB() {
-		return b;
-	}
-
-	/** Lower-right corner of the rectangle (exclusive boundary). */
-	public void setB(JtvPoint b) {
-		this.b = b;
-	}
+    
+    public int getAx() {
+        return a.getX();
+    }
+    
+    public int getAy() {
+        return a.getY();
+    }
+    
+    public int getBx() {
+        return b.getX();
+    }
+    
+    public int getBy() {
+        return b.getY();
+    }
 }

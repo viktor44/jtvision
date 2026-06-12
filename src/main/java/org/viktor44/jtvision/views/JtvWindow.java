@@ -430,7 +430,7 @@ public class JtvWindow extends JtvGroup {
      */
     @Override
     public JtvPoint getMinimumSize() {
-        return new JtvPoint(minWinSize);
+        return minWinSize;
     }
 
     /**

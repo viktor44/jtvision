@@ -8,6 +8,7 @@ import static org.viktor44.jtvision.core.EventCodes.evBroadcast;
 import static org.viktor44.jtvision.core.EventCodes.evCommand;
 import static org.viktor44.jtvision.core.EventCodes.evKeyDown;
 import static org.viktor44.jtvision.core.EventCodes.evNothing;
+import static org.viktor44.jtvision.core.EventCodes.evPaste;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -100,7 +101,7 @@ public class JtvEvent {
 	@Setter
     private MessageEvent message = new MessageEvent();
 
-	/**
+    /**
      * Fills this event as a key-down event.
      *
      * <p>Sets {@link #what} to {@link EventCodes#evKeyDown} and populates the
@@ -115,6 +116,21 @@ public class JtvEvent {
     public void setKeyDownEvent(int keyCode, int controlKeyState, char keyChar) {
         what = evKeyDown;
         keyDown = new KeyDownEvent(keyCode, controlKeyState, keyChar);
+    }
+
+    /**
+     * Fills this event as a bracketed-paste event.
+     *
+     * <p>Sets {@link #what} to {@link EventCodes#evPaste} and stores the pasted
+     * text in the message payload's {@code infoPtr} field.  Receivers should
+     * cast {@code getMessage().getInfoPtr()} to {@code String}.
+     *
+     * @param text the clipboard text delivered by the terminal's
+     *             bracketed-paste sequence
+     */
+    public void setPasteEvent(String text) {
+        what = evPaste;
+        message = new MessageEvent(0, text);
     }
 
     /**
@@ -160,7 +176,7 @@ public class JtvEvent {
     public void copyFrom(JtvEvent other) {
         what = other.getWhat();
         mouse = new MouseEvent(
-        		new JtvPoint(other.getMouse().getWhere()), 
+        		other.getMouse().getWhere(), 
         		other.getMouse().getEventFlags(), 
         		other.getMouse().getModifiers(), 
         		other.getMouse().getButtons(), 

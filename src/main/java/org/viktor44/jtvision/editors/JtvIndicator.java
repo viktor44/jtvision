@@ -119,7 +119,7 @@ public class JtvIndicator extends JtvView {
     public void setValue(JtvPoint p, boolean aModified) {
         boolean changed = false;
         if (p != null && !location.equals(p)) {
-            location = new JtvPoint(p);
+            location = p;
             changed = true;
         }
         if (modified != aModified) {

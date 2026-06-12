@@ -4,7 +4,6 @@
  */
 package org.viktor44.jtvision.editors;
 
-import org.viktor44.jtvision.core.JtvEvent;
 import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.views.JtvScrollBar;
 
@@ -25,13 +24,13 @@ public class JtvMemo extends JtvEditor {
      * Constructs a memo field.
      *
      * @param bounds       the bounding rectangle for this view
-     * @param aHScrollBar  optional horizontal scroll bar, or {@code null}
-     * @param aVScrollBar  optional vertical scroll bar, or {@code null}
-     * @param aIndicator   optional position indicator, or {@code null}
-     * @param aBufSize     maximum buffer size in characters
+     * @param hScrollBar  optional horizontal scroll bar, or {@code null}
+     * @param vScrollBar  optional vertical scroll bar, or {@code null}
+     * @param indicator   optional position indicator, or {@code null}
+     * @param bufferSize     maximum buffer size in characters
      */
-    public JtvMemo(JtvRect bounds, JtvScrollBar aHScrollBar, JtvScrollBar aVScrollBar, JtvIndicator aIndicator, int aBufSize) {
-        super(bounds, aHScrollBar, aVScrollBar, aIndicator, aBufSize);
+    public JtvMemo(JtvRect bounds, JtvScrollBar hScrollBar, JtvScrollBar vScrollBar, JtvIndicator indicator, int bufferSize) {
+        super(bounds, hScrollBar, vScrollBar, indicator, bufferSize);
     }
 
     /**
@@ -67,15 +66,5 @@ public class JtvMemo extends JtvEditor {
             updateMetrics();
             drawView();
         }
-    }
-
-    /**
-     * Handles events by delegating to the inherited {@link JtvEditor} handler.
-     *
-     * @param event the event to handle
-     */
-    @Override
-    public void handleEvent(JtvEvent event) {
-        super.handleEvent(event);
     }
 }

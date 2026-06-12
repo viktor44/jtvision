@@ -182,7 +182,7 @@ public class Screen {
      * {@link #invalidate()}.
      */
     private static JtvScreenCell[] lastBuffer;
-
+    
     /**
      * Whether {@link #init()} has been called without a subsequent
      * {@link #shutdown()}. Guards against double-initialisation and ensures
@@ -196,6 +196,8 @@ public class Screen {
      * Jansi's Windows-compatibility layer is active.
      */
     private static PrintStream out;
+
+    private static final JtvScreenCell LAST_BUFFER_INIT_CELL = new JtvScreenCell('\0', JtvColorAttr.WHITE_ON_WHITE);
 
     /**
      * ANSI SGR foreground colour codes for the 16 CGA/BIOS colour indices.
@@ -276,15 +278,16 @@ public class Screen {
         screenBuffer = new JtvScreenCell[size];
         lastBuffer = new JtvScreenCell[size];
         for (int i = 0; i < size; i++) {
-            screenBuffer[i] = new JtvScreenCell();
-            lastBuffer[i] = new JtvScreenCell('\0', JtvColorAttr.WHITE_ON_WHITE);
+            screenBuffer[i] = JtvScreenCell.EMPTY_CELL;
+            lastBuffer[i] = LAST_BUFFER_INIT_CELL;
         }
 
-        // Enter alternate screen buffer, hide cursor, enable mouse reporting
+        // Enter alternate screen buffer, hide cursor, enable mouse reporting, enable bracketed paste
         out.print("\033[?1049h");  // alternate screen
         out.print("\033[?25l");    // hide cursor
         out.print("\033[?1002h");  // button-event mouse tracking
         out.print("\033[?1006h");  // SGR mouse mode
+        out.print("\033[?2004h");  // bracketed paste mode
         out.flush();
 
         initialized = true;
@@ -309,10 +312,11 @@ public class Screen {
             return;
         }
 
-        // Disable mouse reporting, show cursor, leave alternate screen
+        // Disable mouse reporting, show cursor, disable bracketed paste, leave alternate screen
         out.print("\033[?1006l");
         out.print("\033[?1002l");
         out.print("\033[?25h");
+        out.print("\033[?2004l");  // disable bracketed paste mode
         out.print("\033[?1049l");
         out.flush();
 
@@ -406,8 +410,8 @@ public class Screen {
         screenBuffer = new JtvScreenCell[size];
         lastBuffer = new JtvScreenCell[size];
         for (int i = 0; i < size; i++) {
-            screenBuffer[i] = new JtvScreenCell();
-            lastBuffer[i] = new JtvScreenCell('\0', JtvColorAttr.WHITE_ON_WHITE);
+            screenBuffer[i] = JtvScreenCell.EMPTY_CELL;
+            lastBuffer[i] = LAST_BUFFER_INIT_CELL;
         }
     }
 
@@ -520,7 +524,7 @@ public class Screen {
      */
     public static void clearScreen() {
         for (int i = 0; i < screenBuffer.length; i++) {
-            screenBuffer[i] = new JtvScreenCell();
+            screenBuffer[i] = JtvScreenCell.EMPTY_CELL;
         }
     }
 
@@ -589,7 +593,7 @@ public class Screen {
      */
     public static void invalidate() {
         if (lastBuffer != null) {
-            JtvScreenCell sentinel = new JtvScreenCell('\0', JtvColorAttr.WHITE_ON_WHITE);
+            JtvScreenCell sentinel = LAST_BUFFER_INIT_CELL;
             for (int i = 0; i < lastBuffer.length; i++) {
                 lastBuffer[i] = sentinel;
             }
@@ -610,6 +614,7 @@ public class Screen {
             out.print("\033[?1006l");
             out.print("\033[?1002l");
             out.print("\033[?25h");
+            out.print("\033[?2004l");  // disable bracketed paste mode
             out.print("\033[?1049l");
             out.flush();
         }
@@ -629,6 +634,7 @@ public class Screen {
             out.print("\033[?25l");
             out.print("\033[?1002h");
             out.print("\033[?1006h");
+            out.print("\033[?2004h");  // enable bracketed paste mode
             out.flush();
             invalidate();
         }

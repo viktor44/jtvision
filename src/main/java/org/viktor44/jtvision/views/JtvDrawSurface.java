@@ -78,10 +78,10 @@ public class JtvDrawSurface {
             data = new JtvScreenCell[0];
             return;
         }
-        size = new JtvPoint(aSize);
+        size = aSize;
         data = new JtvScreenCell[size.getX() * size.getY()];
         for (int i = 0; i < data.length; i++) {
-            data[i] = new JtvScreenCell();
+            data[i] = JtvScreenCell.EMPTY_CELL;
         }
     }
 
@@ -105,7 +105,7 @@ public class JtvDrawSurface {
      */
     public void clear() {
         for (int i = 0; i < data.length; i++) {
-            data[i] = new JtvScreenCell();
+            data[i] = JtvScreenCell.EMPTY_CELL;
         }
     }
 

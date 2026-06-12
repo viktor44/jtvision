@@ -45,6 +45,7 @@ import static org.viktor44.jtvision.core.EventCodes.evKeyDown;
 import static org.viktor44.jtvision.core.EventCodes.evMouseAuto;
 import static org.viktor44.jtvision.core.EventCodes.evMouseDown;
 import static org.viktor44.jtvision.core.EventCodes.evMouseMove;
+import static org.viktor44.jtvision.core.EventCodes.evPaste;
 import static org.viktor44.jtvision.core.ViewFlags.ofSelectable;
 import static org.viktor44.jtvision.core.ViewFlags.sfActive;
 import static org.viktor44.jtvision.core.ViewFlags.sfCursorIns;
@@ -258,7 +259,7 @@ public class JtvEditor extends JtvView {
         this.indicator = indicator;
         this.bufSize = Math.max(0x1000, bufSize);
         this.options |= ofSelectable;
-        this.eventMask = evMouseDown | evKeyDown | evCommand | evBroadcast;
+        this.eventMask = evMouseDown | evKeyDown | evPaste | evCommand | evBroadcast;
         
         showCursor();
         updateMetrics();
@@ -1109,6 +1110,20 @@ public class JtvEditor extends JtvView {
             }
             while (mouseEvent(event, evMouseMove | evMouseAuto));
             clearEvent(event);
+            return;
+        }
+
+        // Bracketed paste: insert the pasted text verbatim (no auto-indent)
+        if (event.getWhat() == evPaste) {
+            if (!readOnly) {
+                Object payload = event.getMessage().getInfoPtr();
+                if (payload instanceof String) {
+                    insertText((String) payload, false);
+                    trackCursor(false);
+                    clearEvent(event);
+                    drawView();
+                }
+            }
             return;
         }
 

@@ -8,6 +8,7 @@ import static org.viktor44.jtvision.core.EventCodes.evKeyboard;
 import static org.viktor44.jtvision.core.EventCodes.evMouse;
 import static org.viktor44.jtvision.core.EventCodes.evMouseMove;
 import static org.viktor44.jtvision.core.EventCodes.evNothing;
+import static org.viktor44.jtvision.core.EventCodes.evPaste;
 import static org.viktor44.jtvision.core.EventCodes.mbLeftButton;
 import static org.viktor44.jtvision.core.EventCodes.mbMiddleButton;
 import static org.viktor44.jtvision.core.EventCodes.mbRightButton;
@@ -281,6 +282,18 @@ public abstract class EventQueue {
     protected void pushKeyEvent(int keyCode, int modifiers, char keyChar) {
         JtvEvent event = new JtvEvent();
         event.setKeyDownEvent(keyCode, modifiers, keyChar);
+        eventQueue.offer(event);
+    }
+
+    /**
+     * Constructs an {@code evPaste} event carrying the pasted text and
+     * places it in the queue.  Used by the bracketed-paste handler.
+     *
+     * @param text the clipboard text delivered by the terminal
+     */
+    protected void pushPasteEvent(String text) {
+        JtvEvent event = new JtvEvent();
+        event.setPasteEvent(text);
         eventQueue.offer(event);
     }
 
