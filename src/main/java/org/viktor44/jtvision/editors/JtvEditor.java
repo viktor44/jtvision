@@ -394,7 +394,7 @@ public class JtvEditor extends JtvView {
         // These entries are obsolete and must be removed.
         int firstRemoved = lineContaining + 1;
         int lastRemoved = firstRemoved;
-        while (lastRemoved < lineOffsets.length && lineOffsets[lastRemoved] < editOffset + deletedLength) {
+        while (lastRemoved < lineOffsets.length && lineOffsets[lastRemoved] <= editOffset + deletedLength) {
             lastRemoved++;
         }
         int removedCount = lastRemoved - firstRemoved;
@@ -1187,12 +1187,14 @@ public class JtvEditor extends JtvView {
                     	break;
                     case KeyEvent.VK_BACK_SPACE:
                     	if (!readOnly) {
-                    		deleteRange(prevChar(curPtr), curPtr); 
+                    		if (hasSelection()) deleteSelect();
+                    		else deleteRange(prevChar(curPtr), curPtr);
                     	}
                     	break;
-                    case KeyEvent.VK_DELETE: 
+                    case KeyEvent.VK_DELETE:
                     	if (!readOnly) {
-                    		deleteRange(curPtr, nextChar(curPtr)); 
+                    		if (hasSelection()) deleteSelect();
+                    		else deleteRange(curPtr, nextChar(curPtr));
                     	}
                     	break;
                     case KeyEvent.VK_ENTER:
@@ -1286,10 +1288,16 @@ public class JtvEditor extends JtvView {
                 	if (!readOnly) newLine();
                 	break;
                 case cmBackSpace:
-                	if (!readOnly) deleteRange(prevChar(curPtr), curPtr);
+                	if (!readOnly) {
+                		if (hasSelection()) deleteSelect();
+                		else deleteRange(prevChar(curPtr), curPtr);
+                	}
                 	break;
                 case cmDelChar:
-                	if (!readOnly) deleteRange(curPtr, nextChar(curPtr));
+                	if (!readOnly) {
+                		if (hasSelection()) deleteSelect();
+                		else deleteRange(curPtr, nextChar(curPtr));
+                	}
                 	break;
                 case cmDelWord:
                 	if (!readOnly) deleteRange(curPtr, nextWord(curPtr));
