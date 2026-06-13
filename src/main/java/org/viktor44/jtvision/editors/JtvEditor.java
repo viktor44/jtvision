@@ -30,6 +30,7 @@ import static org.viktor44.jtvision.core.CommandCodes.cmPageDown;
 import static org.viktor44.jtvision.core.CommandCodes.cmPageUp;
 import static org.viktor44.jtvision.core.CommandCodes.cmPaste;
 import static org.viktor44.jtvision.core.CommandCodes.cmReplace;
+import static org.viktor44.jtvision.core.CommandCodes.cmScrollBarChanged;
 import static org.viktor44.jtvision.core.CommandCodes.cmSearchAgain;
 import static org.viktor44.jtvision.core.CommandCodes.cmSelectAll;
 import static org.viktor44.jtvision.core.CommandCodes.cmStartSelect;
@@ -56,6 +57,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 
+import org.viktor44.jtvision.core.CommandCodes;
 import org.viktor44.jtvision.core.JtvColorAttr;
 import org.viktor44.jtvision.core.JtvDrawBuffer;
 import org.viktor44.jtvision.core.JtvEvent;
@@ -729,6 +731,9 @@ public class JtvEditor extends JtvView {
      * Does nothing if there is no selection.
      */
     protected void deleteSelect() {
+    	if (readOnly) {
+    		return;
+    	}
         if (!hasSelection()) {
             return;
         }
@@ -793,6 +798,9 @@ public class JtvEditor extends JtvView {
      * @param b end offset (exclusive)
      */
     protected void deleteRange(int a, int b) {
+    	if (readOnly) {
+    		return;
+    	}
         a = Math.max(0, Math.min(a, buffer.length()));
         b = Math.max(0, Math.min(b, buffer.length()));
         if (b <= a) {
@@ -814,6 +822,9 @@ public class JtvEditor extends JtvView {
      * current line.
      */
     protected void newLine() {
+    	if (readOnly) {
+    		return;
+    	}
         String indent = "";
         if (autoIndent) {
             int s = lineStart(curPtr);
@@ -873,6 +884,9 @@ public class JtvEditor extends JtvView {
      * the {@code sfCursorIns} state flag that controls the cursor shape.
      */
     protected void toggleInsMode() {
+    	if (readOnly) {
+    		return;
+    	}
         overwrite = !overwrite;
         setState(sfCursorIns, !hasState(sfCursorIns));
     }
@@ -925,6 +939,9 @@ public class JtvEditor extends JtvView {
      * Does nothing if the clipboard holds no text.
      */
     protected void clipPaste() {
+    	if (readOnly) {
+    		return;
+    	}
         try {
             Transferable t = JtvProgram.getClipboard().getContents(null);
             if (t != null && t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
@@ -942,6 +959,9 @@ public class JtvEditor extends JtvView {
      * Does nothing if no snapshot is available.
      */
     protected void undo() {
+    	if (readOnly) {
+    		return;
+    	}
         if (!canUndoState) {
             return;
         }
@@ -1147,17 +1167,13 @@ public class JtvEditor extends JtvView {
 
             // Compound shortcuts first; navigation keys ignore the Shift modifier (used for selection).
             if (keyEvent.isShiftDown() && keyEvent.getKeyCode() == KeyEvent.VK_DELETE) {
-                if (!readOnly) {
-                	clipCut();
-                }
+                clipCut();
             }
             else if (keyEvent.isCtrlDown() && keyEvent.getKeyCode() == KeyEvent.VK_INSERT) {
                 clipCopy();
             }
             else if (keyEvent.isShiftDown() && keyEvent.getKeyCode() == KeyEvent.VK_INSERT) {
-                if (!readOnly) {
-                	clipPaste();
-                }
+                clipPaste();
             }
             else {
                 switch (keyEvent.getKeyCode()) {
@@ -1186,26 +1202,26 @@ public class JtvEditor extends JtvView {
                     	setCurPtr(Math.min(bufLen, curPtr + (size.getX() * size.getY())), selectMode);
                     	break;
                     case KeyEvent.VK_BACK_SPACE:
-                    	if (!readOnly) {
-                    		if (hasSelection()) deleteSelect();
-                    		else deleteRange(prevChar(curPtr), curPtr);
-                    	}
+                		if (hasSelection()) {
+                			deleteSelect();
+                		}
+                		else {
+                			deleteRange(prevChar(curPtr), curPtr);
+                		}
                     	break;
                     case KeyEvent.VK_DELETE:
-                    	if (!readOnly) {
-                    		if (hasSelection()) deleteSelect();
-                    		else deleteRange(curPtr, nextChar(curPtr));
-                    	}
+                		if (hasSelection()) {
+                			deleteSelect();
+                		}
+                		else {
+                			deleteRange(curPtr, nextChar(curPtr));
+                		}
                     	break;
                     case KeyEvent.VK_ENTER:
-                    	if (!readOnly) {
-                    		newLine();
-                    	}
+                    	newLine();
                     	break;
                     case KeyEvent.VK_INSERT:
-                    	if (!readOnly) {
-                    		toggleInsMode();
-                    	}
+                    	toggleInsMode();
                     	break;
                     default: 
                     	return;
@@ -1234,19 +1250,19 @@ public class JtvEditor extends JtvView {
                 	doSearchAgain();
                 	break;
                 case cmCut:
-                	if (!readOnly) clipCut();
+                	clipCut();
                 	break;
                 case cmCopy:
                 	clipCopy();
                 	break;
                 case cmPaste:
-                	if (!readOnly) clipPaste();
+                	clipPaste();
                 	break;
                 case cmUndo:
-                	if (!readOnly) undo();
+                	undo();
                 	break;
                 case cmClear:
-                	if (!readOnly) deleteSelect();
+                	deleteSelect();
                 	break;
                 case cmCharLeft:
                 	setCurPtr(prevChar(curPtr), selectMode);
@@ -1285,37 +1301,41 @@ public class JtvEditor extends JtvView {
                 	setCurPtr(bufLen, selectMode);
                 	break;
                 case cmNewLine:
-                	if (!readOnly) newLine();
+                	newLine();
                 	break;
                 case cmBackSpace:
-                	if (!readOnly) {
-                		if (hasSelection()) deleteSelect();
-                		else deleteRange(prevChar(curPtr), curPtr);
-                	}
+            		if (hasSelection()) {
+            			deleteSelect();
+            		}
+            		else {
+            			deleteRange(prevChar(curPtr), curPtr);
+            		}
                 	break;
                 case cmDelChar:
-                	if (!readOnly) {
-                		if (hasSelection()) deleteSelect();
-                		else deleteRange(curPtr, nextChar(curPtr));
-                	}
+            		if (hasSelection()) {
+            			deleteSelect();
+            		}
+            		else {
+            			deleteRange(curPtr, nextChar(curPtr));
+            		}
                 	break;
                 case cmDelWord:
-                	if (!readOnly) deleteRange(curPtr, nextWord(curPtr));
+                	deleteRange(curPtr, nextWord(curPtr));
                 	break;
                 case cmDelWordLeft:
-                	if (!readOnly) deleteRange(prevWord(curPtr), curPtr);
+                	deleteRange(prevWord(curPtr), curPtr);
                 	break;
                 case cmDelStart:
-                	if (!readOnly) deleteRange(lineStart(curPtr), curPtr);
+                	deleteRange(lineStart(curPtr), curPtr);
                 	break;
                 case cmDelEnd:
-                	if (!readOnly) deleteRange(curPtr, lineEnd(curPtr));
+                	deleteRange(curPtr, lineEnd(curPtr));
                 	break;
                 case cmDelLine:
-                	if (!readOnly) deleteRange(lineStart(curPtr), nextLine(curPtr));
+                	deleteRange(lineStart(curPtr), nextLine(curPtr));
                 	break;
                 case cmInsMode:
-                	if (!readOnly) toggleInsMode();
+                	toggleInsMode();
                 	break;
                 case cmStartSelect:
                 	startSelect();
@@ -1342,7 +1362,7 @@ public class JtvEditor extends JtvView {
         }
 
         if (event.getWhat() == evBroadcast) {
-            if (event.getMessage().getCommand() == org.viktor44.jtvision.core.CommandCodes.cmScrollBarChanged) {
+            if (event.getMessage().getCommand() == cmScrollBarChanged) {
                 if (event.getMessage().getInfoPtr() == hScrollBar) {
                     delta = new JtvPoint(hScrollBar.getValue(), delta.getY());
                     drawView();
