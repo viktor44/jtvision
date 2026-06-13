@@ -62,6 +62,9 @@ import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.core.JtvScreenCell;
 import org.viktor44.jtvision.platform.Screen;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Abstract base class for all JT Vision views.
  * <p>
@@ -208,12 +211,14 @@ public class JtvView {
      * The width and height of this view. Together with {@link #origin},
      * it defines the bounding rectangle returned by {@link #getBounds()}.
      */
+    @Getter
     protected JtvPoint size = new JtvPoint();
 
 	/**
      * The cursor position within the view's local coordinate system.
      * Updated by {@link #setCursor(int, int)} and {@link #resetCursor()}.
      */
+    @Getter
     protected JtvPoint cursor = new JtvPoint();
 
 	/**
@@ -230,12 +235,15 @@ public class JtvView {
      * visibility, focus, selection, and dragging status of the view.
      * Modify only through {@link #setState(int, boolean)}.
      */
+    @Getter
     protected int state;
 
 	/**
      * Bitmask of {@code ofXXXX} option constants controlling selectable,
      * framed, centered, buffered, and other optional behaviour.
      */
+    @Getter
+    @Setter
     protected int options;
 
 	/**
@@ -244,6 +252,8 @@ public class JtvView {
      * {@code evCommand}). Set to the union of event types handled by
      * {@link #handleEvent(JtvEvent)}.
      */
+    @Getter
+    @Setter
     protected int eventMask;
 
 	/**
@@ -251,6 +261,8 @@ public class JtvView {
      * view resizes relative to its owner (e.g. {@code gfGrowHiX} to keep
      * the right edge pinned to the owner's right side).
      */
+    @Getter
+    @Setter
     protected int growMode;
 
 	/**
@@ -269,8 +281,9 @@ public class JtvView {
     /** Builds the initial {@link #curCommandSet} with window commands disabled. */
     private static JtvCommandSet initCommands() {
         JtvCommandSet temp = new JtvCommandSet();
-        for (int i = 0; i < 256; i++)
+        for (int i = 0; i < 256; i++) {
             temp.enableCmd(i);
+        }
         temp.disableCmd(cmZoom);
         temp.disableCmd(cmClose);
         temp.disableCmd(cmResize);
@@ -333,32 +346,38 @@ public class JtvView {
         int s = owner.size.getX();
         int d = delta.getX();
 
-        if ((growMode & gfGrowLoX) != 0)
-            bounds.setA(new JtvPoint(grow(s, d, bounds.getA().getX()), bounds.getA().getY()));
-        if ((growMode & gfGrowHiX) != 0)
-            bounds.setB(new JtvPoint(grow(s, d, bounds.getB().getX()), bounds.getB().getY()));
+        if ((growMode & gfGrowLoX) != 0) {
+            bounds.setA(new JtvPoint(grow(s, d, bounds.getAx()), bounds.getAy()));
+        }
+        if ((growMode & gfGrowHiX) != 0) {
+            bounds.setB(new JtvPoint(grow(s, d, bounds.getBx()), bounds.getBy()));
+        }
 
         s = owner.size.getY();
         d = delta.getY();
 
-        if ((growMode & gfGrowLoY) != 0)
-            bounds.setA(new JtvPoint(bounds.getA().getX(), grow(s, d, bounds.getA().getY())));
-        if ((growMode & gfGrowHiY) != 0)
-            bounds.setB(new JtvPoint(bounds.getB().getX(), grow(s, d, bounds.getB().getY())));
+        if ((growMode & gfGrowLoY) != 0) {
+            bounds.setA(new JtvPoint(bounds.getAx(), grow(s, d, bounds.getAy())));
+        }
+        if ((growMode & gfGrowHiY) != 0) {
+            bounds.setB(new JtvPoint(bounds.getBx(), grow(s, d, bounds.getBy())));
+        }
 
         JtvPoint min = getMinimumSize();
         JtvPoint max = getMaximumSize();
         bounds.setB(new JtvPoint(
-            bounds.getA().getX() + balancedRange(bounds.getB().getX() - bounds.getA().getX(), min.getX(), max.getX(), true),
-            bounds.getA().getY() + balancedRange(bounds.getB().getY() - bounds.getA().getY(), min.getY(), max.getY(), false)));
+            bounds.getAx() + balancedRange(bounds.getBx() - bounds.getAx(), min.getX(), max.getX(), true),
+            bounds.getAy() + balancedRange(bounds.getBy() - bounds.getAy(), min.getY(), max.getY(), false)));
     }
 
     /** Applies grow-mode scaling or translation to a single coordinate. */
     private int grow(int s, int d, int i) {
         if ((growMode & gfGrowRel) != 0) {
-            if (s != d)
+            if (s != d) {
                 i = (i * s + ((s - d) >> 1)) / (s - d);
-        } else {
+            }
+        }
+        else {
             i += d;
         }
         return i;
@@ -370,23 +389,30 @@ public class JtvView {
      * repeated owner resizes.
      */
     private int balancedRange(int val, int min, int max, boolean useX) {
-        if (min > max)
+        if (min > max) {
             max = min;
+        }
         int balance = useX ? resizeBalance.getX() : resizeBalance.getY();
         int result;
         if (val < min) {
             balance += val - min;
             result = min;
-        } else if (val > max) {
+        }
+        else if (val > max) {
             balance += val - max;
             result = max;
-        } else {
+        }
+        else {
             int offset = range(val + balance, min, max) - val;
             balance -= offset;
             result = val + offset;
         }
-        if (useX) resizeBalance = new JtvPoint(balance, resizeBalance.getY());
-        else resizeBalance = new JtvPoint(resizeBalance.getX(), balance);
+        if (useX) {
+            resizeBalance = new JtvPoint(balance, resizeBalance.getY());
+        }
+        else {
+            resizeBalance = new JtvPoint(resizeBalance.getX(), balance);
+        }
         return result;
     }
 
@@ -464,8 +490,9 @@ public class JtvView {
      * cursor is visible. Called at the end of {@link #drawView()}.
      */
     public void drawCursor() {
-        if ((state & sfFocused) != 0)
+        if ((state & sfFocused) != 0) {
             resetCursor();
+        }
     }
 
     /**
@@ -489,8 +516,9 @@ public class JtvView {
      */
     public void drawShow(JtvView lastView) {
         drawView();
-        if ((state & sfShadow) != 0)
+        if ((state & sfShadow) != 0) {
             drawUnderView(true, lastView);
+        }
     }
 
     /**
@@ -515,10 +543,12 @@ public class JtvView {
      */
     public void drawUnderView(boolean doShadow, JtvView lastView) {
         JtvRect r = getBounds();
-        if (doShadow)
+        if (doShadow) {
             r.setB(r.getB().add(shadowSize));
-        if ((options & ofFramed) != 0)
+        }
+        if ((options & ofFramed) != 0) {
             r.grow(1, 1);
+        }
         drawUnderRect(r, lastView);
     }
 
@@ -563,8 +593,9 @@ public class JtvView {
      */
     public void endModal(int command) {
         JtvView top = topView();
-        if (top != null)
+        if (top != null) {
             top.endModal(command);
+        }
     }
 
     /**
@@ -576,8 +607,9 @@ public class JtvView {
     public boolean eventAvail() {
         JtvEvent event = new JtvEvent();
         getEvent(event);
-        if (event.getWhat() != evNothing)
+        if (event.getWhat() != evNothing) {
             putEvent(event);
+        }
         return event.getWhat() != evNothing;
     }
 
@@ -599,16 +631,20 @@ public class JtvView {
      * @return {@code true} if the view contributes visible pixels to the screen
      */
     public boolean exposed() {
-        if ((state & sfExposed) == 0)
+        if ((state & sfExposed) == 0) {
             return false;
-        if (size.getX() <= 0 || size.getY() <= 0)
+        }
+        if (size.getX() <= 0 || size.getY() <= 0) {
             return false;
-        if (owner == null)
+        }
+        if (owner == null) {
             return false;
+        }
         // Simplified: check if any row has visible pixels
         for (int y = 0; y < size.getY(); y++) {
-            if (exposedRow(y, 0, size.getX()))
+            if (exposedRow(y, 0, size.getX())) {
                 return true;
+            }
         }
         return false;
     }
@@ -624,12 +660,14 @@ public class JtvView {
 
         while (grp != null) {
             // Clip to owner's clip rect
-            if (ay < grp.clip.getA().getY() || ay >= grp.clip.getB().getY())
+            if (ay < grp.clip.getAy() || ay >= grp.clip.getBy()) {
                 return false;
-            ax1 = Math.max(ax1, grp.clip.getA().getX());
-            ax2 = Math.min(ax2, grp.clip.getB().getX());
-            if (ax1 >= ax2)
+            }
+            ax1 = Math.max(ax1, grp.clip.getAx());
+            ax2 = Math.min(ax2, grp.clip.getBx());
+            if (ax1 >= ax2) {
                 return false;
+            }
 
             // Check sibling views in front of target
             if (grp.last != null) {
@@ -641,19 +679,23 @@ public class JtvView {
                         if (ay >= vy1 && ay < vy2) {
                             int vx1 = v.origin.getX();
                             int vx2 = vx1 + v.size.getX();
-                            if (ax1 >= vx1 && ax2 <= vx2)
+                            if (ax1 >= vx1 && ax2 <= vx2) {
                                 return false; // Completely occluded
+                            }
                             if (ax1 < vx1 && ax2 > vx2) {
                                 // Split: check left part, if visible return true
                                 // (simplified: just mark partially visible)
                                 return true;
                             }
-                            if (ax1 < vx2 && ax1 >= vx1)
+                            if (ax1 < vx2 && ax1 >= vx1) {
                                 ax1 = vx2;
-                            if (ax2 > vx1 && ax2 <= vx2)
+                            }
+                            if (ax2 > vx1 && ax2 <= vx2) {
                                 ax2 = vx1;
-                            if (ax1 >= ax2)
+                            }
+                            if (ax1 >= ax2) {
                                 return false;
+                            }
                         }
                     }
                     v = v.next;
@@ -661,8 +703,9 @@ public class JtvView {
             }
 
             // Move up
-            if (grp.buffer != null || grp.lockFlag != 0)
+            if (grp.buffer != null || grp.lockFlag != 0) {
                 return true; // Will be written to buffer
+            }
             target = grp;
             ay += grp.origin.getY();
             ax1 += grp.origin.getX();
@@ -690,10 +733,12 @@ public class JtvView {
                 if (result) {
                     if (owner.current == null ||
                         (owner.current.options & ofValidate) == 0 ||
-                        owner.current.valid(cmReleasedFocus))
+                        owner.current.valid(cmReleasedFocus)) {
                         select();
-                    else
+                    }
+                    else {
                         return false;
+                    }
                 }
             }
         }
@@ -718,8 +763,9 @@ public class JtvView {
      */
     public JtvRect getClipRect() {
         JtvRect clip = getBounds();
-        if (owner != null)
+        if (owner != null) {
             clip.intersect(owner.clip);
+        }
         clip.move(-origin.getX(), -origin.getY());
         return clip;
     }
@@ -795,8 +841,9 @@ public class JtvView {
      * @return the current help-context ID
      */
     public int getHelpCtx() {
-        if ((state & sfDragging) != 0)
+        if ((state & sfDragging) != 0) {
             return hcDragging;
+        }
         return helpCtx;
     }
 
@@ -857,8 +904,9 @@ public class JtvView {
     public void handleEvent(JtvEvent event) {
         if (event.getWhat() == evMouseDown) {
             if ((state & (sfSelected | sfDisabled)) == 0 && (options & ofSelectable) != 0) {
-                if (!focus() || (options & ofFirstClick) == 0)
+                if (!focus() || (options & ofFirstClick) == 0) {
                     clearEvent(event);
+                }
             }
         }
     }
@@ -868,8 +916,9 @@ public class JtvView {
      * If the view is already invisible this is a no-op.
      */
     public void hide() {
-        if ((state & sfVisible) != 0)
+        if ((state & sfVisible) != 0) {
             setState(sfVisible, false);
+        }
     }
 
     /**
@@ -888,7 +937,8 @@ public class JtvView {
     public void keyEvent(JtvEvent event) {
         do {
             getEvent(event);
-        } while (event.getWhat() != evKeyDown);
+        }
+        while (event.getWhat() != evKeyDown);
     }
 
     /**
@@ -1008,7 +1058,8 @@ public class JtvView {
     public boolean mouseEvent(JtvEvent event, int mask) {
         do {
             getEvent(event);
-        } while ((event.getWhat() & (mask | evMouseUp)) == 0);
+        }
+        while ((event.getWhat() & (mask | evMouseUp)) == 0);
         return event.getWhat() != evMouseUp;
     }
 
@@ -1044,10 +1095,12 @@ public class JtvView {
      * @return the next sibling, or {@code null}
      */
     public JtvView nextView() {
-        if (owner == null || this == owner.last)
+        if (owner == null || this == owner.last) {
             return null;
-        else
+        }
+        else {
             return next;
+        }
     }
 
     /**
@@ -1067,8 +1120,9 @@ public class JtvView {
      */
     public JtvView prev() {
         JtvView res = this;
-        while (res.next != this)
+        while (res.next != this) {
             res = res.next;
+        }
         return res;
     }
 
@@ -1079,10 +1133,12 @@ public class JtvView {
      * @return the previous sibling, or {@code null}
      */
     public JtvView prevView() {
-        if (owner == null || this == owner.first())
+        if (owner == null || this == owner.first()) {
             return null;
-        else
+        }
+        else {
             return prev();
+        }
     }
 
     /**
@@ -1092,8 +1148,9 @@ public class JtvView {
      * @param event the event to inject
      */
     public void putEvent(JtvEvent event) {
-        if (owner != null)
+        if (owner != null) {
             owner.putEvent(event);
+        }
     }
 
     /**
@@ -1111,23 +1168,29 @@ public class JtvView {
             if ((state & sfVisible) == 0) {
                 owner.removeView(this);
                 owner.insertView(this, target);
-            } else {
+            }
+            else {
                 JtvView lastView = nextView();
                 JtvView p = target;
-                while (p != null && p != this)
+                while (p != null && p != this) {
                     p = p.nextView();
-                if (p == null)
+                }
+                if (p == null) {
                     lastView = target;
+                }
                 state &= ~sfVisible;
-                if (lastView == target)
+                if (lastView == target) {
                     drawHide(lastView);
+                }
                 owner.removeView(this);
                 owner.insertView(this, target);
                 state |= sfVisible;
-                if (lastView != target)
+                if (lastView != target) {
                     drawShow(lastView);
-                if ((options & ofSelectable) != 0)
+                }
+                if ((options & ofSelectable) != 0) {
                     owner.resetCurrent();
+                }
             }
         }
     }
@@ -1143,7 +1206,8 @@ public class JtvView {
             Screen.setCursorPosition(globalCursor.getX(), globalCursor.getY());
             Screen.setCursorShape((state & sfCursorIns) != 0);
             Screen.setCursorVisible(true);
-        } else if (owner != null) {
+        }
+        else if (owner != null) {
             Screen.setCursorVisible(false);
         }
     }
@@ -1156,10 +1220,12 @@ public class JtvView {
      */
     public void select() {
         if ((options & ofSelectable) != 0 && owner != null) {
-            if ((options & ofTopSelect) != 0)
+            if ((options & ofTopSelect) != 0) {
                 makeFirst();
-            else
+            }
+            else {
                 owner.setCurrent(this, normalSelect);
+            }
         }
     }
 
@@ -1183,10 +1249,12 @@ public class JtvView {
      * @param enable   {@code true} to enable, {@code false} to disable
      */
     public static void setCmdState(JtvCommandSet commands, boolean enable) {
-        if (enable)
+        if (enable) {
             enableCommands(commands);
-        else
+        }
+        else {
             disableCommands(commands);
+        }
     }
 
     /**
@@ -1227,24 +1295,31 @@ public class JtvView {
      * @param enable {@code true} to set the bits, {@code false} to clear them
      */
     public void setState(int aState, boolean enable) {
-        if (enable)
+        if (enable) {
             state |= aState;
-        else
+        }
+        else {
             state &= ~aState;
+        }
 
-        if (owner == null)
+        if (owner == null) {
             return;
+        }
 
         switch (aState) {
             case sfVisible:
-                if ((owner.state & sfExposed) != 0)
+                if ((owner.state & sfExposed) != 0) {
                     setState(sfExposed, enable);
-                if (enable)
+                }
+                if (enable) {
                     drawShow(null);
-                else
+                }
+                else {
                     drawHide(null);
-                if ((options & ofSelectable) != 0)
+                }
+                if ((options & ofSelectable) != 0) {
                     owner.resetCurrent();
+                }
                 break;
             case sfCursorVis:
             case sfCursorIns:
@@ -1266,8 +1341,9 @@ public class JtvView {
      * If the view is already visible this is a no-op.
      */
     public void show() {
-        if ((state & sfVisible) == 0)
+        if ((state & sfVisible) == 0) {
             setState(sfVisible, true);
+        }
     }
 
     /**
@@ -1405,8 +1481,9 @@ public class JtvView {
      * @param count the number of character cells to fill
      */
     public void writeChar(int x, int y, char c, int color, int count) {
-        if (count > size.getX())
+        if (count > size.getX()) {
             count = size.getX();
+        }
         if (count > 0) {
             JtvScreenCell[] buf = new JtvScreenCell[count];
             JtvColorAttr attr = mapColor(color);
@@ -1427,7 +1504,9 @@ public class JtvView {
      * @param color the one-based palette index
      */
     public void writeStr(int x, int y, String str, int color) {
-        if (str == null) return;
+        if (str == null) {
+            return;
+        }
         int count = Math.min(str.length(), size.getX());
         if (count > 0) {
             JtvScreenCell[] buf = new JtvScreenCell[count];
@@ -1444,10 +1523,14 @@ public class JtvView {
      * to {@link #writeToOwner} for occlusion testing and final rendering.
      */
     protected void writeView(int x, int y, int count, JtvScreenCell[] buf, int bufOffset) {
-        if (y < 0 || y >= size.getY()) return;
+        if (y < 0 || y >= size.getY()) {
+            return;
+        }
         int x1 = Math.max(x, 0);
         int x2 = Math.min(x + count, size.getX());
-        if (x1 >= x2) return;
+        if (x1 >= x2) {
+            return;
+        }
 
         writeToOwner(x1, x2, y, buf, bufOffset + (x1 - x), false);
     }
@@ -1463,7 +1546,9 @@ public class JtvView {
     public static JtvColorAttr applyShadow(JtvColorAttr attr) {
         int v = attr.getValue();
         int shadowAttrInv = ((shadowAttr & 0x0F) << 4) | ((shadowAttr & 0xF0) >> 4);
-        if (v == shadowAttr || v == shadowAttrInv) return attr;
+        if (v == shadowAttr || v == shadowAttrInv) {
+            return attr;
+        }
         return new JtvColorAttr((v & 0xF0) != 0 ? shadowAttr : shadowAttrInv);
     }
 
@@ -1473,19 +1558,23 @@ public class JtvView {
      */
     protected void writeToOwner(int x1, int x2, int y,
                                       JtvScreenCell[] buf, int bufOffset, boolean inShadow) {
-        if ((state & sfVisible) == 0 || owner == null)
+        if ((state & sfVisible) == 0 || owner == null) {
             return;
+        }
 
         JtvGroup grp = owner;
         int ay = y + origin.getY();
         int ax1 = x1 + origin.getX();
         int ax2 = x2 + origin.getX();
 
-        if (ay < grp.clip.getA().getY() || ay >= grp.clip.getB().getY())
+        if (ay < grp.clip.getAy() || ay >= grp.clip.getBy()) {
             return;
-        int cx1 = Math.max(ax1, grp.clip.getA().getX());
-        int cx2 = Math.min(ax2, grp.clip.getB().getX());
-        if (cx1 >= cx2) return;
+        }
+        int cx1 = Math.max(ax1, grp.clip.getAx());
+        int cx2 = Math.min(ax2, grp.clip.getBx());
+        if (cx1 >= cx2) {
+            return;
+        }
 
         int adjBufOffset = bufOffset + (cx1 - ax1);
 
@@ -1509,17 +1598,21 @@ public class JtvView {
                          JtvPoint minSize, JtvPoint maxSize, int mode) {
         s = new JtvPoint(Math.min(Math.max(s.getX(), minSize.getX()), maxSize.getX()),
                          Math.min(Math.max(s.getY(), minSize.getY()), maxSize.getY()));
-        p = new JtvPoint(Math.min(Math.max(p.getX(), limits.getA().getX() - s.getX() + 1), limits.getB().getX() - 1),
-                         Math.min(Math.max(p.getY(), limits.getA().getY() - s.getY() + 1), limits.getB().getY() - 1));
+        p = new JtvPoint(Math.min(Math.max(p.getX(), limits.getAx() - s.getX() + 1), limits.getBx() - 1),
+                         Math.min(Math.max(p.getY(), limits.getAy() - s.getY() + 1), limits.getBy() - 1));
 
-        if ((mode & dmLimitLoX) != 0)
-            p = new JtvPoint(Math.max(p.getX(), limits.getA().getX()), p.getY());
-        if ((mode & dmLimitLoY) != 0)
-            p = new JtvPoint(p.getX(), Math.max(p.getY(), limits.getA().getY()));
-        if ((mode & dmLimitHiX) != 0)
-            p = new JtvPoint(Math.min(p.getX(), limits.getB().getX() - s.getX()), p.getY());
-        if ((mode & dmLimitHiY) != 0)
-            p = new JtvPoint(p.getX(), Math.min(p.getY(), limits.getB().getY() - s.getY()));
+        if ((mode & dmLimitLoX) != 0) {
+            p = new JtvPoint(Math.max(p.getX(), limits.getAx()), p.getY());
+        }
+        if ((mode & dmLimitLoY) != 0) {
+            p = new JtvPoint(p.getX(), Math.max(p.getY(), limits.getAy()));
+        }
+        if ((mode & dmLimitHiX) != 0) {
+            p = new JtvPoint(Math.min(p.getX(), limits.getBx() - s.getX()), p.getY());
+        }
+        if ((mode & dmLimitHiY) != 0) {
+            p = new JtvPoint(p.getX(), Math.min(p.getY(), limits.getBy() - s.getY()));
+        }
         locate(new JtvRect(p.getX(), p.getY(), p.getX() + s.getX(), p.getY() + s.getY()));
     }
 
@@ -1554,17 +1647,21 @@ public class JtvView {
                 do {
                     JtvPoint moveWhere = event.getMouse().getWhere().add(p);
                     moveGrow(moveWhere, size, limits, minSize, maxSize, mode);
-                } while (mouseEvent(event, evMouseMove));
-            } else if ((mode & dmDragGrow) != 0) {
+                }
+                while (mouseEvent(event, evMouseMove));
+            }
+            else if ((mode & dmDragGrow) != 0) {
                 p = size.subtract(downWhere);
                 do {
                     JtvPoint growWhere = event.getMouse().getWhere().add(p);
                     moveGrow(origin, growWhere, limits, minSize, maxSize, mode);
-                } while (mouseEvent(event, evMouseMove));
-            } else if ((mode & dmDragGrowLeft) != 0) {
+                }
+                while (mouseEvent(event, evMouseMove));
+            }
+            else if ((mode & dmDragGrowLeft) != 0) {
                 JtvRect start = getBounds();
-                int fixedRight = start.getB().getX();
-                int fixedTop = start.getA().getY();
+                int fixedRight = start.getBx();
+                int fixedTop = start.getAy();
                 JtvPoint ownerGlobal = new JtvPoint();
                 if (owner != null) {
                     ownerGlobal = owner.makeGlobal(new JtvPoint(0, 0));
@@ -1578,9 +1675,11 @@ public class JtvView {
                     JtvPoint newOrigin = new JtvPoint(newLeft, fixedTop);
                     JtvPoint newSize = new JtvPoint(fixedRight - newLeft, newBottom - fixedTop);
                     moveGrow(newOrigin, newSize, limits, minSize, maxSize, mode);
-                } while (mouseEvent(event, evMouseMove));
+                }
+                while (mouseEvent(event, evMouseMove));
             }
-        } else {
+        }
+        else {
             // Keyboard dragging
             JtvRect saveBounds = getBounds();
             do {
@@ -1589,25 +1688,45 @@ public class JtvView {
                 keyEvent(event);
                 int kc = event.getKeyDown().getKeyCode();
                 JtvPoint delta = new JtvPoint();
-                if (kc == KeyEvent.VK_LEFT) delta = new JtvPoint(-1, 0);
-                else if (kc == KeyEvent.VK_RIGHT) delta = new JtvPoint(1, 0);
-                else if (kc == KeyEvent.VK_UP) delta = new JtvPoint(0, -1);
-                else if (kc == KeyEvent.VK_DOWN) delta = new JtvPoint(0, 1);
-                else if (kc == KeyEvent.VK_HOME) { p = new JtvPoint(limits.getA().getX(), p.getY()); }
-                else if (kc == KeyEvent.VK_END) { p = new JtvPoint(limits.getB().getX() - s.getX(), p.getY()); }
-                else if (kc == KeyEvent.VK_PAGE_UP) { p = new JtvPoint(p.getX(), limits.getA().getY()); }
-                else if (kc == KeyEvent.VK_PAGE_DOWN) { p = new JtvPoint(p.getX(), limits.getB().getY() - s.getY()); }
+                if (kc == KeyEvent.VK_LEFT) {
+                    delta = new JtvPoint(-1, 0);
+                }
+                else if (kc == KeyEvent.VK_RIGHT) {
+                    delta = new JtvPoint(1, 0);
+                }
+                else if (kc == KeyEvent.VK_UP) {
+                    delta = new JtvPoint(0, -1);
+                }
+                else if (kc == KeyEvent.VK_DOWN) {
+                    delta = new JtvPoint(0, 1);
+                }
+                else if (kc == KeyEvent.VK_HOME) {
+                    p = new JtvPoint(limits.getAx(), p.getY());
+                }
+                else if (kc == KeyEvent.VK_END) {
+                    p = new JtvPoint(limits.getBx() - s.getX(), p.getY());
+                }
+                else if (kc == KeyEvent.VK_PAGE_UP) {
+                    p = new JtvPoint(p.getX(), limits.getAy());
+                }
+                else if (kc == KeyEvent.VK_PAGE_DOWN) {
+                    p = new JtvPoint(p.getX(), limits.getBy() - s.getY());
+                }
 
-                if ((mode & dmDragMove) != 0 && !event.getKeyDown().isShiftDown())
+                if ((mode & dmDragMove) != 0 && !event.getKeyDown().isShiftDown()) {
                     p = p.add(delta);
-                else if ((mode & dmDragGrow) != 0 && event.getKeyDown().isShiftDown())
+                }
+                else if ((mode & dmDragGrow) != 0 && event.getKeyDown().isShiftDown()) {
                     s = s.add(delta);
+                }
 
                 moveGrow(p, s, limits, minSize, maxSize, mode);
-            } while (event.getKeyDown().getKeyCode() != KeyEvent.VK_ESCAPE &&
-                     event.getKeyDown().getKeyCode() != KeyEvent.VK_ENTER);
-            if (event.getKeyDown().getKeyCode() == KeyEvent.VK_ESCAPE)
+            }
+            while (event.getKeyDown().getKeyCode() != KeyEvent.VK_ESCAPE
+            		&& event.getKeyDown().getKeyCode() != KeyEvent.VK_ENTER);
+            if (event.getKeyDown().getKeyCode() == KeyEvent.VK_ESCAPE) {
                 locate(saveBounds);
+            }
         }
         setState(sfDragging, false);
     }
@@ -1655,83 +1774,4 @@ public class JtvView {
         }
         return Math.max(min, Math.min(max, val));
     }
-
-    /**
-     * The width and height of this view. Together with {@link #origin},
-     * it defines the bounding rectangle returned by {@link #getBounds()}.
-     */
-    public JtvPoint getSize() {
-		return size;
-	}
-
-	/**
-     * The cursor position within the view's local coordinate system.
-     * Updated by {@link #setCursor(int, int)} and {@link #resetCursor()}.
-     */
-    public JtvPoint getCursor() {
-		return cursor;
-	}
-
-    /**
-     * Bitmask of {@code sfXXXX} state constants describing the current
-     * visibility, focus, selection, and dragging status of the view.
-     * Modify only through {@link #setState(int, boolean)}.
-     */
-    public int getState() {
-		return state;
-	}
-
-	/**
-     * Bitmask of {@code ofXXXX} option constants controlling selectable,
-     * framed, centered, buffered, and other optional behaviour.
-     */
-    public int getOptions() {
-		return options;
-	}
-
-	/**
-     * Bitmask of {@code ofXXXX} option constants controlling selectable,
-     * framed, centered, buffered, and other optional behaviour.
-     */
-	public void setOptions(int options) {
-		this.options = options;
-	}
-
-	/**
-     * Event-type bitmask that determines which event categories this view
-     * wants to receive (e.g. {@code evMouseDown}, {@code evKeyDown},
-     * {@code evCommand}). Set to the union of event types handled by
-     * {@link #handleEvent(JtvEvent)}.
-     */
-    public int getEventMask() {
-		return eventMask;
-	}
-
-	/**
-     * Event-type bitmask that determines which event categories this view
-     * wants to receive (e.g. {@code evMouseDown}, {@code evKeyDown},
-     * {@code evCommand}). Set to the union of event types handled by
-     * {@link #handleEvent(JtvEvent)}.
-     */
-	public void setEventMask(int eventMask) {
-		this.eventMask = eventMask;
-	}
-
-	/**
-     * Grow-mode bitmask of {@code gfXXXX} constants controlling how this
-     * view resizes relative to its owner (e.g. {@code gfGrowHiX} to keep
-     * the right edge pinned to the owner's right side).
-     */
-    public int getGrowMode() {
-		return growMode;
-	}
-
-	/**
-     * Grow-mode bitmask of {@code gfXXXX} constants controlling how this
-     * view resizes relative to its owner (e.g. {@code gfGrowHiX} to keep
-     * the right edge pinned to the owner's right side).
-     */
-	public void setGrowMode(int growMode) {
-		this.growMode = growMode;
-	}
 }

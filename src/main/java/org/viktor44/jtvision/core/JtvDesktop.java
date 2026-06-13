@@ -117,7 +117,7 @@ public class JtvDesktop extends JtvGroup {
 
         if (count > 0 && lastV != null) {
             JtvPoint min = lastV.getMinimumSize();
-            if (min.getX() > r.getB().getX() - r.getA().getX() - count || min.getY() > r.getB().getY() - r.getA().getY() - count) {
+            if (min.getX() > r.getBx() - r.getAx() - count || min.getY() > r.getBy() - r.getAy() - count) {
                 tileError();
             }
             else {
@@ -127,7 +127,7 @@ public class JtvDesktop extends JtvGroup {
                 forEach(v -> {
                     if (tileable(v) && idx[0] >= 0) {
                         JtvRect nr = new JtvRect(cr);
-                        nr.setA(new JtvPoint(nr.getA().getX() + idx[0], nr.getA().getY() + idx[0]));
+                        nr.setA(new JtvPoint(nr.getAx() + idx[0], nr.getAy() + idx[0]));
                         v.locate(nr);
                         idx[0]--;
                     }
@@ -149,7 +149,9 @@ public class JtvDesktop extends JtvGroup {
         if (last != null) {
             JtvView p = last;
             do {
-                if (tileable(p)) numTileable++;
+                if (tileable(p)) {
+                    numTileable++;
+                }
                 p = p.prev();
             }
             while (p != last);
@@ -175,8 +177,8 @@ public class JtvDesktop extends JtvGroup {
                 numRows = tmp;
             }
 
-            int totalWidth = r.getB().getX() - r.getA().getX();
-            int totalHeight = r.getB().getY() - r.getA().getY();
+            int totalWidth = r.getBx() - r.getAx();
+            int totalHeight = r.getBy() - r.getAy();
             if (totalWidth / numCols == 0 || totalHeight / numRows == 0) {
                 tileError();
                 return;
@@ -191,10 +193,10 @@ public class JtvDesktop extends JtvGroup {
                     int col = tileNum[0] % fc;
                     int row = tileNum[0] / fc;
                     JtvRect nr = new JtvRect(
-                        r.getA().getX() + totalWidth * col / fc,
-                        r.getA().getY() + totalHeight * row / fr,
-                        r.getA().getX() + totalWidth * (col + 1) / fc,
-                        r.getA().getY() + totalHeight * (row + 1) / fr
+                        r.getAx() + totalWidth * col / fc,
+                        r.getAy() + totalHeight * row / fr,
+                        r.getAx() + totalWidth * (col + 1) / fc,
+                        r.getAy() + totalHeight * (row + 1) / fr
                     );
                     v.locate(nr);
                     tileNum[0]--;

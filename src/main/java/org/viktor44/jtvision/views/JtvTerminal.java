@@ -120,7 +120,8 @@ public class JtvTerminal extends JtvTextDevice {
             if (ch == '\n') {
                 lines.add(currentLine);
                 currentLine = "";
-            } else {
+            }
+            else {
                 currentLine += ch;
             }
         }
@@ -156,7 +157,8 @@ public class JtvTerminal extends JtvTextDevice {
             int cut = used - bufSize;
             if (cut >= currentLine.length()) {
                 currentLine = "";
-            } else {
+            }
+            else {
                 currentLine = currentLine.substring(cut);
             }
         }
@@ -208,7 +210,8 @@ public class JtvTerminal extends JtvTextDevice {
         int cursorCol = Math.max(0, currentLine.length() - Math.max(0, delta.getX()));
         if (cursorLine >= 0 && cursorLine < size.getY() && cursorCol < size.getX()) {
             setCursor(cursorCol, cursorLine);
-        } else {
+        }
+        else {
             setCursor(-1, -1);
         }
     }

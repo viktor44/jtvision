@@ -134,7 +134,8 @@ public class JtvDirListBox extends JtvListBox {
 
         if (drives.equals(str)) {
             showDrives(entries);
-        } else {
+        }
+        else {
             showDirs(entries);
         }
 

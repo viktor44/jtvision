@@ -166,8 +166,8 @@ public class JtvGroup extends JtvView {
     @Override
     public void changeBounds(JtvRect bounds) {
         JtvPoint d = new JtvPoint(
-            (bounds.getB().getX() - bounds.getA().getX()) - size.getX(),
-            (bounds.getB().getY() - bounds.getA().getY()) - size.getY()
+            (bounds.getBx() - bounds.getAx()) - size.getX(),
+            (bounds.getBy() - bounds.getAy()) - size.getY()
         );
         if (d.getX() == 0 && d.getY() == 0) {
             setBounds(bounds);
@@ -244,7 +244,9 @@ public class JtvGroup extends JtvView {
      */
     protected void drawSubViews(JtvView p, JtvView bottom) {
         while (p != bottom) {
-            if (p == null) break;
+            if (p == null) {
+                break;
+            }
             p.drawView();
             p = p.nextView();
         }
@@ -813,8 +815,9 @@ public class JtvGroup extends JtvView {
         }
 
         if ((aState & sfFocused) != 0) {
-            if (current != null)
+            if (current != null) {
                 current.setState(sfFocused, enable);
+            }
         }
 
         if ((aState & sfExposed) != 0) {
@@ -987,7 +990,9 @@ public class JtvGroup extends JtvView {
                                 int x1, int x2, int y,
                                 JtvScreenCell[] buf, int bufOffset,
                                 boolean inShadow) {
-        if (x1 >= x2) return;
+        if (x1 >= x2) {
+            return;
+        }
 
         if (last != null) {
             JtvView v = last.next;
@@ -1005,12 +1010,16 @@ public class JtvGroup extends JtvView {
                         if (x1 < vx1 && x2 > vx1) {
                             int preEnd = Math.min(x2, vx1);
                             writeClippedAfter(v, target, x1, preEnd, y, buf, bufOffset, inShadow);
-                            if (x2 <= vx1) return;
+                            if (x2 <= vx1) {
+                                return;
+                            }
                             bufOffset += (vx1 - x1);
                             x1 = vx1;
                         }
                         if (x1 < vx2 && x1 >= vx1) {
-                            if (x2 <= vx2) return;
+                            if (x2 <= vx2) {
+                                return;
+                            }
                             bufOffset += (vx2 - x1);
                             x1 = vx2;
                         }
@@ -1018,7 +1027,8 @@ public class JtvGroup extends JtvView {
                             shadowX1 = vx2;
                             shadowX2 = vx2 + shadowSize.getX();
                         }
-                    } else if (hasShadow && y >= vy2 && y < vy2 + shadowSize.getY()) {
+                    }
+                    else if (hasShadow && y >= vy2 && y < vy2 + shadowSize.getY()) {
                         shadowX1 = vx1 + shadowSize.getX();
                         shadowX2 = vx2 + shadowSize.getX();
                     }
@@ -1027,13 +1037,17 @@ public class JtvGroup extends JtvView {
                         if (x1 < shadowX1) {
                             int preEnd = Math.min(x2, shadowX1);
                             writeClippedAfter(v, target, x1, preEnd, y, buf, bufOffset, inShadow);
-                            if (x2 <= shadowX1) return;
+                            if (x2 <= shadowX1) {
+                                return;
+                            }
                             bufOffset += (shadowX1 - x1);
                             x1 = shadowX1;
                         }
                         int shEnd = Math.min(x2, shadowX2);
                         writeClippedAfter(v, target, x1, shEnd, y, buf, bufOffset, true);
-                        if (x2 <= shadowX2) return;
+                        if (x2 <= shadowX2) {
+                            return;
+                        }
                         bufOffset += (shadowX2 - x1);
                         x1 = shadowX2;
                     }
@@ -1050,7 +1064,9 @@ public class JtvGroup extends JtvView {
                                    int x1, int x2, int y,
                                    JtvScreenCell[] buf, int bufOffset,
                                    boolean inShadow) {
-        if (x1 >= x2) return;
+        if (x1 >= x2) {
+            return;
+        }
         JtvView v = after.next;
         while (v != target) {
             if ((v.state & sfVisible) != 0) {
@@ -1066,12 +1082,16 @@ public class JtvGroup extends JtvView {
                     if (x1 < vx1 && x2 > vx1) {
                         int preEnd = Math.min(x2, vx1);
                         writeClippedAfter(v, target, x1, preEnd, y, buf, bufOffset, inShadow);
-                        if (x2 <= vx1) return;
+                        if (x2 <= vx1) {
+                            return;
+                        }
                         bufOffset += (vx1 - x1);
                         x1 = vx1;
                     }
                     if (x1 < vx2 && x1 >= vx1) {
-                        if (x2 <= vx2) return;
+                        if (x2 <= vx2) {
+                            return;
+                        }
                         bufOffset += (vx2 - x1);
                         x1 = vx2;
                     }
@@ -1079,7 +1099,8 @@ public class JtvGroup extends JtvView {
                         shadowX1 = vx2;
                         shadowX2 = vx2 + shadowSize.getX();
                     }
-                } else if (hasShadow && y >= vy2 && y < vy2 + shadowSize.getY()) {
+                }
+                else if (hasShadow && y >= vy2 && y < vy2 + shadowSize.getY()) {
                     shadowX1 = vx1 + shadowSize.getX();
                     shadowX2 = vx2 + shadowSize.getX();
                 }
@@ -1088,13 +1109,17 @@ public class JtvGroup extends JtvView {
                     if (x1 < shadowX1) {
                         int preEnd = Math.min(x2, shadowX1);
                         writeClippedAfter(v, target, x1, preEnd, y, buf, bufOffset, inShadow);
-                        if (x2 <= shadowX1) return;
+                        if (x2 <= shadowX1) {
+                            return;
+                        }
                         bufOffset += (shadowX1 - x1);
                         x1 = shadowX1;
                     }
                     int shEnd = Math.min(x2, shadowX2);
                     writeClippedAfter(v, target, x1, shEnd, y, buf, bufOffset, true);
-                    if (x2 <= shadowX2) return;
+                    if (x2 <= shadowX2) {
+                        return;
+                    }
                     bufOffset += (shadowX2 - x1);
                     x1 = shadowX2;
                 }
@@ -1128,7 +1153,8 @@ public class JtvGroup extends JtvView {
                     JtvScreenCell src = buf[bi];
                     if (inShadow) {
                         dst[idx] = new JtvScreenCell(src.getCh(), applyShadow(src.getAttr()));
-                    } else {
+                    }
+                    else {
                         dst[idx] = src;
                     }
                 }
@@ -1138,7 +1164,8 @@ public class JtvGroup extends JtvView {
         if (lockFlag == 0) {
             if (owner != null) {
                 writeToOwner(x1, x2, y, buf, bufOffset, inShadow);
-            } else {
+            }
+            else {
                 Screen.writeToScreen(x1, x2, y, buf, bufOffset, inShadow);
             }
         }

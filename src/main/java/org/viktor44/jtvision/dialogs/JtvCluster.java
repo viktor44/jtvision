@@ -28,6 +28,9 @@ import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.util.StringUtils;
 import org.viktor44.jtvision.views.JtvView;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Abstract base class for clustered controls such as check boxes and radio buttons.
  * <p>
@@ -75,6 +78,8 @@ public class JtvCluster extends JtvView {
      * For {@link JtvCheckBoxes} each bit corresponds to a checked item.
      * For {@link JtvRadioButtons} this is the zero-based index of the selected item.
      */
+    @Getter
+    @Setter
     protected int value;
 
 	/** The index of the currently highlighted (cursor-over) item within the cluster. */
@@ -102,8 +107,9 @@ public class JtvCluster extends JtvView {
         sel = 0;
         strings = new ArrayList<>();
         if (items != null) {
-            for (String item : items)
+            for (String item : items) {
                 strings.add(item);
+            }
         }
         options |= ofSelectable | ofFirstClick | ofPreProcess | ofPostProcess;
         setCursor(2, 0);
@@ -129,8 +135,9 @@ public class JtvCluster extends JtvView {
      */
     @Override
     public void setDataFrom(Object rec) {
-        if (rec instanceof Integer)
+        if (rec instanceof Integer) {
             value = (Integer) rec;
+        }
         drawView();
     }
 
@@ -180,8 +187,9 @@ public class JtvCluster extends JtvView {
                         b.moveChar(col, ' ', color, size.getX() - col);
                         b.moveCStr(col, icon, color, colorHot);
                         int markIdx = multiMark(cur);
-                        if (markIdx >= 0 && markIdx < markers.length())
+                        if (markIdx >= 0 && markIdx < markers.length()) {
                             b.putChar(col + 2, markers.charAt(markIdx));
+                        }
                         b.moveCStr(col + 5, strings.get(cur), color, colorHot);
                     }
                 }
@@ -210,8 +218,9 @@ public class JtvCluster extends JtvView {
      */
     @Override
     public int getHelpCtx() {
-        if (helpCtx == hcNoContext)
+        if (helpCtx == hcNoContext) {
             return hcNoContext;
+        }
         return helpCtx + sel;
     }
 
@@ -385,8 +394,9 @@ public class JtvCluster extends JtvView {
      * @return the column offset in character cells
      */
     public int column(int item) {
-        if (item < size.getY())
+        if (item < size.getY()) {
             return 0;
+        }
         int width = 0;
         int col = -6;
         int l = 0;
@@ -395,9 +405,12 @@ public class JtvCluster extends JtvView {
                 col += width + 6;
                 width = 0;
             }
-            if (i < strings.size())
+            if (i < strings.size()) {
                 l = StringUtils.cstrLen(strings.get(i));
-            if (l > width) width = l;
+            }
+            if (l > width) {
+                width = l;
+            }
         }
         return col;
     }
@@ -411,12 +424,17 @@ public class JtvCluster extends JtvView {
      */
     public int findSel(JtvPoint p) {
         JtvRect r = getExtent();
-        if (!r.contains(p)) return -1;
+        if (!r.contains(p)) {
+            return -1;
+        }
         int i = 0;
-        while (p.getX() >= column(i + size.getY()))
+        while (p.getX() >= column(i + size.getY())) {
             i += size.getY();
+        }
         int s = i + p.getY();
-        if (s >= strings.size()) return -1;
+        if (s >= strings.size()) {
+            return -1;
+        }
         return s;
     }
 
@@ -439,8 +457,9 @@ public class JtvCluster extends JtvView {
      * @return {@code true} if the item is enabled
      */
     public boolean buttonState(int item) {
-        if (item < 32)
+        if (item < 32) {
             return (enableMask & (1L << item)) != 0;
+        }
         return false;
     }
 
@@ -452,17 +471,21 @@ public class JtvCluster extends JtvView {
      * @param enable {@code true} to enable the masked items, {@code false} to disable them
      */
     public void setButtonState(long mask, boolean enable) {
-        if (!enable)
+        if (!enable) {
             enableMask &= ~mask;
-        else
+        }
+        else {
             enableMask |= mask;
+        }
         int n = strings.size();
         if (n < 32) {
             long testMask = (1L << n) - 1;
-            if ((enableMask & testMask) != 0)
+            if ((enableMask & testMask) != 0) {
                 options |= ofSelectable;
-            else
+            }
+            else {
                 options &= ~ofSelectable;
+            }
         }
     }
 
@@ -475,25 +498,8 @@ public class JtvCluster extends JtvView {
     @Override
     public void setState(int aState, boolean enable) {
         super.setState(aState, enable);
-        if (aState == sfSelected)
+        if (aState == sfSelected) {
             drawView();
+        }
     }
-
-    /**
-     * The current value of the cluster.
-     * For {@link JtvCheckBoxes} each bit corresponds to a checked item.
-     * For {@link JtvRadioButtons} this is the zero-based index of the selected item.
-     */
-    public int getValue() {
-		return value;
-	}
-
-    /**
-     * The current value of the cluster.
-     * For {@link JtvCheckBoxes} each bit corresponds to a checked item.
-     * For {@link JtvRadioButtons} this is the zero-based index of the selected item.
-     */
-	public void setValue(int value) {
-		this.value = value;
-	}
 }

@@ -393,7 +393,9 @@ public class JtvFrame extends JtvView {
                 if ((win.flags & wfClose) != 0
                 		&& (state & sfActive) != 0
                 		&& mouse.getX() >= 2 && mouse.getX() <= 4) {
-                    while (mouseEvent(event, evMouse)) ;
+                    while (mouseEvent(event, evMouse)) {
+                        // wait for mouse-up
+                    }
                     mouse = makeLocal(event.getMouse().getWhere());
                     if (mouse.getY() == 0 && mouse.getX() >= 2 && mouse.getX() <= 4) {
                         event.setWhat(evCommand);

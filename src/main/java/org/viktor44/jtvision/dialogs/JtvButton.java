@@ -274,8 +274,8 @@ public class JtvButton extends JtvView {
     @Override
     public void handleEvent(JtvEvent event) {
         JtvRect clickRect = getExtent();
-        clickRect.setA(new JtvPoint(clickRect.getA().getX() + 1, clickRect.getA().getY()));
-        clickRect.setB(new JtvPoint(clickRect.getB().getX() - 1, clickRect.getB().getY() - 1));
+        clickRect.setA(new JtvPoint(clickRect.getAx() + 1, clickRect.getAy()));
+        clickRect.setB(new JtvPoint(clickRect.getBx() - 1, clickRect.getBy() - 1));
 
         if (event.getWhat() == evMouseDown) {
             JtvPoint mouse = makeLocal(event.getMouse().getWhere());
@@ -283,15 +283,16 @@ public class JtvButton extends JtvView {
                 clearEvent(event);
             }
         }
-        if ((flags & bfGrabFocus) != 0)
+        if ((flags & bfGrabFocus) != 0) {
             super.handleEvent(event);
+        }
 
         char c = StringUtils.hotKey(title);
 
         switch (event.getWhat()) {
             case evMouseDown:
                 if ((state & sfDisabled) == 0) {
-                    clickRect.setB(new JtvPoint(clickRect.getB().getX() + 1, clickRect.getB().getY()));
+                    clickRect.setB(new JtvPoint(clickRect.getBx() + 1, clickRect.getBy()));
                     boolean down = false;
                     do {
                         JtvPoint mouse = makeLocal(event.getMouse().getWhere());
@@ -371,10 +372,12 @@ public class JtvButton extends JtvView {
     @Override
     public void setState(int aState, boolean enable) {
         super.setState(aState, enable);
-        if ((aState & (sfSelected | sfActive)) != 0)
+        if ((aState & (sfSelected | sfActive)) != 0) {
             drawView();
-        if ((aState & sfFocused) != 0)
+        }
+        if ((aState & sfFocused) != 0) {
             makeDefault(enable);
+        }
     }
 
     /** Duration of the press animation in milliseconds. */
@@ -390,7 +393,8 @@ public class JtvButton extends JtvView {
         Screen.flushScreen();
         try {
             Thread.sleep(animationDurationMs);
-        } catch (InterruptedException e) {
+        }
+        catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
         drawState(false);
@@ -409,7 +413,8 @@ public class JtvButton extends JtvView {
         message(owner, evBroadcast, cmRecordHistory, null);
         if ((flags & bfBroadcast) != 0) {
             message(owner, evBroadcast, command, this);
-        } else {
+        }
+        else {
             JtvEvent e = new JtvEvent();
             e.setWhat(evCommand);
             e.getMessage().setCommand(command);

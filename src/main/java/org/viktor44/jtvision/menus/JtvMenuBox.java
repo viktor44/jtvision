@@ -86,16 +86,21 @@ public class JtvMenuBox extends JtvMenuView {
      * {@link JtvMenuView#execute()} calls this automatically.
      */
     public void adjustBounds() {
-        if (menu == null) return;
+        if (menu == null) {
+            return;
+        }
         int maxWidth = 10;
         int count = 0;
         for (JtvMenuItem p : menu.getItems()) {
             count++;
             if (p.getName() != null) {
                 int w = StringUtils.cstrLen(p.getName()) + 6;
-                if (p.getParam() != null)
+                if (p.getParam() != null) {
                     w += p.getParam().length() + 2;
-                if (w > maxWidth) maxWidth = w;
+                }
+                if (w > maxWidth) {
+                    maxWidth = w;
+                }
             }
         }
         size = new JtvPoint(maxWidth, count + 2); // +2 for border
@@ -148,25 +153,37 @@ public class JtvMenuBox extends JtvMenuView {
                     b.putChar(0, '├');
                     b.moveChar(1, '─', cNormal, w - 2);
                     b.putChar(w - 1, '┤');
-                } else {
+                }
+                else {
                     b.putChar(0, '│');
                     b.putChar(w - 1, '│');
 
                     JtvColorAttr color, colorHot;
                     if (p.isDisabled()) {
-                        if (p == current) { color = cSelDisabled; colorHot = cSelDisabledHot; }
-                        else { color = cNormDisabled; colorHot = cNormDisabledHot; }
-                    } else {
-                        if (p == current) { color = cSelect; colorHot = cSelectHot; }
-                        else { color = cNormal; colorHot = cNormalHot; }
+                        if (p == current) {
+                            color = cSelDisabled; colorHot = cSelDisabledHot;
+                        }
+                        else {
+                            color = cNormDisabled; colorHot = cNormDisabledHot;
+                        }
+                    }
+                    else {
+                        if (p == current) {
+                            color = cSelect; colorHot = cSelectHot;
+                        }
+                        else {
+                            color = cNormal; colorHot = cNormalHot;
+                        }
                     }
 
                     b.moveChar(1, ' ', color, w - 2);
                     b.moveCStr(3, p.getName(), color, colorHot);
-                    if (p.getParam() != null)
+                    if (p.getParam() != null) {
                         b.moveStr(w - p.getParam().length() - 3, p.getParam(), color);
-                    if (p.getCommand() == 0 && p.getSubMenu() != null)
+                    }
+                    if (p.getCommand() == 0 && p.getSubMenu() != null) {
                         b.putChar(w - 3, '►'); // submenu arrow
+                    }
                 }
                 writeLine(0, y, w, 1, b);
                 y++;
@@ -195,8 +212,9 @@ public class JtvMenuBox extends JtvMenuView {
         int y = 1;
         if (menu != null) {
             for (JtvMenuItem p : menu.getItems()) {
-                if (p == item)
+                if (p == item) {
                     return new JtvRect(1, y, size.getX() - 1, y + 1);
+                }
                 y++;
             }
         }

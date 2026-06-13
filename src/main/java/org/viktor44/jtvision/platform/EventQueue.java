@@ -155,10 +155,13 @@ public abstract class EventQueue {
      */
     public void waitForEvents(int timeoutMs) {
         Screen.flushScreen();
-        if (!eventQueue.isEmpty()) return;
+        if (!eventQueue.isEmpty()) {
+            return;
+        }
         try {
             Thread.sleep(Math.max(1, Math.min(timeoutMs, 50)));
-        } catch (InterruptedException ignored) {
+        }
+        catch (InterruptedException ignored) {
             Thread.currentThread().interrupt();
         }
     }
@@ -196,7 +199,8 @@ public abstract class EventQueue {
         JtvEvent queued = peekEvent(evKeyboard);
         if (queued != null) {
             event.copyFrom(queued);
-        } else {
+        }
+        else {
             event.setWhat(evNothing);
         }
         return event;
@@ -220,7 +224,9 @@ public abstract class EventQueue {
      * Re-initialises the event queue after a previous {@link #suspend()}.
      */
     public void resume() {
-        if (!running) init();
+        if (!running) {
+            init();
+        }
     }
 
     // ------------------------------------------------------------------

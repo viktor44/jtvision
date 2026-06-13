@@ -39,8 +39,9 @@ public final class TermColor {
         }
         String mode = args.length == 3 ? args[2] : "indexed16";
         BufferedImage src = ImageIO.read(new File(args[0]));
-        if (src == null)
+        if (src == null) {
             throw new IOException("Cannot read image: " + args[0]);
+        }
 
         BufferedImage dst = new BufferedImage(src.getWidth(), src.getHeight(), BufferedImage.TYPE_INT_RGB);
         for (int y = 0; y < src.getHeight(); y++) {
@@ -66,8 +67,9 @@ public final class TermColor {
 
     private static int quantizeIndexed8(int rgb, int x, int y) {
         int idx = rgbToXTerm16(rgb);
-        if (idx >= 8 && (y % 2) != 0)
+        if (idx >= 8 && (y % 2) != 0) {
             idx -= 8;
+        }
         return XTERM16_TO_RGB[idx];
     }
 
@@ -127,12 +129,16 @@ public final class TermColor {
         if (avg < 8) {
             grayIdx = 16;
             grayRgb = 0;
-        } else if (avg >= 238) {
+        }
+        else if (avg >= 238) {
             grayIdx = 231;
             grayRgb = 0xFFFFFF;
-        } else {
+        }
+        else {
             int step = (avg - 8 + 5) / 10;
-            if (step > 23) step = 23;
+            if (step > 23) {
+                step = 23;
+            }
             grayIdx = 232 + step;
             int level = 8 + step * 10;
             grayRgb = (level << 16) | (level << 8) | level;
@@ -143,8 +149,9 @@ public final class TermColor {
     }
 
     public static int xterm256ToRGB(int idx) {
-        if (idx < 16)
+        if (idx < 16) {
             return XTERM16_TO_RGB[idx];
+        }
         if (idx < 232) {
             int n = idx - 16;
             int r = cubeLevelValue(n / 36);

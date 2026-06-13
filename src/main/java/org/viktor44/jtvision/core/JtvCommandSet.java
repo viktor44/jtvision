@@ -46,7 +46,9 @@ public class JtvCommandSet {
      * @return {@code true} if the bit for {@code cmd} is set
      */
     public boolean has(int cmd) {
-        if (cmd < 0 || cmd > 255) return false;
+        if (cmd < 0 || cmd > 255) {
+            return false;
+        }
         return (cmds[cmd / 8] & (1 << (cmd % 8))) != 0;
     }
 
@@ -101,7 +103,9 @@ public class JtvCommandSet {
      */
     public boolean isEmpty() {
         for (int i = 0; i < 32; i++) {
-            if (cmds[i] != 0) return false;
+            if (cmds[i] != 0) {
+                return false;
+            }
         }
         return true;
     }
@@ -145,11 +149,17 @@ public class JtvCommandSet {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof JtvCommandSet)) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof JtvCommandSet)) {
+            return false;
+        }
         JtvCommandSet other = (JtvCommandSet) obj;
         for (int i = 0; i < 32; i++) {
-            if (cmds[i] != other.cmds[i]) return false;
+            if (cmds[i] != other.cmds[i]) {
+                return false;
+            }
         }
         return true;
     }

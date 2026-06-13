@@ -93,7 +93,9 @@ public class HelpCompiler {
             while (true) {
                 skipBlankLines(in);
                 String line = getLine(in);
-                if (line == null) break;
+                if (line == null) {
+                    break;
+                }
                 pushback = line;
                 readTopic(in);
             }
@@ -110,7 +112,9 @@ public class HelpCompiler {
                 warning("Unresolved forward reference \"" + e.getKey() + "\"");
             }
         }
-        if (warnings > 0) System.out.println(warnings + " warning(s).");
+        if (warnings > 0) {
+            System.out.println(warnings + " warning(s).");
+        }
     }
 
     // =========================== I/O helpers ===========================
@@ -124,9 +128,13 @@ public class HelpCompiler {
         }
         while (true) {
             String line = in.readLine();
-            if (line == null) return null;
+            if (line == null) {
+                return null;
+            }
             lineCount++;
-            if (line.length() > 0 && line.charAt(0) == ';') continue; // comment
+            if (line.length() > 0 && line.charAt(0) == ';') {
+                continue; // comment
+            }
             return line;
         }
     }
@@ -138,8 +146,12 @@ public class HelpCompiler {
 
     private void skipBlankLines(BufferedReader in) throws IOException {
         String line = getLine(in);
-        while (line != null && line.isEmpty()) line = getLine(in);
-        if (line != null) unGetLine(line);
+        while (line != null && line.isEmpty()) {
+            line = getLine(in);
+        }
+        if (line != null) {
+            unGetLine(line);
+        }
     }
 
     // =========================== Topic header ===========================
@@ -147,14 +159,20 @@ public class HelpCompiler {
     private static class TopicDef {
         final String symbol;
         final int value;
-        TopicDef(String symbol, int value) { this.symbol = symbol; this.value = value; }
+
+        TopicDef(String symbol, int value) {
+            this.symbol = symbol;
+            this.value = value;
+        }
     }
 
     /** Parses a {@code .topic sym[=n][, sym[=n]]...} header into its defs. */
     private List<TopicDef> topicHeader(String line) {
         int[] i = { 0 };
         String w = getWord(line, i);
-        if (!".".equals(w)) return null;
+        if (!".".equals(w)) {
+            return null;
+        }
         w = getWord(line, i);
         if (!"TOPIC".equalsIgnoreCase(w)) {
             error("TOPIC expected");
@@ -167,11 +185,15 @@ public class HelpCompiler {
         List<TopicDef> defs = new ArrayList<>();
         while (true) {
             TopicDef d = topicDefinition(line, i);
-            if (d == null) return null;
+            if (d == null) {
+                return null;
+            }
             defs.add(d);
             int[] j = { i[0] };
             String w = getWord(line, j);
-            if (!",".equals(w)) break;
+            if (!",".equals(w)) {
+                break;
+            }
             i[0] = j[0];
         }
         return defs;
@@ -193,7 +215,8 @@ public class HelpCompiler {
                 return null;
             }
             helpCounter = Integer.parseInt(w);
-        } else {
+        }
+        else {
             helpCounter++;
         }
         if (helpCounter > MAX_HELP_TOPIC_ID) {
@@ -211,21 +234,32 @@ public class HelpCompiler {
 
     private static String getWord(String line, int[] i) {
         int len = line.length();
-        while (i[0] < len && (line.charAt(i[0]) == ' ' || line.charAt(i[0]) == '\t')) i[0]++;
+        while (i[0] < len && (line.charAt(i[0]) == ' ' || line.charAt(i[0]) == '\t')) {
+            i[0]++;
+        }
         int start = i[0];
-        if (start >= len) return "";
+        if (start >= len) {
+            return "";
+        }
         char c = line.charAt(start);
         i[0]++;
         if (isWordChar(c)) {
-            while (i[0] < len && isWordChar(line.charAt(i[0]))) i[0]++;
+            while (i[0] < len && isWordChar(line.charAt(i[0]))) {
+                i[0]++;
+            }
         }
         return line.substring(start, i[0]);
     }
 
     private static boolean isNumeric(String s) {
-        if (s.isEmpty()) return false;
-        for (int k = 0; k < s.length(); k++)
-            if (!Character.isDigit(s.charAt(k))) return false;
+        if (s.isEmpty()) {
+            return false;
+        }
+        for (int k = 0; k < s.length(); k++) {
+            if (!Character.isDigit(s.charAt(k))) {
+                return false;
+            }
+        }
         return true;
     }
 
@@ -235,7 +269,12 @@ public class HelpCompiler {
         final String targetSymbol;
         final int offset;
         final int length;
-        CrossRef(String t, int o, int l) { targetSymbol = t; offset = o; length = l; }
+
+        CrossRef(String t, int o, int l) {
+            targetSymbol = t;
+            offset = o;
+            length = l;
+        }
     }
 
     private static class Paragraph {
@@ -250,20 +289,34 @@ public class HelpCompiler {
     }
 
     private boolean isEndParagraph(String line, State state) {
-        if (line == null) return true;
-        if (line.isEmpty()) return true;
+        if (line == null) {
+            return true;
+        }
+        if (line.isEmpty()) {
+            return true;
+        }
         char c0 = line.charAt(0);
-        if (c0 == COMMAND_CHAR) return true;
-        if (c0 == ' ' && state == State.WRAPPING) return true;
-        if (c0 != ' ' && state == State.NOT_WRAPPING) return true;
+        if (c0 == COMMAND_CHAR) {
+            return true;
+        }
+        if (c0 == ' ' && state == State.WRAPPING) {
+            return true;
+        }
+        if (c0 != ' ' && state == State.NOT_WRAPPING) {
+            return true;
+        }
         return false;
     }
 
     private void readTopic(BufferedReader in) throws IOException {
         String header = getLine(in);
-        if (header == null) return;
+        if (header == null) {
+            return;
+        }
         List<TopicDef> defs = topicHeader(header);
-        if (defs == null) return;
+        if (defs == null) {
+            return;
+        }
 
         Topic topic = new Topic();
         int topicOffset = 0;
@@ -271,7 +324,9 @@ public class HelpCompiler {
 
         while (true) {
             Paragraph p = readParagraph(in);
-            if (p == null) break;
+            if (p == null) {
+                break;
+            }
             // Paragraph offsets are relative to the topic start; record absolute-to-paragraph.
             for (CrossRef r : p.refs) {
                 // offsets in readParagraph are relative to paragraph start; add topicOffset.
@@ -310,20 +365,25 @@ public class HelpCompiler {
         }
 
         if (isEndParagraph(line, state)) {
-            if (line != null) unGetLine(line);
+            if (line != null) {
+                unGetLine(line);
+            }
             return null;
         }
 
         while (!isEndParagraph(line, state)) {
-            if (state == State.UNDEFINED)
+            if (state == State.UNDEFINED) {
                 state = (line.charAt(0) == ' ') ? State.NOT_WRAPPING : State.WRAPPING;
+            }
             StringBuilder lineBuf = new StringBuilder(line);
             scanForCrossRefs(lineBuf, buf.length(), refs);
             buf.append(lineBuf);
             buf.append(state == State.WRAPPING ? ' ' : '\n');
             line = getLine(in);
         }
-        if (line != null) unGetLine(line);
+        if (line != null) {
+            unGetLine(line);
+        }
 
         Paragraph p = new Paragraph();
         p.wrap = state == State.WRAPPING;
@@ -341,7 +401,9 @@ public class HelpCompiler {
         int i = 0;
         while (i < line.length()) {
             int beg = findSingle(line, i, '{');
-            if (beg < 0) return;
+            if (beg < 0) {
+                return;
+            }
             int end = findSingle(line, beg + 1, '}');
             if (end < 0) {
                 error("Unterminated topic reference.");
@@ -356,7 +418,8 @@ public class HelpCompiler {
                 highlightLen = end - (beg + 1);
                 removeFrom = -1;
                 removeLen = 0;
-            } else {
+            }
+            else {
                 target = line.substring(alias + 1, end);
                 highlightLen = alias - (beg + 1);
                 removeFrom = alias;
@@ -371,7 +434,9 @@ public class HelpCompiler {
             // Mark spaces inside the highlighted region as 0xFF (JT Vision
             // help-viewer convention for non-breaking highlighted spaces).
             for (int k = beg; k < beg + highlightLen && k < line.length(); k++) {
-                if (line.charAt(k) == ' ') line.setCharAt(k, (char) 0xFF);
+                if (line.charAt(k) == ' ') {
+                    line.setCharAt(k, (char) 0xFF);
+                }
             }
             refs.add(new CrossRef(target, paragraphOffset + beg, highlightLen));
             i = beg + highlightLen;
@@ -383,7 +448,9 @@ public class HelpCompiler {
         int i = from;
         while (i < line.length()) {
             int pos = indexOf(line, ch, i);
-            if (pos < 0) return -1;
+            if (pos < 0) {
+                return -1;
+            }
             if (pos + 1 < line.length() && line.charAt(pos + 1) == ch) {
                 line.deleteCharAt(pos); // collapse pair
                 i = pos + 1;
@@ -395,7 +462,11 @@ public class HelpCompiler {
     }
 
     private static int indexOf(StringBuilder b, char ch, int from) {
-        for (int i = from; i < b.length(); i++) if (b.charAt(i) == ch) return i;
+        for (int i = from; i < b.length(); i++) {
+            if (b.charAt(i) == ch) {
+                return i;
+            }
+        }
         return -1;
     }
 
@@ -409,7 +480,9 @@ public class HelpCompiler {
             out.writeInt(topics.size());
             for (Topic t : topics) {
                 out.writeInt(t.ids.size());
-                for (int id : t.ids) out.writeInt(id);
+                for (int id : t.ids) {
+                    out.writeInt(id);
+                }
                 out.writeInt(t.paragraphs.size());
                 for (Paragraph p : t.paragraphs) {
                     out.writeBoolean(p.wrap);
@@ -436,7 +509,9 @@ public class HelpCompiler {
 
     private void writeSymbolFile(String symbName) throws IOException {
         String className = new File(symbName).getName();
-        if (className.endsWith(".java")) className = className.substring(0, className.length() - 5);
+        if (className.endsWith(".java")) {
+            className = className.substring(0, className.length() - 5);
+        }
         try (PrintWriter w = new PrintWriter(symbName)) {
             w.println("// Generated by TvHelpCompiler from " + sourceName);
             w.println("public final class " + className + " {");
@@ -455,8 +530,12 @@ public class HelpCompiler {
     private static String replaceExt(String path, String newExt, boolean force) {
         int slash = Math.max(path.lastIndexOf('/'), path.lastIndexOf('\\'));
         int dot = path.lastIndexOf('.');
-        if (dot <= slash) return path + newExt;
-        if (force) return path.substring(0, dot) + newExt;
+        if (dot <= slash) {
+            return path + newExt;
+        }
+        if (force) {
+            return path.substring(0, dot) + newExt;
+        }
         return path;
     }
 

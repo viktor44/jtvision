@@ -43,7 +43,8 @@ public class MultiMenu extends JtvMenuBar {
                 }
             }
             clearEvent(event);
-        } else {
+        }
+        else {
             super.handleEvent(event);
         }
     }

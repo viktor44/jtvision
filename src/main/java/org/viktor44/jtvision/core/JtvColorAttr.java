@@ -4,6 +4,8 @@
  */
 package org.viktor44.jtvision.core;
 
+import lombok.EqualsAndHashCode;
+
 /**
  * Encodes a classic CGA/BIOS 8-bit terminal color attribute.
  *
@@ -16,6 +18,7 @@ package org.viktor44.jtvision.core;
  * Use {@link #JtvColorAttr(int, int)} to build an attribute from separate foreground and
  * background values, or pass the raw packed byte directly to {@link #JtvColorAttr(int)}.
  */
+@EqualsAndHashCode
 public class JtvColorAttr {
     /** Black (0x00). */
     public static final int BLACK = 0x00;
@@ -54,7 +57,6 @@ public class JtvColorAttr {
     public static final JtvColorAttr WHITE_ON_WHITE             = new JtvColorAttr(WHITE, WHITE);
     public static final JtvColorAttr WHITE_ON_LIGHT_RED         = new JtvColorAttr(WHITE, LIGHT_RED);
     
-
     private final int value;
 
     /** Constructs the default attribute: light-gray foreground on black background ({@code 0x07}). */
@@ -105,18 +107,6 @@ public class JtvColorAttr {
      * @return packed color byte
      */
     public int getValue() {
-        return value;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof JtvColorAttr)) return false;
-        return value == ((JtvColorAttr) obj).value;
-    }
-
-    @Override
-    public int hashCode() {
         return value;
     }
 }

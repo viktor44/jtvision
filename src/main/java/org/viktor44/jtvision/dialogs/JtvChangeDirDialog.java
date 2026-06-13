@@ -179,7 +179,8 @@ public class JtvChangeDirDialog extends JtvDialog {
                 if (event.getMessage().getInfoPtr() instanceof JtvDirEntry) {
                     JtvDirEntry p = (JtvDirEntry) event.getMessage().getInfoPtr();
                     curDir = p.dir();
-                } else {
+                }
+                else {
                     return;
                 }
                 break;

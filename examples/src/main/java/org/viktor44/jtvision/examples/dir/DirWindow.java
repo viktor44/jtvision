@@ -62,7 +62,9 @@ public class DirWindow extends JtvWindow {
             String path = outline.getCurrentPath();
             filePane.newDir(path);
             title = path;
-            if (frame != null) frame.drawView();
+            if (frame != null) {
+                frame.drawView();
+            }
             clearEvent(event);
         }
         super.handleEvent(event);

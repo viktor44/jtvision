@@ -273,8 +273,9 @@ public class JtvListViewer extends JtvView {
             writeLine(0, i, size.getX(), 1, b);
         }
 
-        if (!focusedVis)
+        if (!focusedVis) {
             setCursor(-1, -1);
+        }
     }
 
     /**

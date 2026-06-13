@@ -50,7 +50,7 @@ public class MultiMenuApp extends JtvApplication {
 
     @Override
     protected JtvStatusLine initStatusLine(JtvRect r) {
-        r = new JtvRect(r.getA().getX(), r.getB().getY() - 1, r.getB().getX(), r.getB().getY());
+        r = new JtvRect(r.getAx(), r.getBy() - 1, r.getBx(), r.getBy());
         return new JtvStatusLine(r,
             new JtvStatusDef()
                 .addItem(new JtvStatusItem("~Ctrl+Q~ Exit", JtvKeyStroke.of(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), cmQuit))
@@ -61,7 +61,7 @@ public class MultiMenuApp extends JtvApplication {
 
     @Override
     protected JtvMenuBar initMenuBar(JtvRect r) {
-        r = new JtvRect(r.getA().getX(), r.getA().getY(), r.getB().getX(), r.getA().getY() + 1);
+        r = new JtvRect(r.getAx(), r.getAy(), r.getBx(), r.getAy() + 1);
 
         // Menu Number One
         JtvMenu menu1 = new JtvMenu()

@@ -109,11 +109,20 @@ public class JtvMenuBar extends JtvMenuView {
                     int l = StringUtils.cstrLen(p.getName());
                     JtvColorAttr color, colorHot;
                     if (p.isDisabled()) {
-                        if (p == current) { color = cSelDisabled; colorHot = cSelDisabledHot; }
-                        else { color = cNormDisabled; colorHot = cNormDisabledHot; }
-                    } else {
-                        if (p == current) { color = cSelect; colorHot = cSelectHot; }
-                        else { color = cNormal; colorHot = cNormalHot; }
+                        if (p == current) {
+                            color = cSelDisabled; colorHot = cSelDisabledHot;
+                        }
+                        else {
+                            color = cNormDisabled; colorHot = cNormDisabledHot;
+                        }
+                    }
+                    else {
+                        if (p == current) {
+                            color = cSelect; colorHot = cSelectHot;
+                        }
+                        else {
+                            color = cNormal; colorHot = cNormalHot;
+                        }
                     }
                     b.moveChar(x, ' ', color, 1);
                     b.moveCStr(x + 1, p.getName(), color, colorHot);
@@ -142,8 +151,9 @@ public class JtvMenuBar extends JtvMenuView {
             for (JtvMenuItem p : menu.getItems()) {
             if (p.getName() != null) {
                 int l = StringUtils.cstrLen(p.getName()) + 2;
-                if (p == item)
+                if (p == item) {
                     return new JtvRect(x, 0, x + l, 1);
+                }
                 x += l;
             }
             }
@@ -200,7 +210,8 @@ public class JtvMenuBar extends JtvMenuView {
                     activateMenu(event);
                 }
             }
-        } else if (event.getWhat() == evCommand && event.getMessage().getCommand() == cmMenu) {
+        }
+        else if (event.getWhat() == evCommand && event.getMessage().getCommand() == cmMenu) {
             if (menu != null && !menu.getItems().isEmpty()) {
                 if (current == null) {
                     current = menu.getItems().get(0);

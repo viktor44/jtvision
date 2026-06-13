@@ -67,7 +67,7 @@ public class HelloApp extends JtvApplication {
 
     @Override
     protected JtvMenuBar initMenuBar(JtvRect r) {
-        r = new JtvRect(r.getA().getX(), r.getA().getY(), r.getB().getX(), r.getA().getY() + 1);
+        r = new JtvRect(r.getAx(), r.getAy(), r.getBx(), r.getAy() + 1);
         return new JtvMenuBar(r)
         		.addItem(
         				new JtvSubMenu("~H~ello", new JtvKeyStroke(KeyEvent.VK_H, InputEvent.ALT_DOWN_MASK))
@@ -80,7 +80,7 @@ public class HelloApp extends JtvApplication {
     @Override
     protected JtvStatusLine initStatusLine(JtvRect r) {
         return new JtvStatusLine(
-        		new JtvRect(r.getA().getX(), r.getB().getY() - 1, r.getB().getX(), r.getB().getY()),
+        		new JtvRect(r.getAx(), r.getBy() - 1, r.getBx(), r.getBy()),
 	            new JtvStatusDef()
 		                .addItem(new JtvStatusItem("~Ctrl+Q~ Exit", new JtvKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), cmQuit))
 		                .addItem(new JtvStatusItem(null, new JtvKeyStroke(KeyEvent.VK_F10, 0), cmMenu))

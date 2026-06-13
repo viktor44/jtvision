@@ -101,12 +101,14 @@ public class DemoApp extends JtvApplication {
     private static final int cmRestoreCmd   = 6010;
     private static final int cmEventViewCmd = 6011;
     private static final int cmChBackground = 6012;
+    private static final int cmUtf8Cmd      = 6013;
 
     private static final int hcViewer          = 2;
     private static final int hcPuzzle          = 3;
     private static final int hcCalculator      = 4;
     private static final int hcCalendar        = 5;
     private static final int hcAsciiTable      = 6;
+    private static final int hcUtf8Table       = 7;
     private static final int hcSAbout          = 8;
     private static final int hcFOFileOpenDBox  = 31;
     private static final int hcFCChDirDBox     = 37;
@@ -151,6 +153,9 @@ public class DemoApp extends JtvApplication {
                     break;
                 case cmAsciiCmd:
                     insertWindow(newAsciiWindow());
+                    break;
+                case cmUtf8Cmd:
+                    insertWindow(newUtf8Window());
                     break;
                 case cmCalcCmd:
                     calculator();
@@ -199,7 +204,8 @@ public class DemoApp extends JtvApplication {
             }
             if (spec.indexOf('*') >= 0 || spec.indexOf('?') >= 0) {
                 openFile(spec);
-            } else {
+            }
+            else {
                 openEditor(spec);
             }
         }
@@ -271,6 +277,12 @@ public class DemoApp extends JtvApplication {
         return w;
     }
 
+    private JtvWindow newUtf8Window() {
+        Utf8ChartWindow w = new Utf8ChartWindow();
+        w.setHelpCtx(hcUtf8Table);
+        return w;
+    }
+
     private void calculator() {
         Calculator calc = new Calculator();
         calc.setHelpCtx(hcCalculator);
@@ -333,7 +345,8 @@ public class DemoApp extends JtvApplication {
                     if (event.getWhat() == evBroadcast && event.getMessage().getCommand() == cmScrollBarChanged) {
                     EventQueue.getInstance().doubleDelay = scrollBar.getValue() * 55;
                     clearEvent(event);
-                } else if (event.getWhat() == evCommand &&
+                }
+                else if (event.getWhat() == evCommand &&
                            event.getMessage().getCommand() == org.viktor44.jtvision.core.CommandCodes.cmCancel) {
                     EventQueue.getInstance().doubleDelay = oldDelay;
                 }
@@ -352,7 +365,8 @@ public class DemoApp extends JtvApplication {
 
         if (getDesktop().execView(d) != cmCancel) {
             reverseMouseButtons = (boxes.getValue() & 1) != 0;
-        } else {
+        }
+        else {
             EventQueue.getInstance().doubleDelay = oldDelay;
         }
     }
@@ -453,13 +467,16 @@ public class DemoApp extends JtvApplication {
             if (slash) {
                 if (c == 't') {
                     out.append('\t');
-                } else {
+                }
+                else {
                     out.append(c);
                 }
                 slash = false;
-            } else if (c == '\\') {
+            }
+            else if (c == '\\') {
                 slash = true;
-            } else {
+            }
+            else {
                 out.append(c);
             }
         }
@@ -476,27 +493,35 @@ public class DemoApp extends JtvApplication {
 
         if (w instanceof PuzzleWindow) {
             type = "puzzle";
-        } else if (w instanceof CalendarWindow) {
+        }
+        else if (w instanceof CalendarWindow) {
             type = "calendar";
-        } else if (w instanceof AsciiChartWindow) {
+        }
+        else if (w instanceof AsciiChartWindow) {
             type = "ascii";
-        } else if (w instanceof EventViewerWindow) {
+        }
+        else if (w instanceof Utf8ChartWindow) {
+            type = "utf8";
+        }
+        else if (w instanceof EventViewerWindow) {
             type = "event";
             flag = ((EventViewerWindow) w).isStopped() ? 1 : 0;
-        } else if (w instanceof JtvEditWindow) {
+        }
+        else if (w instanceof JtvEditWindow) {
             type = "editor";
             JtvEditWindow editWindow = (JtvEditWindow) w;
             String fileName = editWindow.getEditor() != null ? editWindow.getEditor().getFileName() : "";
             arg = fileName != null ? fileName : "";
-        } else {
+        }
+        else {
             return null;
         }
 
         JtvRect b = w.getBounds();
-        int width = b.getB().getX() - b.getA().getX();
-        int height = b.getB().getY() - b.getA().getY();
+        int width = b.getBx() - b.getAx();
+        int height = b.getBy() - b.getAy();
         return "window\t" + type + "\t" + esc(arg) + "\t"
-            + b.getA().getX() + "\t" + b.getA().getY() + "\t" + width + "\t" + height + "\t" + flag;
+            + b.getAx() + "\t" + b.getAy() + "\t" + width + "\t" + height + "\t" + flag;
     }
 
     private void saveDesktop() {
@@ -530,7 +555,8 @@ public class DemoApp extends JtvApplication {
     private int parseInt(String s, int fallback) {
         try {
             return Integer.parseInt(s);
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e) {
             return fallback;
         }
     }
@@ -544,6 +570,9 @@ public class DemoApp extends JtvApplication {
         }
         if ("ascii".equals(type)) {
             return newAsciiWindow();
+        }
+        if ("utf8".equals(type)) {
+            return newUtf8Window();
         }
         if ("event".equals(type)) {
             EventViewerWindow w = new EventViewerWindow(getDesktop().getExtent(), 0x0F00);
@@ -651,9 +680,11 @@ public class DemoApp extends JtvApplication {
             if (validView(w) != null) {
                 execView(w);
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             MessageBox.messageBox("Could not open help file", mfError | mfOKButton);
-        } finally {
+        }
+        finally {
             helpInUse = false;
         }
     }
@@ -670,7 +701,7 @@ public class DemoApp extends JtvApplication {
 
     @Override
     protected JtvMenuBar initMenuBar(JtvRect r) {
-        r = new JtvRect(r.getA().getX(), r.getA().getY(), r.getB().getX(), r.getA().getY() + 1);
+        r = new JtvRect(r.getAx(), r.getAy(), r.getBx(), r.getAy() + 1);
         return new JtvMenuBar(r)
 		        .addItem(
 		        		new JtvSubMenu("~\u2261~")
@@ -679,6 +710,7 @@ public class DemoApp extends JtvApplication {
 		                        .addItem("~P~uzzle", cmPuzzleCmd)
 		                        .addItem("Ca~l~endar", cmCalendarCmd)
 		                        .addItem("Ascii ~T~able", cmAsciiCmd)
+		                        .addItem("~U~tf8 Table", cmUtf8Cmd)
 		                        .addItem("~C~alculator", cmCalcCmd)
 		                        .addItem(new JtvMenuItem("~E~vent Viewer", cmEventViewCmd, JtvKeyStroke.of(KeyEvent.VK_0, InputEvent.ALT_DOWN_MASK), 0, "Alt+0"))
 		        )
@@ -714,7 +746,7 @@ public class DemoApp extends JtvApplication {
     @Override
     protected JtvStatusLine initStatusLine(JtvRect r) {
         return new JtvStatusLine(
-        		new JtvRect(r.getA().getX(), r.getB().getY() - 1, r.getB().getX(), r.getB().getY()),
+        		new JtvRect(r.getAx(), r.getBy() - 1, r.getBx(), r.getBy()),
 	            new JtvStatusDef()
 		                .addItem(new JtvStatusItem("~F1~ Help", JtvKeyStroke.of(KeyEvent.VK_F1), cmHelp))
 		                .addItem(new JtvStatusItem("~Ctrl+Q~ Exit", JtvKeyStroke.of(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), cmQuit))

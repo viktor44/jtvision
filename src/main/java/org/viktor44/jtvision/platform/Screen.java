@@ -266,7 +266,8 @@ public class Screen {
         if (SystemUtils.IS_OS_WINDOWS) {
             try {
                 Kernel32.SetConsoleOutputCP(65001);
-            } catch (Throwable ignored) {
+            }
+            catch (Throwable ignored) {
             }
         }
         AnsiConsole.systemInstall();
@@ -356,9 +357,11 @@ public class Screen {
                         return;
                     }
                 }
-            } catch (Throwable ignored) {
             }
-        } else {
+            catch (Throwable ignored) {
+            }
+        }
+        else {
             try {
                 int[] fds = {
                     CLibrary.STDOUT_FILENO,
@@ -374,7 +377,8 @@ public class Screen {
                         return;
                     }
                 }
-            } catch (Throwable ignored) {
+            }
+            catch (Throwable ignored) {
             }
         }
 
@@ -382,10 +386,18 @@ public class Screen {
         String cols = System.getenv("COLUMNS");
         String rows = System.getenv("LINES");
         if (cols != null) {
-            try { screenWidth = Integer.parseInt(cols); } catch (NumberFormatException ignored) {}
+            try {
+                screenWidth = Integer.parseInt(cols);
+            }
+            catch (NumberFormatException ignored) {
+            }
         }
         if (rows != null) {
-            try { screenHeight = Integer.parseInt(rows); } catch (NumberFormatException ignored) {}
+            try {
+                screenHeight = Integer.parseInt(rows);
+            }
+            catch (NumberFormatException ignored) {
+            }
         }
     }
 
@@ -455,13 +467,17 @@ public class Screen {
             boolean needPos = true;
             for (int x = 0; x < screenWidth; x++) {
                 int idx = y * screenWidth + x;
-                if (idx >= screenBuffer.length) break;
+                if (idx >= screenBuffer.length) {
+                    break;
+                }
                 JtvScreenCell cell = screenBuffer[idx];
                 JtvScreenCell last = lastBuffer[idx];
 
                 if (cell.getCh() != last.getCh() || !cell.getAttr().equals(last.getAttr())) {
                     if (!hadCellChanges) {
-                        if (appliedCursorVisible) sb.append("\033[?25l");
+                        if (appliedCursorVisible) {
+                            sb.append("\033[?25l");
+                        }
                         hadCellChanges = true;
                     }
                     if (needPos) {
@@ -479,7 +495,8 @@ public class Screen {
 
                     sb.append(cell.getCh());
                     lastBuffer[idx] = cell;
-                } else {
+                }
+                else {
                     needPos = true;
                 }
             }
@@ -492,13 +509,17 @@ public class Screen {
         }
 
         if (desiredCursorVisible) {
-            if (desiredCursorX != appliedCursorX || desiredCursorY != appliedCursorY)
+            if (desiredCursorX != appliedCursorX || desiredCursorY != appliedCursorY) {
                 sb.append("\033[").append(desiredCursorY + 1).append(';').append(desiredCursorX + 1).append('H');
-            if (desiredCursorBlock != appliedCursorBlock || !appliedCursorVisible)
+            }
+            if (desiredCursorBlock != appliedCursorBlock || !appliedCursorVisible) {
                 sb.append(desiredCursorBlock ? "\033[1 q" : "\033[3 q");
-            if (!appliedCursorVisible)
+            }
+            if (!appliedCursorVisible) {
                 sb.append("\033[?25h");
-        } else if (appliedCursorVisible) {
+            }
+        }
+        else if (appliedCursorVisible) {
             sb.append("\033[?25l");
         }
 

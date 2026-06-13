@@ -235,11 +235,6 @@ public class JtvEditor extends JtvView {
     /** {@code true} if the editor should reject all modifications. */
     protected boolean readOnly;
 
-    public void setReadOnly(boolean readOnly) {
-        this.readOnly = readOnly;
-        updateCommands();
-    }
-
     /**
      * Constructs a {@code TEditor} view.
      *
@@ -487,7 +482,9 @@ public class JtvEditor extends JtvView {
             if (lineOffsets[mid] <= value) {
             	lo = mid + 1;
             }
-            else hi = mid;
+            else {
+                hi = mid;
+            }
         }
         return lo;
     }
@@ -702,12 +699,12 @@ public class JtvEditor extends JtvView {
     /**
      * Moves the cursor to buffer offset {@code p} and optionally extends the selection.
      *
-     * @param p          target buffer offset
-     * @param selectMode bit 0 set means extend the selection; bit 0 clear collapses it
+     * @param p                target buffer offset
+     * @param extendSelection  {@code true} to extend the selection; {@code false} to collapse it
      */
-    protected void setCurPtr(int p, int selectMode) {
+    protected void setCurPtr(int p, boolean extendSelection) {
         p = Math.max(0, Math.min(p, buffer.length()));
-        if ((selectMode & 0x01) == 0) {
+        if (!extendSelection) {
             selStart = p;
             selEnd = p;
             curPtr = p;
@@ -1087,6 +1084,97 @@ public class JtvEditor extends JtvView {
     }
 
     /**
+     * Maps a key press to the equivalent editor command code.
+     * Returns {@code 0} when no command corresponds to the key.
+     */
+    protected int keyToCommand(KeyDownEvent keyEvent) {
+        int code = keyEvent.getKeyCode();
+        if (keyEvent.isShiftDown() && code == KeyEvent.VK_DELETE) {
+            return cmCut;
+        }
+        if (keyEvent.isCtrlDown()  && code == KeyEvent.VK_INSERT) {
+            return cmCopy;
+        }
+        if (keyEvent.isShiftDown() && code == KeyEvent.VK_INSERT) {
+            return cmPaste;
+        }
+        switch (code) {
+            case KeyEvent.VK_LEFT:       return cmCharLeft;
+            case KeyEvent.VK_RIGHT:      return cmCharRight;
+            case KeyEvent.VK_UP:         return cmLineUp;
+            case KeyEvent.VK_DOWN:       return cmLineDown;
+            case KeyEvent.VK_HOME:       return cmLineStart;
+            case KeyEvent.VK_END:        return cmLineEnd;
+            case KeyEvent.VK_PAGE_UP:    return cmPageUp;
+            case KeyEvent.VK_PAGE_DOWN:  return cmPageDown;
+            case KeyEvent.VK_BACK_SPACE: return cmBackSpace;
+            case KeyEvent.VK_DELETE:     return cmDelChar;
+            case KeyEvent.VK_ENTER:      return cmNewLine;
+            case KeyEvent.VK_INSERT:     return cmInsMode;
+            default:                     return 0;
+        }
+    }
+
+    /**
+     * Executes an editor command. Returns {@code true} if the command was recognised
+     * and dispatched, {@code false} otherwise.
+     */
+    protected boolean handleCommand(int command, boolean extendSelection) {
+        switch (command) {
+            case cmFind:        doFind(); break;
+            case cmReplace:     doReplace(); break;
+            case cmSearchAgain: doSearchAgain(); break;
+            case cmCut:         clipCut(); break;
+            case cmCopy:        clipCopy(); break;
+            case cmPaste:       clipPaste(); break;
+            case cmUndo:        undo(); break;
+            case cmClear:       deleteSelect(); break;
+            case cmCharLeft:    setCurPtr(prevChar(curPtr), extendSelection); break;
+            case cmCharRight:   setCurPtr(nextChar(curPtr), extendSelection); break;
+            case cmWordLeft:    setCurPtr(prevWord(curPtr), extendSelection); break;
+            case cmWordRight:   setCurPtr(nextWord(curPtr), extendSelection); break;
+            case cmLineStart:   setCurPtr(lineStart(curPtr), extendSelection); break;
+            case cmLineEnd:     setCurPtr(lineEnd(curPtr), extendSelection); break;
+            case cmLineUp:      setCurPtr(prevLine(curPtr), extendSelection); break;
+            case cmLineDown:    setCurPtr(nextLine(curPtr), extendSelection); break;
+            case cmPageUp:      setCurPtr(Math.max(0, curPtr - (size.getX() * size.getY())), extendSelection); break;
+            case cmPageDown:    setCurPtr(Math.min(bufLen, curPtr + (size.getX() * size.getY())), extendSelection); break;
+            case cmTextStart:   setCurPtr(0, extendSelection); break;
+            case cmTextEnd:     setCurPtr(bufLen, extendSelection); break;
+            case cmNewLine:     newLine(); break;
+            case cmBackSpace:
+                if (hasSelection()) {
+                    deleteSelect();
+                }
+                else {
+                    deleteRange(prevChar(curPtr), curPtr);
+                }
+                break;
+            case cmDelChar:
+                if (hasSelection()) {
+                    deleteSelect();
+                }
+                else {
+                    deleteRange(curPtr, nextChar(curPtr));
+                }
+                break;
+            case cmDelWord:     deleteRange(curPtr, nextWord(curPtr)); break;
+            case cmDelWordLeft: deleteRange(prevWord(curPtr), curPtr); break;
+            case cmDelStart:    deleteRange(lineStart(curPtr), curPtr); break;
+            case cmDelEnd:      deleteRange(curPtr, lineEnd(curPtr)); break;
+            case cmDelLine:     deleteRange(lineStart(curPtr), nextLine(curPtr)); break;
+            case cmInsMode:     toggleInsMode(); break;
+            case cmStartSelect: startSelect(); break;
+            case cmHideSelect:  hideSelect(); break;
+            case cmIndentMode:  autoIndent = !autoIndent; break;
+            case cmSelectAll:   selStart = 0; selEnd = bufLen; curPtr = bufLen; break;
+            case cmEncoding:    break;
+            default:            return false;
+        }
+        return true;
+    }
+
+    /**
      * Handles mouse, keyboard, command, and scroll-bar broadcast events.
      *
      * <p>Mouse clicks move the cursor; mouse drag extends the selection.
@@ -1102,7 +1190,7 @@ public class JtvEditor extends JtvView {
     public void handleEvent(JtvEvent event) {
         super.handleEvent(event);
 
-        int selectMode = selecting ? 1 : 0;
+        boolean extendSelection = selecting;
         if (event.getWhat() == evMouseDown) {
             do {
                 JtvPoint mouse = makeLocal(event.getMouse().getWhere());
@@ -1123,8 +1211,8 @@ public class JtvEditor extends JtvView {
                         Math.max(0, Math.min(mouse.getY(), Math.max(0, size.getY() - 1)))
                 );
                 int p = lineToPtr(mouse.getY() + delta.getY(), mouse.getX() + delta.getX());
-                setCurPtr(p, selectMode);
-                selectMode |= 1;
+                setCurPtr(p, extendSelection);
+                extendSelection = true;
                 trackCursor(false);
                 drawView();
             }
@@ -1150,7 +1238,7 @@ public class JtvEditor extends JtvView {
         if (event.getWhat() == evKeyDown) {
         	KeyDownEvent keyEvent = event.getKeyDown();
             if (keyEvent.isShiftDown()) {
-                selectMode = 1;
+                extendSelection = true;
             }
             char keyChar = keyEvent.getKeyChar();
             if (keyChar != KeyEvent.CHAR_UNDEFINED && keyChar >= 32) {
@@ -1164,70 +1252,10 @@ public class JtvEditor extends JtvView {
                 }
                 return;
             }
-
-            // Compound shortcuts first; navigation keys ignore the Shift modifier (used for selection).
-            if (keyEvent.isShiftDown() && keyEvent.getKeyCode() == KeyEvent.VK_DELETE) {
-                clipCut();
+            int cmd = keyToCommand(keyEvent);
+            if (cmd == 0 || !handleCommand(cmd, extendSelection)) {
+                return;
             }
-            else if (keyEvent.isCtrlDown() && keyEvent.getKeyCode() == KeyEvent.VK_INSERT) {
-                clipCopy();
-            }
-            else if (keyEvent.isShiftDown() && keyEvent.getKeyCode() == KeyEvent.VK_INSERT) {
-                clipPaste();
-            }
-            else {
-                switch (keyEvent.getKeyCode()) {
-                    case KeyEvent.VK_LEFT: 
-                    	setCurPtr(prevChar(curPtr), selectMode);
-                    	break;
-                    case KeyEvent.VK_RIGHT:
-                    	setCurPtr(nextChar(curPtr), selectMode);
-                    	break;
-                    case KeyEvent.VK_UP:
-                    	setCurPtr(prevLine(curPtr), selectMode);
-                    	break;
-                    case KeyEvent.VK_DOWN:
-                    	setCurPtr(nextLine(curPtr), selectMode);
-                    	break;
-                    case KeyEvent.VK_HOME:
-                    	setCurPtr(lineStart(curPtr), selectMode);
-                    	break;
-                    case KeyEvent.VK_END:
-                    	setCurPtr(lineEnd(curPtr), selectMode);
-                    	break;
-                    case KeyEvent.VK_PAGE_UP:
-                    	setCurPtr(Math.max(0, curPtr - (size.getX() * size.getY())), selectMode);
-                    	break;
-                    case KeyEvent.VK_PAGE_DOWN:
-                    	setCurPtr(Math.min(bufLen, curPtr + (size.getX() * size.getY())), selectMode);
-                    	break;
-                    case KeyEvent.VK_BACK_SPACE:
-                		if (hasSelection()) {
-                			deleteSelect();
-                		}
-                		else {
-                			deleteRange(prevChar(curPtr), curPtr);
-                		}
-                    	break;
-                    case KeyEvent.VK_DELETE:
-                		if (hasSelection()) {
-                			deleteSelect();
-                		}
-                		else {
-                			deleteRange(curPtr, nextChar(curPtr));
-                		}
-                    	break;
-                    case KeyEvent.VK_ENTER:
-                    	newLine();
-                    	break;
-                    case KeyEvent.VK_INSERT:
-                    	toggleInsMode();
-                    	break;
-                    default: 
-                    	return;
-                }
-            }
-
             if (!keyEvent.isShiftDown()) {
                 selecting = false;
                 selStart = selEnd = curPtr;
@@ -1239,120 +1267,8 @@ public class JtvEditor extends JtvView {
         }
 
         if (event.getWhat() == evCommand) {
-            switch (event.getMessage().getCommand()) {
-                case cmFind: 
-                	doFind(); 
-                	break;
-                case cmReplace:
-                	doReplace();
-                	break;
-                case cmSearchAgain:
-                	doSearchAgain();
-                	break;
-                case cmCut:
-                	clipCut();
-                	break;
-                case cmCopy:
-                	clipCopy();
-                	break;
-                case cmPaste:
-                	clipPaste();
-                	break;
-                case cmUndo:
-                	undo();
-                	break;
-                case cmClear:
-                	deleteSelect();
-                	break;
-                case cmCharLeft:
-                	setCurPtr(prevChar(curPtr), selectMode);
-                	break;
-                case cmCharRight:
-                	setCurPtr(nextChar(curPtr), selectMode);
-                	break;
-                case cmWordLeft:
-                	setCurPtr(prevWord(curPtr), selectMode);
-                	break;
-                case cmWordRight:
-                	setCurPtr(nextWord(curPtr), selectMode);
-                	break;
-                case cmLineStart:
-                	setCurPtr(lineStart(curPtr), selectMode);
-                	break;
-                case cmLineEnd:
-                	setCurPtr(lineEnd(curPtr), selectMode);
-                	break;
-                case cmLineUp:
-                	setCurPtr(prevLine(curPtr), selectMode);
-                	break;
-                case cmLineDown:
-                	setCurPtr(nextLine(curPtr), selectMode);
-                	break;
-                case cmPageUp:
-                	setCurPtr(Math.max(0, curPtr - (size.getX() * size.getY())), selectMode);
-                	break;
-                case cmPageDown:
-                	setCurPtr(Math.min(bufLen, curPtr + (size.getX() * size.getY())), selectMode);
-                	break;
-                case cmTextStart:
-                	setCurPtr(0, selectMode);
-                	break;
-                case cmTextEnd:
-                	setCurPtr(bufLen, selectMode);
-                	break;
-                case cmNewLine:
-                	newLine();
-                	break;
-                case cmBackSpace:
-            		if (hasSelection()) {
-            			deleteSelect();
-            		}
-            		else {
-            			deleteRange(prevChar(curPtr), curPtr);
-            		}
-                	break;
-                case cmDelChar:
-            		if (hasSelection()) {
-            			deleteSelect();
-            		}
-            		else {
-            			deleteRange(curPtr, nextChar(curPtr));
-            		}
-                	break;
-                case cmDelWord:
-                	deleteRange(curPtr, nextWord(curPtr));
-                	break;
-                case cmDelWordLeft:
-                	deleteRange(prevWord(curPtr), curPtr);
-                	break;
-                case cmDelStart:
-                	deleteRange(lineStart(curPtr), curPtr);
-                	break;
-                case cmDelEnd:
-                	deleteRange(curPtr, lineEnd(curPtr));
-                	break;
-                case cmDelLine:
-                	deleteRange(lineStart(curPtr), nextLine(curPtr));
-                	break;
-                case cmInsMode:
-                	toggleInsMode();
-                	break;
-                case cmStartSelect:
-                	startSelect();
-                	break;
-                case cmHideSelect:
-                	hideSelect();
-                	break;
-                case cmIndentMode:
-                	autoIndent = !autoIndent;
-                	break;
-                case cmSelectAll:
-                	selStart = 0; selEnd = bufLen; curPtr = bufLen;
-                	break;
-                case cmEncoding:
-                	break;
-                default:
-                	return;
+            if (!handleCommand(event.getMessage().getCommand(), extendSelection)) {
+                return;
             }
             updateMetrics();
             trackCursor(false);
@@ -1385,5 +1301,10 @@ public class JtvEditor extends JtvView {
     @Override
     public boolean valid(int command) {
         return isValid;
+    }
+
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
+        updateCommands();
     }
 }

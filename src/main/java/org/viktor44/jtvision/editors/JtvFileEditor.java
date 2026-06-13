@@ -198,7 +198,8 @@ public class JtvFileEditor extends JtvEditor {
             updateMetrics();
             drawView();
             return true;
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             MessageBox.messageBox("Write error: " + fileName, 0x0001 | 0x0400);
             return false;
         }
@@ -213,12 +214,14 @@ public class JtvFileEditor extends JtvEditor {
             if (Files.exists(path)) {
                 try {
                     return path.toRealPath().toString();
-                } catch (IOException ignored) {
+                }
+                catch (IOException ignored) {
                     // Fall back to normalized absolute path below.
                 }
             }
             return path.toAbsolutePath().normalize().toString();
-        } catch (InvalidPathException | SecurityException e) {
+        }
+        catch (InvalidPathException | SecurityException e) {
             return name;
         }
     }
@@ -278,7 +281,8 @@ public class JtvFileEditor extends JtvEditor {
                 if ((editorFlags & (efReplaceAll | efDoReplace)) != (efReplaceAll | efDoReplace)) {
                     MessageBox.messageBox("Search string not found.", mfError | mfOKButton);
                 }
-            } else if ((editorFlags & efDoReplace) != 0) {
+            }
+            else if ((editorFlags & efDoReplace) != 0) {
                 answer = cmYes;
                 if ((editorFlags & efPromptOnReplace) != 0) {
                     answer = MessageBox.messageBox("Replace this occurrence?", mfInformation | mfYesNoCancel);
@@ -299,7 +303,8 @@ public class JtvFileEditor extends JtvEditor {
                     trackCursor(false);
                 }
             }
-        } while (answer != cmCancel && (editorFlags & efReplaceAll) != 0);
+        }
+        while (answer != cmCancel && (editorFlags & efReplaceAll) != 0);
     }
 
     private boolean search(String findStr, int opts) {
@@ -379,7 +384,8 @@ public class JtvFileEditor extends JtvEditor {
 
                 insert(new JtvButton(new JtvRect(17, 13, 27, 15), "O~K~", cmOK, bfDefault));
                 insert(new JtvButton(new JtvRect(28, 13, 38, 15), "Cancel", cmCancel, bfNormal));
-            } else {
+            }
+            else {
                 findInput = new JtvInputLine(new JtvRect(3, 3, 32, 4), 80);
                 insert(findInput);
                 insert(new JtvLabel(new JtvRect(2, 2, 15, 3), "~T~ext to find", findInput));
@@ -458,7 +464,8 @@ public class JtvFileEditor extends JtvEditor {
         if (!readOnly && (state & sfActive) != 0) {
             enableCommand(cmSave);
             enableCommand(cmSaveAs);
-        } else {
+        }
+        else {
             disableCommand(cmSave);
             disableCommand(cmSaveAs);
         }

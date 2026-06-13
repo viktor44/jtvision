@@ -340,12 +340,17 @@ public class JtvInputLine extends JtvView {
                             curPos++;
                         }
                     }
-                    else switch (keyCode) {
+                    else {
+                        switch (keyCode) {
                         case KeyEvent.VK_LEFT:
-                            if (curPos > 0) curPos--;
+                            if (curPos > 0) {
+                                curPos--;
+                            }
                             break;
                         case KeyEvent.VK_RIGHT:
-                            if (curPos < data.length()) curPos++;
+                            if (curPos < data.length()) {
+                                curPos++;
+                            }
                             break;
                         case KeyEvent.VK_HOME:
                             curPos = 0;
@@ -383,6 +388,7 @@ public class JtvInputLine extends JtvView {
                             else {
                                 return; // Not handled
                             }
+                        }
                     }
 
                     if (extendBlock) {

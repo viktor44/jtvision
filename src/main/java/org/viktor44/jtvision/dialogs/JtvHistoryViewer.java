@@ -95,7 +95,8 @@ public class JtvHistoryViewer extends JtvListViewer {
         setRange(entries.size());
         if (range > 1) {
             focusItemNum(1);
-        } else if (range == 1) {
+        }
+        else if (range == 1) {
             focusItemNum(0);
         }
         if (hScrollBar != null) {

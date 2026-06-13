@@ -276,9 +276,11 @@ public class JtvMenuView extends JtvView {
                         if (size.getY() == 1) {
                             autoSelect = true;
                         }
-                    } else if (mouseInMenus(e)) {
+                    }
+                    else if (mouseInMenus(e)) {
                         return 0;
-                    } else {
+                    }
+                    else {
                         putEvent(e);
                         exitRequested = true;
                     }
@@ -286,15 +288,17 @@ public class JtvMenuView extends JtvView {
 
                 case evMouseUp:
                     trackMouse(e, true);
-                    if (mouseInOwner(e))
+                    if (mouseInOwner(e)) {
                         current = menu.getDefaultItem();
+                    }
                     else if (current != null && current.getName() != null) {
                         if (current.getCommand() == 0) {
                             // Submenu
                             if (current != itemShown) {
                                 autoSelect = true;
                             }
-                        } else if (mouseActive) {
+                        }
+                        else if (mouseActive) {
                             result = current.getCommand();
                             break;
                         }
@@ -315,7 +319,8 @@ public class JtvMenuView extends JtvView {
                         case KeyEvent.VK_DOWN:
                             if (size.getY() != 1) {
                                 trackKey(e.getKeyDown().getKeyCode() == KeyEvent.VK_DOWN);
-                            } else if (e.getKeyDown().getKeyCode() == KeyEvent.VK_DOWN) {
+                            }
+                            else if (e.getKeyDown().getKeyCode() == KeyEvent.VK_DOWN) {
                                 autoSelect = true;
                             }
                             break;
@@ -324,7 +329,8 @@ public class JtvMenuView extends JtvView {
                             if (size.getY() == 1) {
                                 trackKey(e.getKeyDown().getKeyCode() == KeyEvent.VK_RIGHT);
                                 autoSelect = true;
-                            } else if (parentMenu != null) {
+                            }
+                            else if (parentMenu != null) {
                                 putEvent(e);
                                 return 0;
                             }
@@ -342,7 +348,8 @@ public class JtvMenuView extends JtvView {
                             if (current != null) {
                                 if (current.getCommand() != 0) {
                                     result = current.getCommand();
-                                } else {
+                                }
+                                else {
                                     autoSelect = true;
                                 }
                             }
@@ -350,7 +357,8 @@ public class JtvMenuView extends JtvView {
                         case KeyEvent.VK_ESCAPE:
                             if (parentMenu != null && parentMenu.size.getY() == 1) {
                                 putEvent(e);
-                            } else {
+                            }
+                            else {
                                 clearEvent(e);
                             }
                             exitRequested = true;
@@ -358,9 +366,13 @@ public class JtvMenuView extends JtvView {
                         default:
                             if (menu != null) {
                                 for (JtvMenuItem p : menu.getItems()) {
-                                    if (p.getName() == null || p.isDisabled()) continue;
+                                    if (p.getName() == null || p.isDisabled()) {
+                                        continue;
+                                    }
                                     char c = StringUtils.hotKey(p.getName());
-                                    if (c == 0) continue;
+                                    if (c == 0) {
+                                        continue;
+                                    }
                                     boolean match;
                                     if (size.getY() == 1) {
                                         // Menu bar: Alt+letter only
@@ -403,7 +415,7 @@ public class JtvMenuView extends JtvView {
                 autoSelect = false;
                 JtvRect r = getItemRect(current);
                 JtvMenuBox box = new JtvMenuBox(
-	                    new JtvRect(r.getA().getX(), r.getB().getY(), r.getA().getX() + 20, r.getB().getY() + 10),
+	                    new JtvRect(r.getAx(), r.getBy(), r.getAx() + 20, r.getBy() + 10),
 	                    current.getSubMenu(), this
                 );
                 if (owner != null) {
@@ -415,10 +427,14 @@ public class JtvMenuView extends JtvView {
                 }
             }
 
-            if (result != 0) break;
-            if (exitRequested) break;
-
-        } while (true);
+            if (result != 0) {
+                break;
+            }
+            if (exitRequested) {
+                break;
+            }
+        }
+        while (true);
 
         if (current != null) {
             if (menu != null) {
@@ -462,14 +478,23 @@ public class JtvMenuView extends JtvView {
     protected void trackKey(boolean findNext) {
         if (current == null) {
             current = firstItem(menu);
-            if (!findNext) prevItem();
-            if (current != null && current.getName() != null) return;
+            if (!findNext) {
+                prevItem();
+            }
+            if (current != null && current.getName() != null) {
+                return;
+            }
         }
         int maxSteps = (menu != null) ? menu.getItems().size() : 0;
         do {
-            if (findNext) nextItem();
-            else prevItem();
-        } while (maxSteps-- > 0 && current != null && current.getName() == null);
+            if (findNext) {
+                nextItem();
+            }
+            else {
+                prevItem();
+            }
+        }
+        while (maxSteps-- > 0 && current != null && current.getName() == null);
     }
 
     /**
@@ -508,10 +533,12 @@ public class JtvMenuView extends JtvView {
             return;
         }
         int idx = menu.getItems().indexOf(current);
-        if (idx <= 0)
+        if (idx <= 0) {
             current = menu.getItems().get(menu.getItems().size() - 1);
-        else
+        }
+        else {
             current = menu.getItems().get(idx - 1);
+        }
     }
 
     /**
@@ -524,7 +551,9 @@ public class JtvMenuView extends JtvView {
      * @return {@code true} if the pointer is over the parent's current item
      */
     protected boolean mouseInOwner(JtvEvent e) {
-        if (parentMenu == null) return false;
+        if (parentMenu == null) {
+            return false;
+        }
         JtvPoint mouse = parentMenu.makeLocal(e.getMouse().getWhere());
         JtvRect r = parentMenu.getItemRect(parentMenu.current);
         return r.contains(mouse);
@@ -540,8 +569,9 @@ public class JtvMenuView extends JtvView {
      */
     protected boolean mouseInMenus(JtvEvent e) {
         JtvMenuView p = parentMenu;
-        while (p != null && !p.mouseInView(e.getMouse().getWhere()))
+        while (p != null && !p.mouseInView(e.getMouse().getWhere())) {
             p = p.parentMenu;
+        }
         return p != null;
     }
 
@@ -553,8 +583,9 @@ public class JtvMenuView extends JtvView {
      */
     public JtvMenuView topMenu() {
         JtvMenuView p = this;
-        while (p.parentMenu != null)
+        while (p.parentMenu != null) {
             p = p.parentMenu;
+        }
         return p;
     }
 
@@ -590,12 +621,17 @@ public class JtvMenuView extends JtvView {
      */
     private boolean updateMenu(JtvMenu aMenu) {
         boolean changed = false;
-        if (aMenu == null) return false;
+        if (aMenu == null) {
+            return false;
+        }
         for (JtvMenuItem p : aMenu.getItems()) {
             if (p.getName() != null) {
                 if (p.getCommand() == 0) {
-                    if (updateMenu(p.getSubMenu())) changed = true;
-                } else {
+                    if (updateMenu(p.getSubMenu())) {
+                        changed = true;
+                    }
+                }
+                else {
                     boolean commandState = commandEnabled(p.getCommand());
                     if (p.isDisabled() == commandState) {
                         p.setDisabled(!commandState);
@@ -630,7 +666,9 @@ public class JtvMenuView extends JtvView {
      */
     @Override
     public void handleEvent(JtvEvent event) {
-        if (menu == null) return;
+        if (menu == null) {
+            return;
+        }
         if (event.getWhat() == evKeyDown && tryCommandByShortcut(event)) {
             return;
         }
@@ -639,13 +677,15 @@ public class JtvMenuView extends JtvView {
                 doASelect(event);
                 break;
             case evCommand:
-                if (event.getMessage().getCommand() == cmMenu)
+                if (event.getMessage().getCommand() == cmMenu) {
                     doASelect(event);
+                }
                 break;
             case evBroadcast:
                 if (event.getMessage().getCommand() == cmCommandSetChanged) {
-                    if (updateMenu(menu))
+                    if (updateMenu(menu)) {
                         drawView();
+                    }
                 }
                 break;
         }

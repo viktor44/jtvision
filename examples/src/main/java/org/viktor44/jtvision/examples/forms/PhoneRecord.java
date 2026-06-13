@@ -44,12 +44,32 @@ public class PhoneRecord {
     public static PhoneRecord parse(String line) {
         String[] parts = line.split("\t", -1);
         PhoneRecord r = new PhoneRecord();
-        if (parts.length > 0) r.name = parts[0];
-        if (parts.length > 1) r.company = parts[1];
-        if (parts.length > 2) r.remarks = parts[2];
-        if (parts.length > 3) r.phone = parts[3];
-        if (parts.length > 4) try { r.acquaintType = Integer.parseInt(parts[4]); } catch (NumberFormatException ignored) {}
-        if (parts.length > 5) try { r.gender = Integer.parseInt(parts[5]); } catch (NumberFormatException ignored) {}
+        if (parts.length > 0) {
+            r.name = parts[0];
+        }
+        if (parts.length > 1) {
+            r.company = parts[1];
+        }
+        if (parts.length > 2) {
+            r.remarks = parts[2];
+        }
+        if (parts.length > 3) {
+            r.phone = parts[3];
+        }
+        if (parts.length > 4) {
+            try {
+                r.acquaintType = Integer.parseInt(parts[4]);
+            }
+            catch (NumberFormatException ignored) {
+            }
+        }
+        if (parts.length > 5) {
+            try {
+                r.gender = Integer.parseInt(parts[5]);
+            }
+            catch (NumberFormatException ignored) {
+            }
+        }
         return r;
     }
 }

@@ -56,8 +56,9 @@ public class JtvListBox extends JtvListViewer {
     public String getText(int item, int maxLen) {
         if (list != null && item >= 0 && item < list.size()) {
             String s = list.get(item);
-            if (s.length() > maxLen)
+            if (s.length() > maxLen) {
                 return s.substring(0, maxLen);
+            }
             return s;
         }
         return "";
@@ -70,13 +71,16 @@ public class JtvListBox extends JtvListViewer {
      * @param aList the new list of items; if {@code null} an empty list is used
      */
     public void newList(List<String> aList) {
-        if (aList != null)
+        if (aList != null) {
             list = aList;
-        else
+        }
+        else {
             list = new ArrayList<>();
+        }
         setRange(list.size());
-        if (range > 0)
+        if (range > 0) {
             focusItem(0);
+        }
         drawView();
     }
 

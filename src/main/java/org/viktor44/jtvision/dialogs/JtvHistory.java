@@ -132,16 +132,19 @@ public class JtvHistory extends JtvView {
         if (event.getWhat() == evMouseDown) {
             showHistory();
             clearEvent(event);
-        } else if (event.getWhat() == evKeyDown) {
+        }
+        else if (event.getWhat() == evKeyDown) {
             if (event.getKeyDown().getKeyCode() == KeyEvent.VK_DOWN &&
                 event.getKeyDown().isAltDown()) {
                 showHistory();
                 clearEvent(event);
             }
-        } else if (event.getWhat() == evBroadcast) {
+        }
+        else if (event.getWhat() == evBroadcast) {
             if (event.getMessage().getCommand() == cmRecordHistory) {
                 recordHistory(historyId, link.getData());
-            } else if (event.getMessage().getCommand() == cmReleasedFocus && event.getMessage().getInfoPtr() == link) {
+            }
+            else if (event.getMessage().getCommand() == cmReleasedFocus && event.getMessage().getInfoPtr() == link) {
                 recordHistory(historyId, link.getData());
             }
         }
@@ -166,11 +169,11 @@ public class JtvHistory extends JtvView {
         recordHistory(historyId, link.getData());
 
         JtvRect r = link.getBounds();
-        r.setA(new JtvPoint(r.getA().getX() - 1, r.getA().getY() - 1));
-        r.setB(new JtvPoint(r.getB().getX() + 1, r.getB().getY() + 7));
+        r.setA(new JtvPoint(r.getAx() - 1, r.getAy() - 1));
+        r.setB(new JtvPoint(r.getBx() + 1, r.getBy() + 7));
         JtvRect ownerExtent = owner.getExtent();
         r.intersect(ownerExtent);
-        r.setB(new JtvPoint(r.getB().getX(), r.getB().getY() - 1));
+        r.setB(new JtvPoint(r.getBx(), r.getBy() - 1));
 
         JtvHistoryWindow historyWindow = initHistoryWindow(r);
         if (historyWindow == null) {
@@ -187,7 +190,8 @@ public class JtvHistory extends JtvView {
                     link.drawView();
                 }
             }
-        } else {
+        }
+        else {
             String item = hist.get(hist.size() - 1);
             if (item != null) {
                 link.setData(item);
@@ -223,12 +227,15 @@ public class JtvHistory extends JtvView {
      * @param str the string to record; empty or {@code null} strings are ignored
      */
     public static void recordHistory(int id, String str) {
-        if (str == null || str.isEmpty()) return;
+        if (str == null || str.isEmpty()) {
+            return;
+        }
         List<String> hist = histories.computeIfAbsent(id, k -> new ArrayList<>());
         hist.remove(str); // Remove duplicate if present
         hist.add(str);
-        if (hist.size() > 20) // Limit history size
+        if (hist.size() > 20) { // Limit history size
             hist.remove(0);
+        }
     }
 
     /**

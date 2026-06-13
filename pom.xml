@@ -25,6 +25,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<lombok-maven-plugin.version>1.18.20.0</lombok-maven-plugin.version>
+		<maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
 	    <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
 	    <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
 	    <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
@@ -183,6 +184,25 @@
 				<configuration>
 					<publishingServerId>central-sonatype</publishingServerId>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${maven-checkstyle-plugin.version}</version>
+				<configuration>
+					<configLocation>checkstyle.xml</configLocation>
+					<failsOnError>true</failsOnError>
+					<consoleOutput>true</consoleOutput>
+				</configuration>
+				<executions>
+					<execution>
+						<id>validate</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

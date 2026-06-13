@@ -136,12 +136,14 @@ public class JtvColorSelector extends JtvView {
                         org.viktor44.jtvision.core.JtvPoint mouse = makeLocal(event.getMouse().getWhere());
                         color = mouse.getY() * 4 + mouse.getX() / 3;
                         color = Math.max(0, Math.min(maxCol, color));
-                    } else {
+                    }
+                    else {
                         color = oldColor;
                     }
                     colorChanged();
                     drawView();
-                } while (mouseEvent(event, evMouseMove));
+                }
+                while (mouseEvent(event, evMouseMove));
                 clearEvent(event);
                 return;
 
@@ -156,18 +158,22 @@ public class JtvColorSelector extends JtvView {
                     case KeyEvent.VK_UP:
                         if (color > 3) {
                             color -= 4;
-                        } else if (color == 0) {
+                        }
+                        else if (color == 0) {
                             color = maxCol;
-                        } else {
+                        }
+                        else {
                             color += maxCol - 4;
                         }
                         break;
                     case KeyEvent.VK_DOWN:
                         if (color < maxCol - 3) {
                             color += 4;
-                        } else if (color == maxCol) {
+                        }
+                        else if (color == maxCol) {
                             color = 0;
-                        } else {
+                        }
+                        else {
                             color -= maxCol - 4;
                         }
                         break;

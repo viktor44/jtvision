@@ -169,7 +169,7 @@ public final class MessageBox {
      */
     public static int messageBox(String msg, int options) {
         JtvRect dr = JtvProgram.getDesktop().getExtent();
-        int width = Math.max(40, (dr.getB().getX() - dr.getA().getX()) / 3);
+        int width = Math.max(40, (dr.getBx() - dr.getAx()) / 3);
         JtvRect r = new JtvRect(0, 0, width, 9);
         return messageBox(r, msg, options);
     }
@@ -203,7 +203,7 @@ public final class MessageBox {
         dialog.setOptions(dialog.getOptions() | ofCentered);
 
         // Add text
-        JtvRect textRect = new JtvRect(3, 2, r.getB().getX() - r.getA().getX() - 2, r.getB().getY() - r.getA().getY() - 3);
+        JtvRect textRect = new JtvRect(3, 2, r.getBx() - r.getAx() - 2, r.getBy() - r.getAy() - 3);
         JtvStaticText text = new JtvStaticText(textRect, msg);
         dialog.insert(text);
 
@@ -230,10 +230,10 @@ public final class MessageBox {
             buttons[buttonCount++] = 2;
         }
 
-        int dialogWidth = r.getB().getX() - r.getA().getX();
+        int dialogWidth = r.getBx() - r.getAx();
         int totalButtonWidth = buttonCount * 12;
         int buttonX = (dialogWidth - totalButtonWidth) / 2;
-        int buttonY = r.getB().getY() - r.getA().getY() - 3;
+        int buttonY = r.getBy() - r.getAy() - 3;
 
         for (int i = 0; i < buttonCount; i++) {
             int idx = buttons[i];
@@ -280,7 +280,7 @@ public final class MessageBox {
      */
     public static String inputBox(String title, String label, int maxLen) {
         JtvRect dr = JtvProgram.getDesktop().getExtent();
-        int width = Math.max(40, (dr.getB().getX() - dr.getA().getX()) / 3);
+        int width = Math.max(40, (dr.getBx() - dr.getAx()) / 3);
         JtvRect r = new JtvRect(0, 0, width, 9);
         return inputBox(r, title, label, maxLen);
     }
@@ -314,7 +314,7 @@ public final class MessageBox {
         JtvDialog dialog = new JtvDialog(r, title);
         dialog.setOptions(dialog.getOptions() | ofCentered);
 
-        int dialogWidth = r.getB().getX() - r.getA().getX();
+        int dialogWidth = r.getBx() - r.getAx();
 
         // Add label
         JtvRect labelRect = new JtvRect(2, 2, dialogWidth - 2, 3);

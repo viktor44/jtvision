@@ -68,7 +68,8 @@ public class FormsApp extends JtvApplication {
     private void openList(Path path) {
         try {
             insertWindow(new ListDialog(path));
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             MessageBox.messageBox("Cannot open " + path + ": " + e.getMessage(),
                 mfError | mfOKButton);
         }
@@ -135,7 +136,7 @@ public class FormsApp extends JtvApplication {
 
     @Override
     protected JtvMenuBar initMenuBar(JtvRect r) {
-        r = new JtvRect(r.getA().getX(), r.getA().getY(), r.getB().getX(), r.getA().getY() + 1);
+        r = new JtvRect(r.getAx(), r.getAy(), r.getBx(), r.getAy() + 1);
         return new JtvMenuBar(r)
                 .addItem(
                 		new JtvSubMenu("~\u2261~")
@@ -158,7 +159,7 @@ public class FormsApp extends JtvApplication {
 
     @Override
     protected JtvStatusLine initStatusLine(JtvRect r) {
-        r = new JtvRect(r.getA().getX(), r.getB().getY() - 1, r.getB().getX(), r.getB().getY());
+        r = new JtvRect(r.getAx(), r.getBy() - 1, r.getBx(), r.getBy());
         return new JtvStatusLine(r,
             new JtvStatusDef()
                 .addItem(new JtvStatusItem("~F2~ Save", JtvKeyStroke.of(KeyEvent.VK_F2), cmListSave))

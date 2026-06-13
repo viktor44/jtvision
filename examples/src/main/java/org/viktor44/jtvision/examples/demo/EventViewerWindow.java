@@ -67,7 +67,9 @@ public class EventViewerWindow extends JtvWindow {
     }
 
     public void print(JtvEvent ev) {
-        if (ev.getWhat() == evNothing || stopped) return;
+        if (ev.getWhat() == evNothing || stopped) {
+            return;
+        }
         eventCount++;
         log.append("Received event #" + eventCount);
         formatEvent(ev, log);
@@ -129,8 +131,13 @@ public class EventViewerWindow extends JtvWindow {
         }
     }
 
-    private static String hex2(int v) { return String.format("0x%02X", v & 0xFF); }
-    private static String hex4(int v) { return String.format("0x%04X", v & 0xFFFF); }
+    private static String hex2(int v) {
+        return String.format("0x%02X", v & 0xFF);
+    }
+
+    private static String hex4(int v) {
+        return String.format("0x%04X", v & 0xFFFF);
+    }
 
     /** Ring-buffer scroller that renders the event log as scrollable text. */
     static class EventLog extends JtvScroller {
@@ -145,19 +152,28 @@ public class EventViewerWindow extends JtvWindow {
             setLimit(0, 0);
         }
 
-        void append(String s) { pending.add(s); }
+        void append(String s) {
+            pending.add(s);
+        }
 
         void commit() {
-            if (pending.isEmpty()) return;
+            if (pending.isEmpty()) {
+                return;
+            }
             for (String s : pending) {
                 lines.addLast(s);
-                if (s.length() > maxWidth) maxWidth = s.length();
-                while (lines.size() > bufSize) lines.removeFirst();
+                if (s.length() > maxWidth) {
+                    maxWidth = s.length();
+                }
+                while (lines.size() > bufSize) {
+                    lines.removeFirst();
+                }
             }
             pending.clear();
             setLimit(maxWidth, lines.size());
-            if (vScrollBar != null)
+            if (vScrollBar != null) {
                 vScrollBar.setValue(Math.max(0, lines.size() - size.getY()));
+            }
             drawView();
         }
 
@@ -171,8 +187,9 @@ public class EventViewerWindow extends JtvWindow {
                 int idx = i + delta.getY();
                 if (idx >= 0 && idx < snapshot.length) {
                     String s = (String) snapshot[idx];
-                    if (delta.getX() < s.length())
+                    if (delta.getX() < s.length()) {
                         buf.moveStr(0, s.substring(delta.getX()), color);
+                    }
                 }
                 writeLine(0, i, size.getX(), 1, buf);
             }

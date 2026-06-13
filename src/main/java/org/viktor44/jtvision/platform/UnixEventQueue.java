@@ -296,7 +296,9 @@ abstract class UnixEventQueue extends EventQueue {
         input.add(first);
         while (true) {
             int next = readByteWithTimeout(ESC_SEQUENCE_TIMEOUT_MS);
-            if (next < 0) break;
+            if (next < 0) {
+                break;
+            }
             input.add(next);
         }
         log.info("Keyboard input {}", input);
@@ -359,16 +361,20 @@ abstract class UnixEventQueue extends EventQueue {
                     if (c >= 0) {
                         pasteBuffer.append((char) c);
                     }
-                } else if (second >= 0) {
+                }
+                else if (second >= 0) {
                     pasteBuffer.append('\033').append((char) second);
-                } else {
+                }
+                else {
                     pasteBuffer.append('\033');
                 }
-            } else if ((firstByte & 0x80) != 0) {
+            }
+            else if ((firstByte & 0x80) != 0) {
                 // UTF-8 multi-byte character inside paste
                 String text = decodeUtf8Char(firstByte);
                 pasteBuffer.append(text);
-            } else {
+            }
+            else {
                 // Normalize \r and \r\n to \n so the editor sees proper line breaks.
                 if (firstByte == '\r') {
                     // Peek at the next byte: if it is \n, consume it (CRLF -> LF).
@@ -377,7 +383,8 @@ abstract class UnixEventQueue extends EventQueue {
                         byteQueue.poll();
                     }
                     pasteBuffer.append('\n');
-                } else {
+                }
+                else {
                     pasteBuffer.append((char) firstByte);
                 }
             }

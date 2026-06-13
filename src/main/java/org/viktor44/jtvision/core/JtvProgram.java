@@ -329,8 +329,9 @@ public abstract class JtvProgram extends JtvGroup {
      * disabling commands based on application state.
      */
     public void idle() {
-        if (statusLine != null)
+        if (statusLine != null) {
             statusLine.update();
+        }
 
         if (commandSetChanged) {
             message(this, evBroadcast, cmCommandSetChanged, null);
@@ -434,7 +435,7 @@ public abstract class JtvProgram extends JtvGroup {
      * @return a new desktop view, or {@code null}
      */
     protected JtvDesktop initDesktop(JtvRect r) {
-        r = new JtvRect(r.getA().getX(), r.getA().getY() + 1, r.getB().getX(), r.getB().getY() - 1);
+        r = new JtvRect(r.getAx(), r.getAy() + 1, r.getBx(), r.getBy() - 1);
         return new JtvDesktop(r);
     }
 
@@ -446,7 +447,7 @@ public abstract class JtvProgram extends JtvGroup {
      * @return a new menu bar view, or {@code null}
      */
     protected JtvMenuBar initMenuBar(JtvRect r) {
-        r = new JtvRect(r.getA().getX(), r.getA().getY(), r.getB().getX(), r.getA().getY() + 1);
+        r = new JtvRect(r.getAx(), r.getAy(), r.getBx(), r.getAy() + 1);
         return new JtvMenuBar(r, new JtvMenu());
     }
 
@@ -458,7 +459,7 @@ public abstract class JtvProgram extends JtvGroup {
      * @return a new status line view, or {@code null}
      */
     protected JtvStatusLine initStatusLine(JtvRect r) {
-        r = new JtvRect(r.getA().getX(), r.getB().getY() - 1, r.getB().getX(), r.getB().getY());
+        r = new JtvRect(r.getAx(), r.getBy() - 1, r.getBx(), r.getBy());
         String meta = JtvKey.getMetaKeyLabel();
         return new JtvStatusLine(r,
             new JtvStatusDef()

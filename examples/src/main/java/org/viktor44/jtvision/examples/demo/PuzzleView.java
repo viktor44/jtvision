@@ -87,8 +87,12 @@ public class PuzzleView extends JtvView {
                 char tile = board[i][j];
                 String s = " " + tile + " ";
                 JtvColorAttr c;
-                if (tile == ' ') c = colorA;
-                else c = (MAP[tile - 'A'] != 0) ? colorB : colorA;
+                if (tile == ' ') {
+                    c = colorA;
+                }
+                else {
+                    c = (MAP[tile - 'A'] != 0) ? colorB : colorA;
+                }
                 buf.moveStr(j * 3, s, c);
             }
             writeLine(0, i, 18, 1, buf);
@@ -129,22 +133,42 @@ public class PuzzleView extends JtvView {
         int x = i % 4, y = i / 4;
         switch (key) {
             case KeyEvent.VK_DOWN:
-                if (y > 0) { board[y][x] = board[y - 1][x]; board[y - 1][x] = ' '; bumpMoves(); }
+                if (y > 0) {
+                    board[y][x] = board[y - 1][x];
+                    board[y - 1][x] = ' ';
+                    bumpMoves();
+                }
                 break;
             case KeyEvent.VK_UP:
-                if (y < 3) { board[y][x] = board[y + 1][x]; board[y + 1][x] = ' '; bumpMoves(); }
+                if (y < 3) {
+                    board[y][x] = board[y + 1][x];
+                    board[y + 1][x] = ' ';
+                    bumpMoves();
+                }
                 break;
             case KeyEvent.VK_RIGHT:
-                if (x > 0) { board[y][x] = board[y][x - 1]; board[y][x - 1] = ' '; bumpMoves(); }
+                if (x > 0) {
+                    board[y][x] = board[y][x - 1];
+                    board[y][x - 1] = ' ';
+                    bumpMoves();
+                }
                 break;
             case KeyEvent.VK_LEFT:
-                if (x < 3) { board[y][x] = board[y][x + 1]; board[y][x + 1] = ' '; bumpMoves(); }
+                if (x < 3) {
+                    board[y][x] = board[y][x + 1];
+                    board[y][x + 1] = ' ';
+                    bumpMoves();
+                }
                 break;
         }
         drawView();
     }
 
-    private void bumpMoves() { if (moves < 1000) moves++; }
+    private void bumpMoves() {
+        if (moves < 1000) {
+            moves++;
+        }
+    }
 
     private void moveTile(JtvPoint p) {
         JtvPoint lp = makeLocal(p);

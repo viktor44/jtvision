@@ -181,11 +181,19 @@ public class JtvHelpViewer extends JtvScroller {
             return;
         }
         int dx = delta.getX();
-        if (ref.getX() < dx) dx = ref.getX();
-        if (ref.getX() > dx + size.getX()) dx = ref.getX() - size.getX();
+        if (ref.getX() < dx) {
+            dx = ref.getX();
+        }
+        if (ref.getX() > dx + size.getX()) {
+            dx = ref.getX() - size.getX();
+        }
         int dy = delta.getY();
-        if (ref.getY() <= dy) dy = ref.getY() - 1;
-        if (ref.getY() > dy + size.getY()) dy = ref.getY() - size.getY();
+        if (ref.getY() <= dy) {
+            dy = ref.getY() - 1;
+        }
+        if (ref.getY() > dy + size.getY()) {
+            dy = ref.getY() - size.getY();
+        }
         JtvPoint d = new JtvPoint(dx, dy);
         if (d.getX() != delta.getX() || d.getY() != delta.getY()) {
             scrollTo(d.getX(), d.getY());

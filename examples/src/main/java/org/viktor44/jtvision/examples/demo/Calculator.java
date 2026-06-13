@@ -84,7 +84,8 @@ public class Calculator extends JtvDialog {
             if ((event.getWhat() & evKeyboard) != 0) {
                 calcKey(event.getKeyDown().getKeyChar());
                 clearEvent(event);
-            } else if (event.getWhat() == evBroadcast) {
+            }
+            else if (event.getWhat() == evBroadcast) {
                 if (event.getMessage().getCommand() == cmCalcButton &&
                     event.getMessage().getInfoPtr() instanceof JtvButton) {
                     calcKey(((JtvButton) event.getMessage().getInfoPtr()).getTitle().charAt(0));
@@ -105,8 +106,12 @@ public class Calculator extends JtvDialog {
         }
 
         private double getDisplay() {
-            try { return Double.parseDouble(number.toString()); }
-            catch (NumberFormatException e) { return 0; }
+            try {
+                return Double.parseDouble(number.toString());
+            }
+            catch (NumberFormatException e) {
+                return 0;
+            }
         }
 
         private void error() {
@@ -126,11 +131,17 @@ public class Calculator extends JtvDialog {
         }
 
         private void setDisplay(double r) {
-            if (r < 0) { sign = '-'; r = -r; }
-            else sign = ' ';
+            if (r < 0) {
+                sign = '-';
+                r = -r;
+            }
+            else {
+                sign = ' ';
+            }
             String s = format(r);
-            if (s.length() > DISPLAYLEN)
+            if (s.length() > DISPLAYLEN) {
                 error();
+            }
             else {
                 number.setLength(0);
                 number.append(s);
@@ -138,8 +149,9 @@ public class Calculator extends JtvDialog {
         }
 
         private static String format(double r) {
-            if (r == Math.floor(r) && !Double.isInfinite(r) && Math.abs(r) < 1e15)
+            if (r == Math.floor(r) && !Double.isInfinite(r) && Math.abs(r) < 1e15) {
                 return Long.toString((long) r);
+            }
             String s = Double.toString(r);
             return s;
         }
@@ -155,8 +167,9 @@ public class Calculator extends JtvDialog {
 
         private void calcKey(char key) {
             key = Character.toUpperCase(key);
-            if (status == Status.ERROR && key != 'C')
+            if (status == Status.ERROR && key != 'C') {
                 key = ' ';
+            }
 
             switch (key) {
                 case '0': 
@@ -171,15 +184,17 @@ public class Calculator extends JtvDialog {
                 case '9':
                     checkFirst();
                     if (number.length() < 15) {
-                        if (number.toString().equals("0"))
+                        if (number.toString().equals("0")) {
                             number.setLength(0);
+                        }
                         number.append(key);
                     }
                     break;
                 case '.':
                     checkFirst();
-                    if (number.indexOf(".") < 0)
+                    if (number.indexOf(".") < 0) {
                         number.append('.');
+                    }
                     break;
                 case 8:
                 case 27:
@@ -188,7 +203,8 @@ public class Calculator extends JtvDialog {
                     if (number.length() == 1) {
                         number.setLength(0);
                         number.append('0');
-                    } else {
+                    }
+                    else {
                         number.setLength(number.length() - 1);
                     }
                     break;
@@ -207,18 +223,24 @@ public class Calculator extends JtvDialog {
                         status = Status.FIRST;
                         double r = getDisplay() * (sign == '-' ? -1.0 : 1.0);
                         if (key == '%') {
-                            if (operate == '+' || operate == '-')
+                            if (operate == '+' || operate == '-') {
                                 r = (operand * r) / 100;
-                            else
+                            }
+                            else {
                                 r /= 100;
+                            }
                         }
                         switch (operate) {
                             case '+': setDisplay(operand + r); break;
                             case '-': setDisplay(operand - r); break;
                             case '*': setDisplay(operand * r); break;
                             case '/':
-                                if (r == 0) error();
-                                else setDisplay(operand / r);
+                                if (r == 0) {
+                                    error();
+                                }
+                                else {
+                                    setDisplay(operand / r);
+                                }
                                 break;
                         }
                     }

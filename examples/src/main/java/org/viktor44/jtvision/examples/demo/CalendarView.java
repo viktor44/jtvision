@@ -80,7 +80,8 @@ public class CalendarView extends JtvView {
             for (int col = 0; col < 7; col++) {
                 if (current < 1 || current > daysInMonth) {
                     buf.moveStr(col * 3, "   ", color);
-                } else {
+                }
+                else {
                     String s = String.format("%2d", current);
                     JtvColorAttr c = (year == curYear && month == curMonth && current == curDay)
                         ? boldColor : color;
@@ -95,26 +96,44 @@ public class CalendarView extends JtvView {
     @Override
     public void handleEvent(JtvEvent event) {
         super.handleEvent(event);
-        if ((state & sfSelected) == 0) return;
+        if ((state & sfSelected) == 0) {
+            return;
+        }
 
         if ((event.getWhat() & (evMouseDown | evMouseAuto)) != 0) {
             JtvPoint p = makeLocal(event.getMouse().getWhere());
-            if (p.getX() == 15 && p.getY() == 0) { addMonth(1); drawView(); }
-            else if (p.getX() == 18 && p.getY() == 0) { addMonth(-1); drawView(); }
-        } else if ((event.getWhat() & evKeyboard) != 0) {
+            if (p.getX() == 15 && p.getY() == 0) {
+                addMonth(1);
+                drawView();
+            }
+            else if (p.getX() == 18 && p.getY() == 0) {
+                addMonth(-1);
+                drawView();
+            }
+        }
+        else if ((event.getWhat() & evKeyboard) != 0) {
             char ch = event.getKeyDown().getKeyChar();
             int kc = event.getKeyDown().getKeyCode();
             if (ch == '+' || kc == KeyEvent.VK_DOWN) {
-                addMonth(1); drawView();
-            } else if (ch == '-' || kc == KeyEvent.VK_UP) {
-                addMonth(-1); drawView();
+                addMonth(1);
+                drawView();
+            }
+            else if (ch == '-' || kc == KeyEvent.VK_UP) {
+                addMonth(-1);
+                drawView();
             }
         }
     }
 
     private void addMonth(int delta) {
         month += delta;
-        while (month > 12) { month -= 12; year++; }
-        while (month < 1)  { month += 12; year--; }
+        while (month > 12) {
+            month -= 12;
+            year++;
+        }
+        while (month < 1) {
+            month += 12;
+            year--;
+        }
     }
 }

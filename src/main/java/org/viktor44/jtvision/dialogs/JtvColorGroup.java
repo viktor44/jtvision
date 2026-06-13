@@ -7,6 +7,9 @@ package org.viktor44.jtvision.dialogs;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * A named colour group used by {@link JtvColorDialog}.
  * <p>
@@ -23,15 +26,19 @@ import java.util.List;
 public class JtvColorGroup {
 
     /** The display name shown in the colour group list. */
+	@Getter
     protected String name;
 
 	/**
      * The index of the most recently focused item within this group's item list.
      * Used to restore the selection when switching between groups.
      */
+	@Getter
+	@Setter
     protected int index;
 
 	/** The list of {@link JtvColorItem} objects belonging to this group. */
+	@Getter
     protected List<JtvColorItem> items;
 
 	/**
@@ -52,7 +59,9 @@ public class JtvColorGroup {
     public JtvColorGroup(String nm, JtvColorItem itm) {
         name = nm;
         items = new ArrayList<>();
-        if (itm != null) items.add(itm);
+        if (itm != null) {
+            items.add(itm);
+        }
     }
 
     /**
@@ -80,30 +89,4 @@ public class JtvColorGroup {
         g.addItem(i);
         return g;
     }
-
-    /** The display name shown in the colour group list. */
-    public String getName() {
-		return name;
-	}
-
-	/**
-     * The index of the most recently focused item within this group's item list.
-     * Used to restore the selection when switching between groups.
-     */
-    public int getIndex() {
-		return index;
-	}
-
-	/**
-     * The index of the most recently focused item within this group's item list.
-     * Used to restore the selection when switching between groups.
-     */
-	public void setIndex(int index) {
-		this.index = index;
-	}
-
-	/** The list of {@link JtvColorItem} objects belonging to this group. */
-    public List<JtvColorItem> getItems() {
-		return items;
-	}
 }

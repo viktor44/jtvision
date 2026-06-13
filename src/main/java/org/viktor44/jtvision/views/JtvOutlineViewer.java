@@ -545,9 +545,11 @@ public abstract class JtvOutlineViewer extends JtvScroller {
         if (event.getWhat() == evKeyDown) {
             if (event.getKeyDown().isCtrlDown() && event.getKeyDown().getKeyCode() == KeyEvent.VK_PAGE_UP) {
                 newFocus = 0;
-            } else if (event.getKeyDown().isCtrlDown() && event.getKeyDown().getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
+            }
+            else if (event.getKeyDown().isCtrlDown() && event.getKeyDown().getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
                 newFocus = limit.getY() - 1;
-            } else {
+            }
+            else {
                 switch (event.getKeyDown().getKeyStroke()) {
                     case KeyEvent.VK_UP:
                     case KeyEvent.VK_LEFT:

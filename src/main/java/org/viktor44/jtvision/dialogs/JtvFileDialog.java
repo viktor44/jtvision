@@ -182,18 +182,20 @@ public class JtvFileDialog extends JtvDialog {
 
             if (app.getSize().getX() > 90) {
                 bounds.grow(15, 0);
-            } else if (app.getSize().getX() > 63) {
+            }
+            else if (app.getSize().getX() > 63) {
                 screenBounds.grow(-7, 0);
-                bounds.setA(new JtvPoint(screenBounds.getA().getX(), bounds.getA().getY()));
-                bounds.setB(new JtvPoint(screenBounds.getB().getX(), bounds.getB().getY()));
+                bounds.setA(new JtvPoint(screenBounds.getAx(), bounds.getAy()));
+                bounds.setB(new JtvPoint(screenBounds.getBx(), bounds.getBy()));
             }
 
             if (app.getSize().getY() > 34) {
                 bounds.grow(0, 5);
-            } else if (app.getSize().getY() > 25) {
+            }
+            else if (app.getSize().getY() > 25) {
                 screenBounds.grow(0, -3);
-                bounds.setA(new JtvPoint(bounds.getA().getX(), screenBounds.getA().getY()));
-                bounds.setB(new JtvPoint(bounds.getB().getX(), screenBounds.getB().getY()));
+                bounds.setA(new JtvPoint(bounds.getAx(), screenBounds.getAy()));
+                bounds.setB(new JtvPoint(bounds.getBx(), screenBounds.getBy()));
             }
 
             locate(bounds);
@@ -260,7 +262,8 @@ public class JtvFileDialog extends JtvDialog {
                 default:
                     break;
             }
-        } else if (event.getWhat() == evBroadcast && event.getMessage().getCommand() == cmFileDoubleClicked) {
+        }
+        else if (event.getWhat() == evBroadcast && event.getMessage().getCommand() == cmFileDoubleClicked) {
             event.setWhat(evCommand);
             event.getMessage().setCommand(cmOK);
             putEvent(event);

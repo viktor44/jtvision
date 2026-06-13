@@ -30,8 +30,8 @@ public class ChangeBackgroundDialog extends JtvDialog {
         this.background = background;
 
         JtvRect r = getBounds();
-        r.move((JtvProgram.getDesktop().getSize().getX() - r.getB().getX()) / 2,
-            (JtvProgram.getDesktop().getSize().getY() - r.getB().getY()) / 2);
+        r.move((JtvProgram.getDesktop().getSize().getX() - r.getBx()) / 2,
+            (JtvProgram.getDesktop().getSize().getY() - r.getBy()) / 2);
         changeBounds(r);
 
         input = new JtvInputLine(new JtvRect(4, 5, 7, 6), 2);

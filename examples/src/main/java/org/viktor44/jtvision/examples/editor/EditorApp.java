@@ -165,7 +165,7 @@ public class EditorApp extends JtvApplication {
 
     @Override
     protected JtvMenuBar initMenuBar(JtvRect r) {
-        r = new JtvRect(r.getA().getX(), r.getA().getY(), r.getB().getX(), r.getA().getY() + 1);
+        r = new JtvRect(r.getAx(), r.getAy(), r.getBx(), r.getAy() + 1);
         JtvMenuItem systemMenu = new JtvSubMenu("~\u2261~")
         		.addItem("~A~bout...", cmAbout);
 
@@ -181,7 +181,7 @@ public class EditorApp extends JtvApplication {
                 .addItem(new JtvMenuItem("E~x~it", cmQuit, JtvKeyStroke.of(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+Q"));
 
         JtvMenuItem editMenu = new JtvSubMenu("~E~dit")
-                .addItem(new JtvMenuItem("~U~ndo", cmUndo, JtvKeyStroke.of(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+U"))
+                .addItem(new JtvMenuItem("~U~ndo", cmUndo, JtvKeyStroke.of(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+Z"))
                 .addSeparator()
                 .addItem(new JtvMenuItem("Cu~t~", cmCut, JtvKeyStroke.of(KeyEvent.VK_DELETE, InputEvent.SHIFT_DOWN_MASK), 0, "Shift+Del"))
                 .addItem(new JtvMenuItem("~C~opy", cmCopy, JtvKeyStroke.of(KeyEvent.VK_INSERT, InputEvent.CTRL_DOWN_MASK), 0, "Ctrl+Ins"))
@@ -214,7 +214,7 @@ public class EditorApp extends JtvApplication {
     @Override
     protected JtvStatusLine initStatusLine(JtvRect r) {
         return new JtvStatusLine(
-        		new JtvRect(r.getA().getX(), r.getB().getY() - 1, r.getB().getX(), r.getB().getY()), 
+        		new JtvRect(r.getAx(), r.getBy() - 1, r.getBx(), r.getBy()), 
         		new JtvStatusDef()
 			            .addItem(new JtvStatusItem("~F2~ Save", JtvKeyStroke.of(KeyEvent.VK_F2), cmSave))
 			            .addItem(new JtvStatusItem("~F3~ Open", JtvKeyStroke.of(KeyEvent.VK_F3), cmOpen))

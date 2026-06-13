@@ -185,11 +185,20 @@ public class JtvStatusLine extends JtvView {
                 if (i + l < size.getX()) {
                     JtvColorAttr color, colorHot;
                     if (commandEnabled(t.getCommand())) {
-                        if (t == selected) { color = cSelect; colorHot = cSelectHot; }
-                        else { color = cNormal; colorHot = cNormalHot; }
-                    } else {
-                        if (t == selected) { color = cSelDisabled; colorHot = cSelDisabledHot; }
-                        else { color = cNormDisabled; colorHot = cNormDisabledHot; }
+                        if (t == selected) {
+                            color = cSelect; colorHot = cSelectHot;
+                        }
+                        else {
+                            color = cNormal; colorHot = cNormalHot;
+                        }
+                    }
+                    else {
+                        if (t == selected) {
+                            color = cSelDisabled; colorHot = cSelDisabledHot;
+                        }
+                        else {
+                            color = cNormDisabled; colorHot = cNormDisabledHot;
+                        }
                     }
                     b.moveChar(i, ' ', color, 1);
                     b.moveCStr(i + 1, t.getText(), color, colorHot);
@@ -251,13 +260,16 @@ public class JtvStatusLine extends JtvView {
      * @return the item under the pointer, or {@code null}
      */
     public JtvStatusItem itemMouseIsIn(JtvPoint mouse) {
-        if (mouse.getY() != 0) return null;
+        if (mouse.getY() != 0) {
+            return null;
+        }
         int i = 0;
         for (JtvStatusItem t : items) {
             if (t.getText() != null) {
                 int k = i + StringUtils.cstrLen(t.getText()) + 2;
-                if (mouse.getX() >= i && mouse.getX() < k)
+                if (mouse.getX() >= i && mouse.getX() < k) {
                     return t;
+                }
                 i = k;
             }
         }
@@ -297,7 +309,8 @@ public class JtvStatusLine extends JtvView {
                         t = newT;
                         drawSelect(t);
                     }
-                } while (mouseEvent(event, evMouseMove));
+                }
+                while (mouseEvent(event, evMouseMove));
 
                 if (t != null && commandEnabled(t.getCommand())) {
                     event.setWhat(evCommand);
@@ -323,8 +336,9 @@ public class JtvStatusLine extends JtvView {
                 }
                 break;
             case evBroadcast:
-                if (event.getMessage().getCommand() == cmCommandSetChanged)
+                if (event.getMessage().getCommand() == cmCommandSetChanged) {
                     drawView();
+                }
                 break;
         }
     }

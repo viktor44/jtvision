@@ -34,7 +34,8 @@ public class NumInputLine extends JtvInputLine {
             long value;
             try {
                 value = Long.parseLong(s.trim());
-            } catch (NumberFormatException e) {
+            }
+            catch (NumberFormatException e) {
                 value = 0;
             }
             if (value == 0 || value < min || value > max) {

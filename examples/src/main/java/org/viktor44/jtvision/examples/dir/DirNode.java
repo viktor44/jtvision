@@ -50,7 +50,8 @@ public class DirNode extends JtvNode {
             if (head == null) {
                 head = child;
                 tail = child;
-            } else {
+            }
+            else {
                 tail.setNext(child);
                 tail = child;
             }

@@ -61,8 +61,12 @@ public class JtvPoint {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof JtvPoint)) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof JtvPoint)) {
+            return false;
+        }
         JtvPoint other = (JtvPoint) obj;
         return x == other.x && y == other.y;
     }

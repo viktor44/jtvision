@@ -38,7 +38,9 @@ public class PaletteWindow extends JtvWindow {
 
     private static int[] toIntArray(JtvColorAttr[] attrs) {
         int[] result = new int[attrs.length];
-        for (int i = 0; i < attrs.length; i++) result[i] = attrs[i].getValue();
+        for (int i = 0; i < attrs.length; i++) {
+            result[i] = attrs[i].getValue();
+        }
         return result;
     }
 

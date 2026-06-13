@@ -411,10 +411,10 @@ public class JtvWindow extends JtvGroup {
     public JtvScrollBar standardScrollBar(int aOptions) {
         JtvRect r = getExtent();
         if ((aOptions & sbVertical) != 0) {
-            r = new JtvRect(r.getB().getX() - 1, r.getA().getY() + 1, r.getB().getX(), r.getB().getY() - 1);
+            r = new JtvRect(r.getBx() - 1, r.getAy() + 1, r.getBx(), r.getBy() - 1);
         }
         else {
-            r = new JtvRect(r.getA().getX() + 2, r.getB().getY() - 1, r.getB().getX() - 2, r.getB().getY());
+            r = new JtvRect(r.getAx() + 2, r.getBy() - 1, r.getBx() - 2, r.getBy());
         }
 
         JtvScrollBar s = new JtvScrollBar(r);

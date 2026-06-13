@@ -119,7 +119,8 @@ class WinEventQueue extends EventQueue {
             				| WIN_ENABLE_VIRTUAL_TERMINAL_INPUT);
             newMode |= WIN_ENABLE_MOUSE_INPUT | WIN_ENABLE_EXTENDED_FLAGS | WIN_ENABLE_WINDOW_INPUT;
             return Kernel32.SetConsoleMode(handle, newMode) != 0;
-        } catch (LinkageError ignored) {
+        }
+        catch (LinkageError ignored) {
             return false;
         }
     }

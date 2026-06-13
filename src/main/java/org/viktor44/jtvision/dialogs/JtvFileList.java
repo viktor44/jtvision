@@ -201,7 +201,8 @@ public class JtvFileList extends JtvSortedListBox {
             for (File f : files) {
                 if (f.isDirectory()) {
                     records.add(JtvFileRecord.fromFile(f));
-                } else if (mask.matcher(f.getName()).matches()) {
+                }
+                else if (mask.matcher(f.getName()).matches()) {
                     records.add(JtvFileRecord.fromFile(f));
                 }
             }
@@ -242,10 +243,12 @@ public class JtvFileList extends JtvSortedListBox {
                 dir = new File(System.getProperty("user.dir"));
             }
             mask = f.getName();
-        } else if (f.isDirectory()) {
+        }
+        else if (f.isDirectory()) {
             dir = f;
             mask = "*";
-        } else {
+        }
+        else {
             dir = f.getParentFile();
             if (dir == null) {
                 dir = new File(System.getProperty("user.dir"));

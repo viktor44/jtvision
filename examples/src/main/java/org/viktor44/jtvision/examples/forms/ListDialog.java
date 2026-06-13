@@ -93,7 +93,9 @@ public class ListDialog extends JtvDialog {
         List<PhoneRecord> records = new ArrayList<>();
         if (Files.exists(filePath)) {
             for (String line : Files.readAllLines(filePath)) {
-                if (!line.isEmpty()) records.add(PhoneRecord.parse(line));
+                if (!line.isEmpty()) {
+                    records.add(PhoneRecord.parse(line));
+                }
             }
         }
         listBox.newListObjects(records);
@@ -116,7 +118,8 @@ public class ListDialog extends JtvDialog {
                 lines.add(r.toLine());
             }
             Files.write(filePath, lines);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             MessageBox.messageBox("Cannot save: " + e.getMessage(), mfError | mfOKButton);
         }
     }
@@ -124,7 +127,9 @@ public class ListDialog extends JtvDialog {
     private PhoneRecord focusedRecord() {
         int idx = listBox.getFocused();
         List<PhoneRecord> records = snapshotRecords();
-        if (idx < 0 || idx >= records.size()) return null;
+        if (idx < 0 || idx >= records.size()) {
+            return null;
+        }
         return records.get(idx);
     }
 
@@ -154,7 +159,9 @@ public class ListDialog extends JtvDialog {
                     break;
                 case cmEdit: {
                     PhoneRecord r = focusedRecord();
-                    if (r != null) editForm(r, false);
+                    if (r != null) {
+                        editForm(r, false);
+                    }
                     clearEvent(event);
                     break;
                 }

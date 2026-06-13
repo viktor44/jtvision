@@ -41,9 +41,13 @@ public class AsciiChartWindow extends JtvWindow {
     private static char[] buildCp437() {
         char[] table = new char[256];
         byte[] bytes = new byte[256];
-        for (int i = 0; i < 256; i++) bytes[i] = (byte) i;
+        for (int i = 0; i < 256; i++) {
+            bytes[i] = (byte) i;
+        }
         String decoded = new String(bytes, Charset.forName("IBM437"));
-        for (int i = 0; i < 256; i++) table[i] = decoded.charAt(i);
+        for (int i = 0; i < 256; i++) {
+            table[i] = decoded.charAt(i);
+        }
         char[] lowGlyphs = {
             ' ',      '\u263A', '\u263B', '\u2665', '\u2666', '\u2663', '\u2660', '\u2022',
             '\u25D8', '\u25CB', '\u25D9', '\u2642', '\u2640', '\u266A', '\u266B', '\u263C',
@@ -62,13 +66,13 @@ public class AsciiChartWindow extends JtvWindow {
         paletteIndex = wpGrayWindow;
 
         JtvRect r = getExtent().grow(-1, -1);
-        JtvRect reportR = new JtvRect(r.getA().getX(), r.getB().getY() - 1, r.getB().getX(), r.getB().getY());
+        JtvRect reportR = new JtvRect(r.getAx(), r.getBy() - 1, r.getBx(), r.getBy());
         TReport report = new TReport(reportR);
         report.setOptions(report.getOptions() | ofFramed);
         report.setEventMask(report.getEventMask() | evBroadcast);
         insert(report);
 
-        JtvRect tableR = new JtvRect(r.getA().getX(), r.getA().getY(), r.getB().getX(), r.getB().getY() - 2);
+        JtvRect tableR = new JtvRect(r.getAx(), r.getAy(), r.getBx(), r.getBy() - 2);
         TTable table = new TTable(tableR);
         table.setOptions(table.getOptions() | ofFramed | ofSelectable);
         table.blockCursor();
@@ -104,7 +108,9 @@ public class AsciiChartWindow extends JtvWindow {
             e.setWhat(evBroadcast);
             e.getMessage().setCommand(CM_CHAR_FOCUSED);
             e.getMessage().setInfoPtr(code);
-            if (owner != null) owner.handleEvent(e);
+            if (owner != null) {
+                owner.handleEvent(e);
+            }
         }
 
         @Override
@@ -117,9 +123,11 @@ public class AsciiChartWindow extends JtvWindow {
                         setCursor(spot.getX(), spot.getY());
                         broadcast();
                     }
-                } while (mouseEvent(event, evMouseMove));
+                }
+                while (mouseEvent(event, evMouseMove));
                 clearEvent(event);
-            } else if ((event.getWhat() & evKeyboard) != 0) {
+            }
+            else if ((event.getWhat() & evKeyboard) != 0) {
                 switch (event.getKeyDown().getKeyCode()) {
                     case KeyEvent.VK_HOME: 
 	                    	setCursor(0, 0);
@@ -149,7 +157,9 @@ public class AsciiChartWindow extends JtvWindow {
 	                    	break;
                     default: {
                         char ch = event.getKeyDown().getKeyChar();
-                        if (ch != java.awt.event.KeyEvent.CHAR_UNDEFINED && ch > 0) setCursor(ch % 32, ch / 32);
+                        if (ch != java.awt.event.KeyEvent.CHAR_UNDEFINED && ch > 0) {
+                            setCursor(ch % 32, ch / 32);
+                        }
                     }
                 }
                 broadcast();
@@ -162,7 +172,9 @@ public class AsciiChartWindow extends JtvWindow {
     public static class TReport extends JtvView {
         private int asciiChar;
 
-        public TReport(JtvRect r) { super(r); }
+        public TReport(JtvRect r) {
+            super(r);
+        }
 
         @Override
         public void draw() {
