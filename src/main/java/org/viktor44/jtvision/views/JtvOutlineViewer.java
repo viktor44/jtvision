@@ -362,7 +362,7 @@ public abstract class JtvOutlineViewer extends JtvScroller {
             if (pos >= 0 && pos < nodes.size()) {
                 VisibleNode vn = nodes.get(pos);
                 JtvColorAttr color = normal;
-                if (pos == foc && (state & sfFocused) != 0) {
+                if (pos == foc && isInState(sfFocused)) {
                     color = getColor(2);
                 }
                 else if (isSelected(pos)) {

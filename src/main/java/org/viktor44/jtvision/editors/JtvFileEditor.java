@@ -461,7 +461,7 @@ public class JtvFileEditor extends JtvEditor {
     @Override
     protected void updateCommands() {
         super.updateCommands();
-        if (!readOnly && (state & sfActive) != 0) {
+        if (!readOnly && isInState(sfActive)) {
             enableCommand(cmSave);
             enableCommand(cmSaveAs);
         }

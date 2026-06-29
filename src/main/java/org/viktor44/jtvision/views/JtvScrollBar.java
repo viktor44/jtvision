@@ -289,7 +289,7 @@ public class JtvScrollBar extends JtvView {
 
         switch (event.getWhat()) {
             case evMouseWheel:
-                if ((state & sfVisible) != 0) {
+                if (isInState(sfVisible)) {
                     if (size.getX() == 1) {
                         if (event.getMouse().getWheel() == mwUp) {
                         	step = -arStep;
@@ -356,7 +356,7 @@ public class JtvScrollBar extends JtvView {
             }
 
             case evKeyDown:
-                if ((state & sfVisible) != 0) {
+                if (isInState(sfVisible)) {
                     int clickPart = sbIndicator;
                     int i = value;
                     int kc = event.getKeyDown().getKeyStroke();

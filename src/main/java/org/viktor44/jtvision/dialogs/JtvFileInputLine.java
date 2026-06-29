@@ -55,7 +55,7 @@ public class JtvFileInputLine extends JtvInputLine {
     @Override
     public void handleEvent(JtvEvent event) {
         super.handleEvent(event);
-        if (event.getWhat() == evBroadcast && event.getMessage().getCommand() == cmFileFocused && (state & sfSelected) == 0) {
+        if (event.getWhat() == evBroadcast && event.getMessage().getCommand() == cmFileFocused && isNotInState(sfSelected)) {
             if (event.getMessage().getInfoPtr() instanceof JtvFileRecord) {
                 JtvFileRecord rec = (JtvFileRecord) event.getMessage().getInfoPtr();
                 setData(rec.getName());

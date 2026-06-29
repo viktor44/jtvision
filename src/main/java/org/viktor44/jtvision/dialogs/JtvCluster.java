@@ -178,7 +178,7 @@ public class JtvCluster extends JtvView {
                         if (!buttonState(cur)) {
                             color = cDis; colorHot = cDisHot;
                         }
-                        else if (cur == sel && (state & sfSelected) != 0) {
+                        else if (cur == sel && isInState(sfSelected)) {
                             color = cSel; colorHot = cSelHot;
                         }
                         else {
@@ -269,7 +269,7 @@ public class JtvCluster extends JtvView {
             int s = sel;
             switch (event.getKeyDown().getKeyStroke()) {
                 case KeyEvent.VK_UP:
-                    if ((state & sfFocused) != 0) {
+                    if (isInState(sfFocused)) {
                         int count = 0;
                         do {
                             count++;
@@ -284,7 +284,7 @@ public class JtvCluster extends JtvView {
                     }
                     break;
                 case KeyEvent.VK_DOWN:
-                    if ((state & sfFocused) != 0) {
+                    if (isInState(sfFocused)) {
                         int count = 0;
                         do {
                             count++;
@@ -305,7 +305,7 @@ public class JtvCluster extends JtvView {
                         if (event.getKeyDown().getKeyCode() != 0 && c != 0 &&
                             ((event.getKeyDown().isAltDown()
                               && Character.toUpperCase(c) == event.getKeyDown().getKeyCode()) ||
-                             ((state & sfFocused) != 0 &&
+                             (isInState(sfFocused) &&
                               c == Character.toUpperCase(event.getKeyDown().getKeyChar())))) {
                             if (buttonState(i)) {
                                 if (focus()) {
@@ -319,7 +319,7 @@ public class JtvCluster extends JtvView {
                             return;
                         }
                     }
-                    if (event.getKeyDown().getKeyChar() == ' ' && (state & sfFocused) != 0) {
+                    if (event.getKeyDown().getKeyChar() == ' ' && isInState(sfFocused)) {
                         press(sel);
                         drawView();
                         clearEvent(event);

@@ -539,7 +539,7 @@ public class JtvView {
      * cursor is visible. Called at the end of {@link #drawView()}.
      */
     public void drawCursor() {
-        if ((state & sfFocused) != 0) {
+        if (isInState(sfFocused)) {
             resetCursor();
         }
     }
@@ -553,7 +553,7 @@ public class JtvView {
      */
     public void drawHide(JtvView lastView) {
         drawCursor();
-        drawUnderView((state & sfShadow) != 0, lastView);
+        drawUnderView(isInState(sfShadow), lastView);
     }
 
     /**
@@ -565,7 +565,7 @@ public class JtvView {
      */
     public void drawShow(JtvView lastView) {
         drawView();
-        if ((state & sfShadow) != 0) {
+        if (isInState(sfShadow)) {
             drawUnderView(true, lastView);
         }
     }
@@ -680,7 +680,7 @@ public class JtvView {
      * @return {@code true} if the view contributes visible pixels to the screen
      */
     public boolean exposed() {
-        if ((state & sfExposed) == 0) {
+        if (isNotInState(sfExposed)) {
             return false;
         }
         if (size.getX() <= 0 || size.getY() <= 0) {
@@ -722,7 +722,7 @@ public class JtvView {
             if (grp.last != null) {
                 JtvView v = grp.last.next;
                 while (v != target) {
-                    if ((v.state & sfVisible) != 0) {
+                    if (v.isInState(sfVisible)) {
                         int vy1 = v.origin.getY();
                         int vy2 = vy1 + v.size.getY();
                         if (ay >= vy1 && ay < vy2) {
@@ -776,7 +776,7 @@ public class JtvView {
      */
     public boolean focus() {
         boolean result = true;
-        if ((state & (sfSelected | sfModal)) == 0) {
+        if (isNotInState(sfSelected | sfModal)) {
             if (owner != null) {
                 result = owner.focus();
                 if (result) {
@@ -891,7 +891,7 @@ public class JtvView {
      * @return the current help-context ID
      */
     public int getHelpCtx() {
-        if ((state & sfDragging) != 0) {
+        if (isInState(sfDragging)) {
             return hcDragging;
         }
         return helpCtx;
@@ -929,6 +929,28 @@ public class JtvView {
     }
 
     /**
+     * Tests whether any bit of the given state flag is set in
+     * {@link #state}.
+     *
+     * @param value the {@code sfXXXX} state constant to test
+     * @return {@code true} if the state bit is set
+     */
+    public boolean isInState(int value) {
+        return (state & value) != 0;
+    }
+
+    /**
+     * Tests whether no bit of the given state flag is set in
+     * {@link #state}.
+     *
+     * @param value the {@code sfXXXX} state constant to test
+     * @return {@code true} if the state bit is clear
+     */
+    public boolean isNotInState(int value) {
+        return (state & value) == 0;
+    }
+
+    /**
      * Resizes the view to exactly {@code x} columns wide and {@code y}
      * rows tall, keeping the current top-left origin.
      *
@@ -953,7 +975,7 @@ public class JtvView {
      */
     public void handleEvent(JtvEvent event) {
         if (event.getWhat() == evMouseDown) {
-            if ((state & (sfSelected | sfDisabled)) == 0 && isOptionEnabled(ofSelectable)) {
+            if (isNotInState(sfSelected | sfDisabled) && isOptionEnabled(ofSelectable)) {
                 if (!focus() || isOptionDisabled(ofFirstClick)) {
                     clearEvent(event);
                 }
@@ -966,7 +988,7 @@ public class JtvView {
      * If the view is already invisible this is a no-op.
      */
     public void hide() {
-        if ((state & sfVisible) != 0) {
+        if (isInState(sfVisible)) {
             setState(sfVisible, false);
         }
     }
@@ -1011,8 +1033,8 @@ public class JtvView {
         JtvRect r = getBounds();
         if (!bounds.equals(r)) {
             changeBounds(bounds);
-            if (owner != null && (state & sfVisible) != 0) {
-                if ((state & sfShadow) != 0) {
+            if (owner != null && isInState(sfVisible)) {
+                if (isInState(sfShadow)) {
                     r.union(bounds);
                     r.setB(r.getB().add(shadowSize));
                 }
@@ -1215,7 +1237,7 @@ public class JtvView {
     public void putInFrontOf(JtvView target) {
         if (owner != null && target != this && target != nextView() &&
             (target == null || target.owner == owner)) {
-            if ((state & sfVisible) == 0) {
+            if (isNotInState(sfVisible)) {
                 owner.removeView(this);
                 owner.insertView(this, target);
             }
@@ -1254,7 +1276,7 @@ public class JtvView {
         if (owner != null && (state & (sfCursorVis | sfFocused)) == (sfCursorVis | sfFocused)) {
             JtvPoint globalCursor = makeGlobal(cursor);
             Screen.setCursorPosition(globalCursor.getX(), globalCursor.getY());
-            Screen.setCursorShape((state & sfCursorIns) != 0);
+            Screen.setCursorShape(isInState(sfCursorIns));
             Screen.setCursorVisible(true);
         }
         else if (owner != null) {
@@ -1358,7 +1380,7 @@ public class JtvView {
 
         switch (aState) {
             case sfVisible:
-                if ((owner.state & sfExposed) != 0) {
+                if (owner.isInState(sfExposed)) {
                     setState(sfExposed, enable);
                 }
                 if (enable) {
@@ -1391,7 +1413,7 @@ public class JtvView {
      * If the view is already visible this is a no-op.
      */
     public void show() {
-        if ((state & sfVisible) == 0) {
+        if (isNotInState(sfVisible)) {
             setState(sfVisible, true);
         }
     }
@@ -1426,7 +1448,7 @@ public class JtvView {
             return JtvGroup.getTheTopView();
         }
         JtvView p = this;
-        while (p != null && (p.state & sfModal) == 0) {
+        while (p != null && p.isNotInState(sfModal)) {
             p = p.owner;
         }
         return p;
@@ -1452,7 +1474,7 @@ public class JtvView {
      * @return {@code true} if the mouse is inside the visible view
      */
     public boolean containsMouse(JtvEvent event) {
-        return (state & sfVisible) != 0 && mouseInView(event.getMouse().getWhere());
+        return isInState(sfVisible) && mouseInView(event.getMouse().getWhere());
     }
 
     // --- Write methods ---
@@ -1599,7 +1621,7 @@ public class JtvView {
      */
     protected void writeToOwner(int x1, int x2, int y,
                                       JtvScreenCell[] buf, int bufOffset, boolean inShadow) {
-        if ((state & sfVisible) == 0 || owner == null) {
+        if (isNotInState(sfVisible) || owner == null) {
             return;
         }
 

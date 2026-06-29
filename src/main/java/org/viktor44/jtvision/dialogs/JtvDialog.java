@@ -302,7 +302,7 @@ public class JtvDialog extends JtvWindow {
                     case cmCancel:
                     case cmYes:
                     case cmNo:
-                        if ((state & sfModal) != 0) {
+                        if (isInState(sfModal)) {
                             endModal(event.getMessage().getCommand());
                             clearEvent(event);
                         }

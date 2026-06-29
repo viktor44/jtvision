@@ -270,7 +270,7 @@ public class JtvGroup extends JtvView {
      */
     @Override
     public void endModal(int command) {
-        if ((state & sfModal) != 0) {
+        if (isInState(sfModal)) {
             endState = command;
         }
         else {
@@ -493,7 +493,7 @@ public class JtvGroup extends JtvView {
      * instead of uninitialised (black) cells.
      */
     private void initBuffer() {
-        if ((state & sfExposed) != 0 && isOptionEnabled(ofBuffered)) {
+        if (isInState(sfExposed) && isOptionEnabled(ofBuffered)) {
             int sz = size.getX() * size.getY();
             if (sz > 0) {
                 buffer = new JtvDrawBuffer(sz);
@@ -552,7 +552,7 @@ public class JtvGroup extends JtvView {
         if (p == null) {
         	return;
         }
-        if ((p.state & sfDisabled) != 0 && (event.getWhat() & (positionalEvents | focusedEvents)) != 0) {
+        if (p.isInState(sfDisabled) && (event.getWhat() & (positionalEvents | focusedEvents)) != 0) {
             return;
         }
 
@@ -759,7 +759,7 @@ public class JtvGroup extends JtvView {
      * @param enable {@code true} to focus; {@code false} to unfocus
      */
     public void focusView(JtvView p, boolean enable) {
-        if ((state & sfFocused) != 0 && p != null) {
+        if (isInState(sfFocused) && p != null) {
             p.setState(sfFocused, enable);
         }
     }
@@ -783,7 +783,7 @@ public class JtvGroup extends JtvView {
             if (mode != leaveSelect && p != null) {
                 p.setState(sfSelected, true);
             }
-            if ((state & sfFocused) != 0 && p != null) {
+            if (isInState(sfFocused) && p != null) {
                 p.setState(sfFocused, true);
             }
             current = p;
@@ -832,7 +832,7 @@ public class JtvGroup extends JtvView {
 
         if ((aState & sfExposed) != 0) {
             forEach(v -> {
-                if ((v.state & sfVisible) != 0) {
+                if (v.isInState(sfVisible)) {
                     v.setState(sfExposed, enable);
                 }
             });
@@ -1007,12 +1007,12 @@ public class JtvGroup extends JtvView {
         if (last != null) {
             JtvView v = last.next;
             while (v != target) {
-                if ((v.state & sfVisible) != 0) {
+                if (v.isInState(sfVisible)) {
                     int vx1 = v.origin.getX();
                     int vx2 = vx1 + v.size.getX();
                     int vy1 = v.origin.getY();
                     int vy2 = vy1 + v.size.getY();
-                    boolean hasShadow = (v.state & sfShadow) != 0;
+                    boolean hasShadow = v.isInState(sfShadow);
 
                     int shadowX1 = -1, shadowX2 = -1;
 
@@ -1079,12 +1079,12 @@ public class JtvGroup extends JtvView {
         }
         JtvView v = after.next;
         while (v != target) {
-            if ((v.state & sfVisible) != 0) {
+            if (v.isInState(sfVisible)) {
                 int vx1 = v.origin.getX();
                 int vx2 = vx1 + v.size.getX();
                 int vy1 = v.origin.getY();
                 int vy2 = vy1 + v.size.getY();
-                boolean hasShadow = (v.state & sfShadow) != 0;
+                boolean hasShadow = v.isInState(sfShadow);
 
                 int shadowX1 = -1, shadowX2 = -1;
 

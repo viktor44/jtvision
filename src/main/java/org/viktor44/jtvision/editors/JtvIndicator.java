@@ -81,7 +81,7 @@ public class JtvIndicator extends JtvView {
      */
     @Override
     public void draw() {
-        boolean dragging = (state & sfDragging) != 0;
+        boolean dragging = isInState(sfDragging);
         JtvColorAttr color = dragging ? getColor(2) : getColor(1);
         char frame = dragging ? normalFrame : dragFrame;
         JtvDrawBuffer b = new JtvDrawBuffer();

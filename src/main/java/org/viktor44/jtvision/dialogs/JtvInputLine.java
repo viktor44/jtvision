@@ -136,7 +136,7 @@ public class JtvInputLine extends JtvView {
     @Override
     public void draw() {
         JtvDrawBuffer b = new JtvDrawBuffer();
-        JtvColorAttr color = getColor((state & sfFocused) != 0 ? 2 : 1);
+        JtvColorAttr color = getColor(isInState(sfFocused) ? 2 : 1);
 
         b.moveChar(0, ' ', color, size.getX());
         if (size.getX() > 1) {
@@ -148,7 +148,7 @@ public class JtvInputLine extends JtvView {
         if (canScroll(-1)) {
             b.moveChar(0, leftArrow, getColor(4), 1);
         }
-        if ((state & sfSelected) != 0) {
+        if (isInState(sfSelected)) {
             int l = Math.max(0, selStart - firstPos);
             int r = Math.min(size.getX() - 2, selEnd - firstPos);
             if (l < r) {
@@ -232,7 +232,7 @@ public class JtvInputLine extends JtvView {
     @Override
     public void handleEvent(JtvEvent event) {
         super.handleEvent(event);
-        if ((state & sfSelected) == 0) {
+        if (isNotInState(sfSelected)) {
         	return;
         }
 
@@ -328,7 +328,7 @@ public class JtvInputLine extends JtvView {
 
                     if (printable) {
                         deleteSelect();
-                        if ((state & sfCursorIns) != 0 && curPos < data.length()) {
+                        if (isInState(sfCursorIns) && curPos < data.length()) {
                             // Overwrite mode
                             data = data.substring(0, curPos) + data.substring(curPos + 1);
                         }
@@ -377,7 +377,7 @@ public class JtvInputLine extends JtvView {
                             deleteSelect();
                             break;
                         case KeyEvent.VK_INSERT:
-                            setState(sfCursorIns, (state & sfCursorIns) == 0);
+                            setState(sfCursorIns, isNotInState(sfCursorIns));
                             break;
                         default:
                             // Ctrl+Y - clear line
@@ -555,7 +555,7 @@ public class JtvInputLine extends JtvView {
     @Override
     public void setState(int aState, boolean enable) {
         super.setState(aState, enable);
-        if (aState == sfSelected || (aState == sfActive && (state & sfSelected) != 0)) {
+        if (aState == sfSelected || (aState == sfActive && isInState(sfSelected))) {
             selectAll(enable);
         }
     }

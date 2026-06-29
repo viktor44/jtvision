@@ -153,13 +153,13 @@ public class JtvButton extends JtvView {
         JtvColorAttr cButton, cButtonHot, cShadow;
         JtvDrawBuffer drawBuffer = new JtvDrawBuffer();
 
-        if ((state & sfDisabled) != 0) {
+        if (isInState(sfDisabled)) {
             cButton = getColor(4); cButtonHot = getColor(4);
         }
         else {
             cButton = getColor(1); cButtonHot = getColor(5);
-            if ((state & sfActive) != 0) {
-                if ((state & sfSelected) != 0) {
+            if (isInState(sfActive)) {
+                if (isInState(sfSelected)) {
                     cButton = getColor(3); cButtonHot = getColor(7);
                 }
                 else if (amDefault) {
@@ -233,7 +233,7 @@ public class JtvButton extends JtvView {
 
         if (showMarkers && !down) {
             int scOff;
-            if ((state & sfSelected) != 0) {
+            if (isInState(sfSelected)) {
                 scOff = 0;
             }
             else if (amDefault) {
@@ -291,7 +291,7 @@ public class JtvButton extends JtvView {
 
         switch (event.getWhat()) {
             case evMouseDown:
-                if ((state & sfDisabled) == 0) {
+                if (isNotInState(sfDisabled)) {
                     clickRect.setB(new JtvPoint(clickRect.getBx() + 1, clickRect.getBy()));
                     boolean down = false;
                     do {
@@ -315,7 +315,7 @@ public class JtvButton extends JtvView {
                 		&&
                     ((event.getKeyDown().isAltDown()
                       && Character.toUpperCase(c) == event.getKeyDown().getKeyCode()) ||
-                     ((state & sfFocused) != 0 &&
+                     (isInState(sfFocused) &&
                       event.getKeyDown().getKeyChar() == ' '))) {
                     animatePress();
                     clearEvent(event);
@@ -325,7 +325,7 @@ public class JtvButton extends JtvView {
             case evBroadcast:
                 switch (event.getMessage().getCommand()) {
                     case cmDefault:
-                        if (amDefault && (state & sfDisabled) == 0) {
+                        if (amDefault && isNotInState(sfDisabled)) {
                             animatePress();
                             clearEvent(event);
                         }

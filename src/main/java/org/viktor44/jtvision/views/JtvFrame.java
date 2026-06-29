@@ -188,12 +188,12 @@ public class JtvFrame extends JtvView {
         JtvColorAttr cFrame, cFrameHot, cTitle;
         int f;
 
-        if ((state & sfDragging) != 0) {
+        if (isInState(sfDragging)) {
             cFrame = getColor(5); cFrameHot = getColor(5);
             cTitle = getColor(5);
             f = 0;
         }
-        else if ((state & sfActive) == 0) {
+        else if (isNotInState(sfActive)) {
             cFrame = getColor(1); cFrameHot = getColor(1);
             cTitle = getColor(2);
             f = 0;
@@ -233,7 +233,7 @@ public class JtvFrame extends JtvView {
             }
         }
 
-        if ((state & sfActive) != 0 && win != null) {
+        if (isInState(sfActive) && win != null) {
             if ((win.flags & wfClose) != 0) {
                 b.moveCStr(2, closeIcon, cFrame, cFrameHot);
             }
@@ -255,7 +255,7 @@ public class JtvFrame extends JtvView {
         }
 
         frameLine(b, size.getY() - 1, f + 6, cFrame);
-        if ((state & sfActive) != 0 && win != null && (win.flags & wfGrow) != 0) {
+        if (isInState(sfActive) && win != null && (win.flags & wfGrow) != 0) {
             b.moveCStr(0, dragLeftIcon, cFrame, cFrameHot);
             b.moveCStr(width - 2, dragIcon, cFrame, cFrameHot);
         }
@@ -297,7 +297,7 @@ public class JtvFrame extends JtvView {
             if (grp.last != null) {
                 JtvView v = grp.last.next;
                 while (v != this) {
-                    if (v.isOptionEnabled(ofFramed) && (v.state & sfVisible) != 0) {
+                    if (v.isOptionEnabled(ofFramed) && v.isInState(sfVisible)) {
                         int mask = 0;
                         if (y < v.origin.getY()) {
                             if (y == v.origin.getY() - 1) {
@@ -391,7 +391,7 @@ public class JtvFrame extends JtvView {
             JtvPoint mouse = makeLocal(event.getMouse().getWhere());
             if (mouse.getY() == 0) {
                 if ((win.flags & wfClose) != 0
-                		&& (state & sfActive) != 0
+                		&& isInState(sfActive)
                 		&& mouse.getX() >= 2 && mouse.getX() <= 4) {
                     while (mouseEvent(event, evMouse)) {
                         // wait for mouse-up
@@ -406,7 +406,7 @@ public class JtvFrame extends JtvView {
                     }
                 }
                 else if ((win.flags & wfZoom) != 0
-                		&& (state & sfActive) != 0
+                		&& isInState(sfActive)
                 		&& ((mouse.getX() >= size.getX() - 5 && mouse.getX() <= size.getX() - 3)
                 				|| (event.getMouse().getEventFlags() & meDoubleClick) != 0)) {
                     event.setWhat(evCommand);
@@ -419,7 +419,7 @@ public class JtvFrame extends JtvView {
                     dragWindow(event, dmDragMove);
                 }
             }
-            else if ((state & sfActive) != 0
+            else if (isInState(sfActive)
             		&& mouse.getY() >= size.getY() - 1
             		&& (win.flags & wfGrow) != 0) {
                 if (mouse.getX() >= size.getX() - 2) {

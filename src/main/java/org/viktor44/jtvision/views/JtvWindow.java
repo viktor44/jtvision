@@ -308,7 +308,7 @@ public class JtvWindow extends JtvGroup {
                 case cmClose:
                     if ((flags & wfClose) != 0 && (event.getMessage().getInfoPtr() == null || event.getMessage().getInfoPtr() == this)) {
                         clearEvent(event);
-                        if ((state & sfModal) == 0) {
+                        if (isNotInState(sfModal)) {
                             close();
                         }
                         else {
