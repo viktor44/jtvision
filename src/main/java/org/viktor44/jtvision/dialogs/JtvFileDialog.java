@@ -117,6 +117,7 @@ public class JtvFileDialog extends JtvDialog {
      */
     public JtvFileDialog(String aWildCard, String aTitle, String inputName, int aOptions, int histId) {
         super(new JtvRect(15, 1, 64, 20), aTitle);
+        setMinimumSize(new JtvPoint(49, 19));
         options |= ofCentered;
         flags |= wfGrow;
         wildCard = aWildCard != null ? aWildCard : "*";
@@ -211,17 +212,6 @@ public class JtvFileDialog extends JtvDialog {
         JtvButton b = new JtvButton(new JtvRect(r), title, cmd, flags);
         b.setGrowMode(gfGrowLoX | gfGrowHiX);
         insert(b);
-    }
-
-    /**
-     * Enforces a minimum dialog size of 49×19 characters.
-     *
-     * @param min receives the minimum size
-     * @param max receives the maximum size
-     */
-    @Override
-    public JtvPoint getMinimumSize() {
-        return new JtvPoint(49, 19);
     }
 
     /**

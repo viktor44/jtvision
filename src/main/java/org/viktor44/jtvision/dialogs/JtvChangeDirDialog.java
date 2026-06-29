@@ -83,6 +83,7 @@ public class JtvChangeDirDialog extends JtvDialog {
      */
     public JtvChangeDirDialog(int opts, int histId) {
         super(new JtvRect(16, 2, 64, 20), changeDirTitle);
+        setMinimumSize(new JtvPoint(48, 18));
         options |= ofCentered;
         flags |= wfGrow;
 
@@ -142,17 +143,6 @@ public class JtvChangeDirDialog extends JtvDialog {
      */
     @Override
     public void setDataFrom(Object rec) {
-    }
-
-    /**
-     * Enforces a minimum dialog size of 48×18 characters.
-     *
-     * @param min receives the minimum size
-     * @param max receives the maximum size
-     */
-    @Override
-    public JtvPoint getMinimumSize() {
-        return new JtvPoint(48, 18);
     }
 
     /**

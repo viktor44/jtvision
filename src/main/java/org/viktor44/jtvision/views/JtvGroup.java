@@ -38,6 +38,7 @@ import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.core.JtvScreenCell;
 import org.viktor44.jtvision.platform.Screen;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -76,11 +77,20 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JtvGroup extends JtvView {
 
+
+    /**
+     * The current top-level modal view, or {@code null} when no modal
+     * view is active. Set and restored by {@link JtvGroup#execView}.
+     */
+	@Getter
+    private static JtvView theTopView = null;
+
     /**
      * The currently focused (selected) child view, or {@code null} if no
      * child is selected. Set by {@link #setCurrent(JtvView, int)}.
      */
-    protected JtvView current;
+	@Getter
+    private JtvView current;
 
     /**
      * The last (back-most) view in the circular linked-list of children,

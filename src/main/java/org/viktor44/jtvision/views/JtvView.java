@@ -178,12 +178,6 @@ public class JtvView {
      * {@code cmResize}, {@code cmNext}, {@code cmPrev}).
      */
     public static JtvCommandSet curCommandSet = initCommands();
-
-    /**
-     * The current top-level modal view, or {@code null} when no modal
-     * view is active. Set and restored by {@link JtvGroup#execView}.
-     */
-    public static JtvView theTopView = null;
 	
     // Linked list pointers
 
@@ -278,6 +272,13 @@ public class JtvView {
      */
     protected int helpCtx;
 
+    /**
+     * The minimum allowed window size
+     */
+    @Getter
+    @Setter
+    private JtvPoint minimumSize;
+
     /** Builds the initial {@link #curCommandSet} with window commands disabled. */
     private static JtvCommandSet initCommands() {
         JtvCommandSet temp = new JtvCommandSet();
@@ -302,6 +303,7 @@ public class JtvView {
      * @param bounds the initial bounding rectangle in the owner's coordinate system
      */
     public JtvView(JtvRect bounds) {
+    	minimumSize = new JtvPoint(0, 0);
         options = 0;
         eventMask = evMouseDown | evKeyDown | evCommand;
         state = sfVisible;
@@ -731,9 +733,10 @@ public class JtvView {
             if (owner != null) {
                 result = owner.focus();
                 if (result) {
-                    if (owner.current == null ||
-                        (owner.current.options & ofValidate) == 0 ||
-                        owner.current.valid(cmReleasedFocus)) {
+                	JtvView currentSelectedView = owner.getCurrent();
+                    if (currentSelectedView == null 
+                    		|| (currentSelectedView.options & ofValidate) == 0 
+                    		|| currentSelectedView.valid(cmReleasedFocus)) {
                         select();
                     }
                     else {
@@ -1354,14 +1357,6 @@ public class JtvView {
     }
 
     /**
-     * Returns the minimum allowable size for this view.
-     * The base implementation returns {@code (0, 0)}.
-     */
-    public JtvPoint getMinimumSize() {
-        return new JtvPoint(0, 0);
-    }
-
-    /**
      * Returns the maximum allowable size for this view.
      * The base implementation returns the owner's size, or
      * {@code (Integer.MAX_VALUE, Integer.MAX_VALUE)} when the view has
@@ -1374,15 +1369,14 @@ public class JtvView {
     }
 
     /**
-     * Returns the topmost modal view in the ownership chain, starting at
-     * {@link #theTopView} if set. Returns {@code null} if no modal view
-     * is found.
+     * Returns the topmost modal view in the ownership chain, starting at {@link #theTopView} if set. 
+     * Returns {@code null} if no modal view is found.
      *
      * @return the active modal view, or {@code null}
      */
     public JtvView topView() {
-        if (theTopView != null) {
-            return theTopView;
+        if (JtvGroup.getTheTopView() != null) {
+            return JtvGroup.getTheTopView();
         }
         JtvView p = this;
         while (p != null && (p.state & sfModal) == 0) {

@@ -71,8 +71,8 @@ public class JtvDesktop extends JtvGroup {
                     }
                     break;
                 case cmPrev:
-                    if (valid(cmReleasedFocus) && current != null) {
-                        current.putInFrontOf(background);
+                    if (valid(cmReleasedFocus) && getCurrent() != null) {
+                    	getCurrent().putInFrontOf(background);
                     }
                     break;
                 default:

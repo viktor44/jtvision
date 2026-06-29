@@ -148,65 +148,59 @@ public class JtvWindow extends JtvGroup {
      * Set to {@code null} during {@link #shutDown()}.
      */
     protected JtvFrame frame;
-
-	/**
-     * The minimum allowed window size: 16 columns × 6 rows.
-     * Enforced by {@link #sizeLimits()}.
-     */
-    public static final JtvPoint minWinSize = new JtvPoint(16, 6);
-
+    
     /**
      * Blue-window palette — 8 entries, used when {@link #paletteIndex} is
      * {@code wpBlueWindow}:
-     * <ol>
-     *   <li>{@code 0x08} — passive frame.</li>
-     *   <li>{@code 0x09} — active frame.</li>
-     *   <li>{@code 0x0A} — frame icons (close, zoom, resize).</li>
-     *   <li>{@code 0x0B} — scroll bar page area.</li>
-     *   <li>{@code 0x0C} — scroll bar arrow controls.</li>
-     *   <li>{@code 0x0D} — scroller normal text.</li>
-     *   <li>{@code 0x0E} — scroller selected text.</li>
-     *   <li>{@code 0x0F} — reserved.</li>
-     * </ol>
+     * <ul>
+     *   <li>{@code 8} — passive frame.</li>
+     *   <li>{@code 9} — active frame.</li>
+     *   <li>{@code 10} — frame icons (close, zoom, resize).</li>
+     *   <li>{@code 11} — scroll bar page area.</li>
+     *   <li>{@code 12} — scroll bar arrow controls.</li>
+     *   <li>{@code 13} — scroller normal text.</li>
+     *   <li>{@code 14} — scroller selected text.</li>
+     *   <li>{@code 15} — reserved.</li>
+     * </ul>
      */
     public static final JtvPalette cpBlueWindow = new JtvPalette(
-    		new int[] {0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F}
+    		new int[] {8, 9, 10, 11, 12, 13, 14, 15}
     );
 
     /**
      * Cyan-window palette — 8 entries, used when {@link #paletteIndex} is
      * {@code wpCyanWindow}:
-     * <ol>
-     *   <li>{@code 0x10} — passive frame.</li>
-     *   <li>{@code 0x11} — active frame.</li>
-     *   <li>{@code 0x12} — frame icons (close, zoom, resize).</li>
-     *   <li>{@code 0x13} — scroll bar page area.</li>
-     *   <li>{@code 0x14} — scroll bar arrow controls.</li>
-     *   <li>{@code 0x15} — scroller normal text.</li>
-     *   <li>{@code 0x16} — scroller selected text.</li>
-     *   <li>{@code 0x17} — reserved.</li>
-     * </ol>
+     * <ul>
+     *   <li>{@code 16} — passive frame.</li>
+     *   <li>{@code 17} — active frame.</li>
+     *   <li>{@code 18} — frame icons (close, zoom, resize).</li>
+     *   <li>{@code 19} — scroll bar page area.</li>
+     *   <li>{@code 20} — scroll bar arrow controls.</li>
+     *   <li>{@code 21} — scroller normal text.</li>
+     *   <li>{@code 22} — scroller selected text.</li>
+     *   <li>{@code 23} — reserved.</li>
+     * </ul>
      */
     public static final JtvPalette cpCyanWindow = new JtvPalette(
-    		new int[] {0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17}
+    		new int[] {16, 17, 18, 19, 20, 21, 22, 23}
     );
 
     /**
      * Gray-window palette — 8 entries, used when {@link #paletteIndex} is
      * {@code wpGrayWindow}:
-     * <ol>
-     *   <li>{@code 0x18} — passive frame.</li>
-     *   <li>{@code 0x19} — active frame.</li>
-     *   <li>{@code 0x1A} — frame icons (close, zoom, resize).</li>
-     *   <li>{@code 0x1B} — scroll bar page area.</li>
-     *   <li>{@code 0x1C} — scroll bar arrow controls.</li>
-     *   <li>{@code 0x1D} — scroller normal text.</li>
-     *   <li>{@code 0x1E} — scroller selected text.</li>
-     *   <li>{@code 0x1F} — reserved.</li>
-     * </ol>
+     * <ul>
+     *   <li>{@code 24} — passive frame.</li>
+     *   <li>{@code 25} — active frame.</li>
+     *   <li>{@code 26} — frame icons (close, zoom, resize).</li>
+     *   <li>{@code 27} — scroll bar page area.</li>
+     *   <li>{@code 28} — scroll bar arrow controls.</li>
+     *   <li>{@code 29} — scroller normal text.</li>
+     *   <li>{@code 30} — scroller selected text.</li>
+     *   <li>{@code 31} — reserved.</li>
+     * </ul>
      */
     public static final JtvPalette cpGrayWindow = new JtvPalette(
-    		new int[] {0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F}
+    		new int[] {24, 25, 26, 27, 28, 29, 30, 31}
     );
 
     /**
@@ -223,6 +217,7 @@ public class JtvWindow extends JtvGroup {
      */
     public JtvWindow(JtvRect bounds, String aTitle, int aNumber) {
         super(bounds);
+        setMinimumSize(new JtvPoint(16, 6));
         flags = wfMove | wfGrow | wfClose | wfZoom;
         zoomRect = getBounds();
         number = aNumber;
@@ -423,14 +418,6 @@ public class JtvWindow extends JtvGroup {
             s.options |= ofPostProcess;
         }
         return s;
-    }
-
-    /**
-     * Enforces the minimum window size of {@link #minWinSize}.
-     */
-    @Override
-    public JtvPoint getMinimumSize() {
-        return minWinSize;
     }
 
     /**
