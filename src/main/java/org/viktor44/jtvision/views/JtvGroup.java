@@ -148,7 +148,7 @@ public class JtvGroup extends JtvView {
         buffer = null;
         lockFlag = 0;
         endState = 0;
-        options = ofSelectable | ofBuffered;
+        enableOptions(ofSelectable, ofBuffered);
         clip = getExtent();
         eventMask = 0xFFFF;
     }
@@ -363,14 +363,14 @@ public class JtvGroup extends JtvView {
             return cmCancel;
         }
 
-        int saveOptions = p.options;
+        int saveOptions = p.getOptions();
         JtvGroup saveOwner = p.owner;
         JtvView saveTopView = theTopView;
         JtvView saveCurrent = current;
         JtvCommandSet saveCommands = new JtvCommandSet();
         getCommands(saveCommands);
         theTopView = p;
-        p.options = p.options & ~ofSelectable;
+        p.disableOptions(ofSelectable);
         p.setState(sfModal, true);
         setCurrent(p, enterSelect);
         if (saveOwner == null) {
@@ -382,7 +382,7 @@ public class JtvGroup extends JtvView {
         }
         setCurrent(saveCurrent, leaveSelect);
         p.setState(sfModal, false);
-        p.options = saveOptions;
+        p.setOptions(saveOptions);
         theTopView = saveTopView;
         setCommands(saveCommands);
         return retval;
@@ -426,7 +426,7 @@ public class JtvGroup extends JtvView {
             }
         }
         while (!(((p.state & (sfVisible | sfDisabled)) == sfVisible)
-        		&& (p.options & ofSelectable) != 0) && p != current);
+        		&& p.isOptionEnabled(ofSelectable)) && p != current);
         if (p != current) {
             return p;
         }
@@ -464,7 +464,7 @@ public class JtvGroup extends JtvView {
         }
         JtvView temp = last;
         do {
-            if ((temp.state & aState) == aState && (temp.options & aOptions) == aOptions) {
+            if ((temp.state & aState) == aState && (temp.getOptions() & aOptions) == aOptions) {
                 return temp;
             }
             temp = temp.next;
@@ -479,7 +479,7 @@ public class JtvGroup extends JtvView {
      * group is not visible.
      */
     public void freeBuffer() {
-        if ((options & ofBuffered) != 0) {
+        if (isOptionEnabled(ofBuffered)) {
             buffer = null;
         }
     }
@@ -493,7 +493,7 @@ public class JtvGroup extends JtvView {
      * instead of uninitialised (black) cells.
      */
     private void initBuffer() {
-        if ((state & sfExposed) != 0 && (options & ofBuffered) != 0) {
+        if ((state & sfExposed) != 0 && isOptionEnabled(ofBuffered)) {
             int sz = size.getX() * size.getY();
             if (sz > 0) {
                 buffer = new JtvDrawBuffer(sz);
@@ -558,12 +558,12 @@ public class JtvGroup extends JtvView {
 
         switch (phase) {
             case phPreProcess:
-                if ((p.options & ofPreProcess) == 0) {
+                if (p.isOptionDisabled(ofPreProcess)) {
                 	return;
                 }
                 break;
             case phPostProcess:
-                if ((p.options & ofPostProcess) == 0) {
+                if (p.isOptionDisabled(ofPostProcess)) {
                 	return;
                 }
                 break;
@@ -601,10 +601,10 @@ public class JtvGroup extends JtvView {
     /** Inserts {@code p} immediately before {@code target} in the z-order. */
     private void insertBefore(JtvView p, JtvView target) {
         if (p != null && p.owner == null && (target == null || target.owner == this)) {
-            if ((p.options & ofCenterX) != 0) {
+            if (p.isOptionEnabled(ofCenterX)) {
                 p.origin = new JtvPoint((size.getX() - p.size.getX()) / 2, p.origin.getY());
             }
-            if ((p.options & ofCenterY) != 0) {
+            if (p.isOptionEnabled(ofCenterY)) {
                 p.origin = new JtvPoint(p.origin.getX(), (size.getY() - p.size.getY()) / 2);
             }
             int saveState = p.state;
@@ -854,7 +854,7 @@ public class JtvGroup extends JtvView {
     @Override
     public boolean valid(int command) {
         if (command == cmReleasedFocus) {
-            if (current != null && (current.options & ofValidate) != 0) {
+            if (current != null && current.isOptionEnabled(ofValidate)) {
                 return current.valid(command);
             }
             return true;

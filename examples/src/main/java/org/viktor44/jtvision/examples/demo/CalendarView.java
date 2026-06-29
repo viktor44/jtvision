@@ -43,7 +43,7 @@ public class CalendarView extends JtvView {
 
     public CalendarView(JtvRect r) {
         super(r);
-        options |= ofSelectable;
+        enableOptions(ofSelectable);
         eventMask |= evMouseAuto;
         LocalDate today = LocalDate.now();
         curDay = today.getDayOfMonth();

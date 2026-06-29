@@ -76,7 +76,7 @@ public class JtvMenuBar extends JtvMenuView {
     public JtvMenuBar(JtvRect bounds, JtvMenu menu) {
         super(bounds, menu);
         growMode = gfGrowHiX;
-        options |= ofPreProcess;
+        enableOptions(ofPreProcess);
     }
 
     /**

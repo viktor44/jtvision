@@ -200,7 +200,7 @@ public final class MessageBox {
         String title = titles[titleIdx];
 
         JtvDialog dialog = new JtvDialog(r, title);
-        dialog.setOptions(dialog.getOptions() | ofCentered);
+        dialog.enableOptions(ofCentered);
 
         // Add text
         JtvRect textRect = new JtvRect(3, 2, r.getBx() - r.getAx() - 2, r.getBy() - r.getAy() - 3);
@@ -312,7 +312,7 @@ public final class MessageBox {
      */
     public static String inputBox(JtvRect r, String title, String label, int maxLen) {
         JtvDialog dialog = new JtvDialog(r, title);
-        dialog.setOptions(dialog.getOptions() | ofCentered);
+        dialog.enableOptions(ofCentered);
 
         int dialogWidth = r.getBx() - r.getAx();
 

@@ -62,6 +62,7 @@ import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.core.JtvScreenCell;
 import org.viktor44.jtvision.platform.Screen;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -237,8 +238,8 @@ public class JtvView {
      * framed, centered, buffered, and other optional behaviour.
      */
     @Getter
-    @Setter
-    protected int options;
+    @Setter(value = AccessLevel.PROTECTED)
+    private int options;
 
 	/**
      * Event-type bitmask that determines which event categories this view
@@ -313,6 +314,52 @@ public class JtvView {
         owner = null;
         next = null;
         setBounds(bounds);
+    }
+
+    /**
+     * Enables the given option flags by OR-ing each {@code ofXXXX} bit
+     * into {@link #options}.
+     *
+     * @param option one or more {@code ofXXXX} option constants
+     */
+    public void enableOptions(int... option) {
+        for (int o : option) {
+            options |= o;
+        }
+    }
+
+    /**
+     * Tests whether any bit of the given option flag is set in
+     * {@link #options}.
+     *
+     * @param option the {@code ofXXXX} option constant to test
+     * @return {@code true} if the option is enabled
+     */
+    public boolean isOptionEnabled(int option) {
+        return (options & option) != 0;
+    }
+
+    /**
+     * Disables the given option flags by clearing each {@code ofXXXX} bit
+     * from {@link #options}.
+     *
+     * @param option one or more {@code ofXXXX} option constants
+     */
+    public void disableOptions(int... option) {
+        for (int o : option) {
+            options &= ~o;
+        }
+    }
+
+    /**
+     * Tests whether no bit of the given option flag is set in
+     * {@link #options}.
+     *
+     * @param option the {@code ofXXXX} option constant to test
+     * @return {@code true} if the option is disabled
+     */
+    public boolean isOptionDisabled(int option) {
+        return (options & option) == 0;
     }
 
     /**
@@ -548,7 +595,7 @@ public class JtvView {
         if (doShadow) {
             r.setB(r.getB().add(shadowSize));
         }
-        if ((options & ofFramed) != 0) {
+        if (isOptionEnabled(ofFramed)) {
             r.grow(1, 1);
         }
         drawUnderRect(r, lastView);
@@ -735,7 +782,7 @@ public class JtvView {
                 if (result) {
                 	JtvView currentSelectedView = owner.getCurrent();
                     if (currentSelectedView == null 
-                    		|| (currentSelectedView.options & ofValidate) == 0 
+                    		|| currentSelectedView.isOptionDisabled(ofValidate)
                     		|| currentSelectedView.valid(cmReleasedFocus)) {
                         select();
                     }
@@ -906,8 +953,8 @@ public class JtvView {
      */
     public void handleEvent(JtvEvent event) {
         if (event.getWhat() == evMouseDown) {
-            if ((state & (sfSelected | sfDisabled)) == 0 && (options & ofSelectable) != 0) {
-                if (!focus() || (options & ofFirstClick) == 0) {
+            if ((state & (sfSelected | sfDisabled)) == 0 && isOptionEnabled(ofSelectable)) {
+                if (!focus() || isOptionDisabled(ofFirstClick)) {
                     clearEvent(event);
                 }
             }
@@ -1191,7 +1238,7 @@ public class JtvView {
                 if (lastView != target) {
                     drawShow(lastView);
                 }
-                if ((options & ofSelectable) != 0) {
+                if (isOptionEnabled(ofSelectable)) {
                     owner.resetCurrent();
                 }
             }
@@ -1222,8 +1269,8 @@ public class JtvView {
      * of the z-order via {@link #makeFirst()}.
      */
     public void select() {
-        if ((options & ofSelectable) != 0 && owner != null) {
-            if ((options & ofTopSelect) != 0) {
+        if (isOptionEnabled(ofSelectable) && owner != null) {
+            if (isOptionEnabled(ofTopSelect)) {
                 makeFirst();
             }
             else {
@@ -1320,7 +1367,7 @@ public class JtvView {
                 else {
                     drawHide(null);
                 }
-                if ((options & ofSelectable) != 0) {
+                if (isOptionEnabled(ofSelectable)) {
                     owner.resetCurrent();
                 }
                 break;

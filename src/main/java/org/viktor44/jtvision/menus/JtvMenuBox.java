@@ -72,7 +72,7 @@ public class JtvMenuBox extends JtvMenuView {
         super(bounds, aMenu);
         parentMenu = aParentMenu;
         state |= sfShadow;
-        options |= ofPreProcess;
+        enableOptions(ofPreProcess);
     }
 
     /**

@@ -195,7 +195,7 @@ public class Utf8ChartWindow extends JtvDialog {
         // --- Report line at the bottom ---
         JtvRect reportR = new JtvRect(r.getAx(), r.getBy() - 1, r.getBx(), r.getBy());
         report = new CharReportView(reportR);
-        report.setOptions(report.getOptions() | ofFramed);
+        report.enableOptions(ofFramed);
         report.setEventMask(report.getEventMask() | evBroadcast);
         insert(report);
 
@@ -204,14 +204,14 @@ public class Utf8ChartWindow extends JtvDialog {
         JtvRect listR = new JtvRect(r.getAx() + 8, r.getAy(), r.getBx(), r.getAy() + 3);
 
         JtvScrollBar vScroll = new JtvScrollBar(new JtvRect(listR.getBx() - 1, listR.getAy(), listR.getBx(), listR.getBy()));
-        vScroll.setOptions(vScroll.getOptions() | ofSelectable);
+        vScroll.enableOptions(ofSelectable);
         insert(vScroll);
 
         rangeList = new RangeListView(
                 new JtvRect(listR.getAx(), listR.getAy(), listR.getBx() - 1, listR.getBy()),
                 1, null, vScroll
         );
-        rangeList.setOptions(rangeList.getOptions() | ofSelectable);
+        rangeList.enableOptions(ofSelectable);
         rangeList.setEventMask(rangeList.getEventMask() | evBroadcast);
         insert(rangeList);
 
@@ -222,7 +222,7 @@ public class Utf8ChartWindow extends JtvDialog {
         JtvRect tableR = new JtvRect(r.getAx(), r.getAy() + 4,
                                      r.getBx(), r.getBy() - 2);
         table = new CharTableView(tableR);
-        table.setOptions(table.getOptions() | ofFramed | ofSelectable);
+        table.enableOptions(ofFramed | ofSelectable);
         table.setEventMask(table.getEventMask() | evBroadcast);
         table.blockCursor();
         insert(table);

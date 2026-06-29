@@ -71,7 +71,7 @@ public class JtvColorSelector extends JtvView {
      */
     public JtvColorSelector(JtvRect bounds, ColorSel aSelType) {
         super(bounds);
-        options |= ofSelectable | ofFirstClick | ofFramed;
+        enableOptions(ofSelectable, ofFirstClick, ofFramed);
         eventMask |= evBroadcast;
         selType = aSelType;
         color = 0;

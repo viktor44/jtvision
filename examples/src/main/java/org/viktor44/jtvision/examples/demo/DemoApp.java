@@ -332,7 +332,7 @@ public class DemoApp extends JtvApplication {
                 scrollBar.setParams(
                     Math.max(1, Math.min(20, EventQueue.getInstance().doubleDelay / 55)),
                     1, 20, 20, 1);
-                scrollBar.setOptions(scrollBar.getOptions() | ofSelectable);
+                scrollBar.enableOptions(ofSelectable);
                 insert(scrollBar);
 
                 insert(new JtvLabel(new JtvRect(2, 2, 22, 3), "~M~ouse double click", scrollBar));
@@ -694,7 +694,7 @@ public class DemoApp extends JtvApplication {
         d.insert(new JtvStaticText(new JtvRect(3, 2, 37, 8),
             "\n\n\003JT Vision Demo"));
         d.insert(new JtvButton(new JtvRect(14, 8, 26, 10), " OK", cmOK, bfDefault));
-        d.setOptions(d.getOptions() | ofCentered);
+        d.enableOptions(ofCentered);
         d.setHelpCtx(hcSAbout);
         executeDialog(d, null);
     }

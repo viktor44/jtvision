@@ -71,7 +71,7 @@ public class DirApp extends JtvApplication {
             "\003Copyright (c) 1994\n\n" +
             "\003Borland International"));
         about.insert(new JtvButton(new JtvRect(14, 8, 25, 10), " OK", cmOK, bfDefault));
-        about.setOptions(about.getOptions() | ofCentered);
+        about.enableOptions(ofCentered);
         executeDialog(about, null);
     }
 

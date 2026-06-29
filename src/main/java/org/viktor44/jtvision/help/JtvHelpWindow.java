@@ -75,7 +75,7 @@ public class JtvHelpWindow extends JtvWindow {
      */
     public JtvHelpWindow(JtvHelpFile hFile, int context) {
         super(new JtvRect(0, 0, 50, 18), helpWinTitle, wnNoNumber);
-        options |= ofCentered;
+        enableOptions(ofCentered);
 
         JtvRect r = new JtvRect(0, 0, 50, 18);
         r.grow(-2, -1);

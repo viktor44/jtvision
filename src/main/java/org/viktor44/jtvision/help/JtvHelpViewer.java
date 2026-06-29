@@ -98,7 +98,7 @@ public class JtvHelpViewer extends JtvScroller {
      */
     public JtvHelpViewer(JtvRect bounds, JtvScrollBar aHScrollBar, JtvScrollBar aVScrollBar, JtvHelpFile aHelpFile, int context) {
         super(bounds, aHScrollBar, aVScrollBar);
-        options |= ofSelectable;
+        enableOptions(ofSelectable);
         hFile = aHelpFile;
         topic = aHelpFile != null ? aHelpFile.getTopic(context) : JtvHelpTopic.fromText("");
         topic.setWidth(size.getX());

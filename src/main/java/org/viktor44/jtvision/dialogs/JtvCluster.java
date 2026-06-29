@@ -111,7 +111,7 @@ public class JtvCluster extends JtvView {
                 strings.add(item);
             }
         }
-        options |= ofSelectable | ofFirstClick | ofPreProcess | ofPostProcess;
+        enableOptions(ofSelectable, ofFirstClick, ofPreProcess, ofPostProcess);
         setCursor(2, 0);
         showCursor();
         enableMask = 0xFFFFFFFFL;
@@ -236,7 +236,7 @@ public class JtvCluster extends JtvView {
     @Override
     public void handleEvent(JtvEvent event) {
         super.handleEvent(event);
-        if ((options & ofSelectable) == 0) {
+        if (isOptionDisabled(ofSelectable)) {
         	return;
         }
 
@@ -481,10 +481,10 @@ public class JtvCluster extends JtvView {
         if (n < 32) {
             long testMask = (1L << n) - 1;
             if ((enableMask & testMask) != 0) {
-                options |= ofSelectable;
+                enableOptions(ofSelectable);
             }
             else {
-                options &= ~ofSelectable;
+                disableOptions(ofSelectable);
             }
         }
     }

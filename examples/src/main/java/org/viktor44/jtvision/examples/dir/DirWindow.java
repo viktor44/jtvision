@@ -35,7 +35,7 @@ public class DirWindow extends JtvWindow {
         JtvScrollBar filesVsb = new JtvScrollBar(new JtvRect(74, 1, 75, 15));
         JtvScrollBar filesHsb = new JtvScrollBar(new JtvRect(22, 15, 73, 16));
         filePane = new FilePane(new JtvRect(21, 1, 74, 15), filesHsb, filesVsb);
-        filePane.setOptions(filePane.getOptions() | ofFramed);
+        filePane.enableOptions(ofFramed);
         filePane.setGrowMode(gfGrowHiY | gfGrowHiX | gfFixed);
         insert(filesHsb);
         insert(filesVsb);
@@ -45,7 +45,7 @@ public class DirWindow extends JtvWindow {
         JtvScrollBar treeHsb = new JtvScrollBar(new JtvRect(2, 19, 19, 20));
         JtvNode root = DirNode.buildTree(new File(drive).getAbsoluteFile());
         outline = new DirOutline(new JtvRect(1, 1, 20, 19), treeHsb, treeVsb, root);
-        outline.setOptions(outline.getOptions() | ofFramed);
+        outline.enableOptions(ofFramed);
         outline.setGrowMode(gfGrowHiY | gfFixed);
         treeVsb.setGrowMode(gfGrowHiY);
         treeHsb.setGrowMode(gfGrowHiY | gfGrowLoY);

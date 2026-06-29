@@ -130,7 +130,7 @@ public class FormsApp extends JtvApplication {
             "\003JT Vision Forms Demo\n\n" +
             "\003Phone directory data entry"));
         d.insert(new JtvButton(new JtvRect(14, 7, 26, 9), " OK", cmOK, bfDefault));
-        d.setOptions(d.getOptions() | ofCentered);
+        d.enableOptions(ofCentered);
         executeDialog(d, null);
     }
 

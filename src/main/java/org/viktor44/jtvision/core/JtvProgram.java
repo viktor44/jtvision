@@ -152,7 +152,7 @@ public abstract class JtvProgram extends JtvGroup {
         application = this;
         initScreen();
         state = sfVisible | sfSelected | sfFocused | sfModal | sfExposed;
-        options = 0;
+        setOptions(0);
         buffer = new JtvDrawBuffer(Screen.screenBuffer);
 
         JtvDesktop dt = initDesktop(getExtent());

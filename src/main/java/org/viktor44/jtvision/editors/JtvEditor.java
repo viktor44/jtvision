@@ -238,7 +238,7 @@ public class JtvEditor extends JtvView {
     /**
      * Constructs a {@code TEditor} view.
      *
-     * <p>Sets {@code options |= ofSelectable} and configures the event mask to receive
+     * <p>Enables {@code ofSelectable} and configures the event mask to receive
      * mouse, key, command, and broadcast events.  Associates the supplied scroll bars and
      * indicator, then shows the cursor and initialises the view metrics.
      *
@@ -255,7 +255,7 @@ public class JtvEditor extends JtvView {
         this.vScrollBar = vScrollBar;
         this.indicator = indicator;
         this.bufSize = Math.max(0x1000, bufSize);
-        this.options |= ofSelectable;
+        enableOptions(ofSelectable);
         this.eventMask = evMouseDown | evKeyDown | evPaste | evCommand | evBroadcast;
         
         showCursor();

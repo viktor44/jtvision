@@ -106,7 +106,7 @@ public class JtvColorDialog extends JtvDialog {
      */
     public JtvColorDialog(JtvPalette aPalette, List<JtvColorGroup> aGroups) {
         super(new JtvRect(0, 0, 61, 18), colors);
-        options |= ofCentered;
+        enableOptions(ofCentered);
         pal = aPalette != null ? new JtvPalette(aPalette) : null;
 
         JtvScrollBar sb = new JtvScrollBar(new JtvRect(18, 3, 19, 14));

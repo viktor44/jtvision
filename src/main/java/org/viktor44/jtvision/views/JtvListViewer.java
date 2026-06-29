@@ -152,7 +152,7 @@ public class JtvListViewer extends JtvView {
         focused = 0;
         range = 0;
 
-        options |= ofFirstClick | ofSelectable;
+        enableOptions(ofFirstClick, ofSelectable);
         eventMask |= evBroadcast;
 
         if (aVScrollBar != null) {
@@ -485,7 +485,7 @@ public class JtvListViewer extends JtvView {
             clearEvent(event);
         }
         else if (event.getWhat() == evBroadcast) {
-            if ((options & ofSelectable) != 0) {
+            if (isOptionEnabled(ofSelectable)) {
                 if (event.getMessage().getCommand() == cmScrollBarClicked
                 		&& (event.getMessage().getInfoPtr() == hScrollBar || event.getMessage().getInfoPtr() == vScrollBar)) {
                     select();

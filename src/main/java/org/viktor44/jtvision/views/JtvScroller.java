@@ -140,7 +140,7 @@ public class JtvScroller extends JtvView {
         drawFlag = false;
         hScrollBar = aHScrollBar;
         vScrollBar = aVScrollBar;
-        options |= ofSelectable;
+        enableOptions(ofSelectable);
         eventMask |= evBroadcast;
     }
 

@@ -159,7 +159,7 @@ public class EditorApp extends JtvApplication {
             "\003JT Vision Demo\n\n" +
             "\003Multi-window text editor"));
         d.insert(new JtvButton(new JtvRect(14, 7, 26, 9), " OK", cmOK, bfDefault));
-        d.setOptions(d.getOptions() | ofCentered);
+        d.enableOptions(ofCentered);
         executeDialog(d, null);
     }
 

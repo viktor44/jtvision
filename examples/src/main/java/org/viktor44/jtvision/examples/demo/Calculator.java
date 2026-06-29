@@ -41,14 +41,14 @@ public class Calculator extends JtvDialog {
 
     public Calculator() {
         super(new JtvRect(5, 3, 29, 18), "Calculator");
-        options |= ofFirstClick;
+        enableOptions(ofFirstClick);
 
         for (int i = 0; i < 20; i++) {
             int x = (i % 4) * 5 + 2;
             int y = (i / 4) * 2 + 4;
             JtvRect r = new JtvRect(x, y, x + 5, y + 2);
             JtvButton b = new JtvButton(r, KEY_CHAR[i], cmCalcButton, bfNormal | bfBroadcast);
-            b.setOptions(b.getOptions() & ~ofSelectable);
+            b.disableOptions(ofSelectable);
             insert(b);
         }
         insert(new CalcDisplay(new JtvRect(3, 2, 21, 3)));
@@ -69,7 +69,7 @@ public class Calculator extends JtvDialog {
 
         public CalcDisplay(JtvRect r) {
             super(r);
-            options |= ofSelectable;
+            enableOptions(ofSelectable);
             eventMask = evKeyboard | evBroadcast;
         }
 

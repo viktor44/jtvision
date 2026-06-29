@@ -130,7 +130,7 @@ public class JtvStatusLine extends JtvView {
         if (aDefs != null) {
             defs.add(aDefs);
         }
-        options |= ofPreProcess;
+        enableOptions(ofPreProcess);
         eventMask |= evBroadcast;
         growMode = gfGrowLoY | gfGrowHiX | gfGrowHiY;
         findItems();

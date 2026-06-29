@@ -54,7 +54,7 @@ public class JtvEditWindow extends JtvWindow {
      */
     public JtvEditWindow(JtvRect bounds, String fileName, int number) {
         super(bounds, null, number);
-        options |= ofTileable;
+        enableOptions(ofTileable);
 
         JtvRect r = getExtent();
         r.grow(-1, -1);

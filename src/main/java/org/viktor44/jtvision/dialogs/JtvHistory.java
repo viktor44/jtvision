@@ -90,7 +90,7 @@ public class JtvHistory extends JtvView {
         super(bounds);
         link = aLink;
         historyId = aHistoryId;
-        options |= ofPostProcess;
+        enableOptions(ofPostProcess);
         eventMask |= evBroadcast;
     }
 

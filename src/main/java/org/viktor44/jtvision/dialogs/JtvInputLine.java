@@ -125,7 +125,7 @@ public class JtvInputLine extends JtvView {
         selEnd = 0;
         anchor = 0;
         state |= sfCursorVis;
-        options |= ofSelectable | ofFirstClick;
+        enableOptions(ofSelectable, ofFirstClick);
         eventMask |= evCommand | evPaste;
     }
 

@@ -84,7 +84,7 @@ public class JtvChangeDirDialog extends JtvDialog {
     public JtvChangeDirDialog(int opts, int histId) {
         super(new JtvRect(16, 2, 64, 20), changeDirTitle);
         setMinimumSize(new JtvPoint(48, 18));
-        options |= ofCentered;
+        enableOptions(ofCentered);
         flags |= wfGrow;
 
         dirInput = new JtvInputLine(new JtvRect(3, 3, 42, 4), 254);

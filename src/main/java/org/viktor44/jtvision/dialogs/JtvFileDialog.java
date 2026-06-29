@@ -118,7 +118,7 @@ public class JtvFileDialog extends JtvDialog {
     public JtvFileDialog(String aWildCard, String aTitle, String inputName, int aOptions, int histId) {
         super(new JtvRect(15, 1, 64, 20), aTitle);
         setMinimumSize(new JtvPoint(49, 19));
-        options |= ofCentered;
+        enableOptions(ofCentered);
         flags |= wfGrow;
         wildCard = aWildCard != null ? aWildCard : "*";
         directory = System.getProperty("user.dir") + File.separator;

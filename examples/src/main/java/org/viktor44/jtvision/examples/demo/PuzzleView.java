@@ -54,7 +54,7 @@ public class PuzzleView extends JtvView {
 
     public PuzzleView(JtvRect r) {
         super(r);
-        options |= ofSelectable;
+        enableOptions(ofSelectable);
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 board[i][j] = BOARD_START[i * 4 + j];

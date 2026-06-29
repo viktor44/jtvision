@@ -56,7 +56,7 @@ public class PaletteWindow extends JtvWindow {
         JtvRect r = getExtent();
         r.grow(-2, -2);
         insert(new PaletteView(r));
-        options |= ofCentered;
+        enableOptions(ofCentered);
         flags = wfMove | wfClose;
     }
 

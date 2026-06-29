@@ -225,7 +225,7 @@ public class JtvWindow extends JtvGroup {
         title = aTitle;
 
         state |= sfShadow;
-        options |= ofSelectable | ofTopSelect;
+        enableOptions(ofSelectable, ofTopSelect);
         growMode = gfGrowAll | gfGrowRel;
 
         frame = initFrame(getExtent());
@@ -336,7 +336,7 @@ public class JtvWindow extends JtvGroup {
         else if (event.getWhat() == evBroadcast
         		&& event.getMessage().getCommand() == cmSelectWindowNum
         		&& event.getMessage().getInfoInt() == number
-        		&& (options & ofSelectable) != 0) {
+        		&& isOptionEnabled(ofSelectable)) {
             select();
             clearEvent(event);
         }
@@ -415,7 +415,7 @@ public class JtvWindow extends JtvGroup {
         JtvScrollBar s = new JtvScrollBar(r);
         insert(s);
         if ((aOptions & sbHandleKeyboard) != 0) {
-            s.options |= ofPostProcess;
+            s.enableOptions(ofPostProcess);
         }
         return s;
     }

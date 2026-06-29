@@ -126,7 +126,7 @@ public class JtvButton extends JtvView {
         command = aCommand;
         flags = aFlags;
         amDefault = (aFlags & bfDefault) != 0;
-        options |= ofSelectable | ofFirstClick | ofPreProcess | ofPostProcess;
+        enableOptions(ofSelectable, ofFirstClick, ofPreProcess, ofPostProcess);
         eventMask |= evBroadcast;
         if (!commandEnabled(aCommand)) {
             state |= sfDisabled;

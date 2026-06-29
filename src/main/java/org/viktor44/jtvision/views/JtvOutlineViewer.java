@@ -125,7 +125,7 @@ public abstract class JtvOutlineViewer extends JtvScroller {
      */
     public JtvOutlineViewer(JtvRect bounds, JtvScrollBar aHScrollBar, JtvScrollBar aVScrollBar) {
         super(bounds, aHScrollBar, aVScrollBar);
-        options |= ofSelectable;
+        enableOptions(ofSelectable);
         foc = 0;
     }
 

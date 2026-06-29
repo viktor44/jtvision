@@ -365,7 +365,7 @@ public class JtvFileEditor extends JtvEditor {
             super(replaceMode ? new JtvRect(0, 0, 40, 16) : new JtvRect(0, 0, 38, 12),
                 replaceMode ? "Replace" : "Find");
             this.replaceMode = replaceMode;
-            options |= ofCentered;
+            enableOptions(ofCentered);
 
             if (replaceMode) {
                 findInput = new JtvInputLine(new JtvRect(3, 3, 34, 4), 80);

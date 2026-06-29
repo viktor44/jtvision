@@ -80,7 +80,7 @@ public class JtvLabel extends JtvView {
         text = aText;
         link = aLink;
         light = false;
-        options |= ofPreProcess | ofPostProcess;
+        enableOptions(ofPreProcess, ofPostProcess);
         eventMask |= evBroadcast;
     }
 

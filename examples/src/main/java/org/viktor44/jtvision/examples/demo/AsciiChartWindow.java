@@ -68,13 +68,13 @@ public class AsciiChartWindow extends JtvWindow {
         JtvRect r = getExtent().grow(-1, -1);
         JtvRect reportR = new JtvRect(r.getAx(), r.getBy() - 1, r.getBx(), r.getBy());
         TReport report = new TReport(reportR);
-        report.setOptions(report.getOptions() | ofFramed);
+        report.enableOptions(ofFramed);
         report.setEventMask(report.getEventMask() | evBroadcast);
         insert(report);
 
         JtvRect tableR = new JtvRect(r.getAx(), r.getAy(), r.getBx(), r.getBy() - 2);
         TTable table = new TTable(tableR);
-        table.setOptions(table.getOptions() | ofFramed | ofSelectable);
+        table.enableOptions(ofFramed | ofSelectable);
         table.blockCursor();
         insert(table);
         table.select();

@@ -85,7 +85,7 @@ public class PaletteApp extends JtvApplication {
            		)
         );
         about.insert(new JtvButton(new JtvRect(18, 10, 29, 12), "OK", cmOK, bfDefault));
-        about.setOptions(about.getOptions() | ofCentered);
+        about.enableOptions(ofCentered);
         getDesktop().execView(about);
     }
 

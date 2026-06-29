@@ -297,7 +297,7 @@ public class JtvFrame extends JtvView {
             if (grp.last != null) {
                 JtvView v = grp.last.next;
                 while (v != this) {
-                    if ((v.options & ofFramed) != 0 && (v.state & sfVisible) != 0) {
+                    if (v.isOptionEnabled(ofFramed) && (v.state & sfVisible) != 0) {
                         int mask = 0;
                         if (y < v.origin.getY()) {
                             if (y == v.origin.getY() - 1) {
