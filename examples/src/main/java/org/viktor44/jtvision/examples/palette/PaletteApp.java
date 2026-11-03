@@ -27,9 +27,9 @@ import org.viktor44.jtvision.dialogs.JtvStaticText;
 import org.viktor44.jtvision.menus.JtvMenu;
 import org.viktor44.jtvision.menus.JtvMenuBar;
 import org.viktor44.jtvision.menus.JtvMenuItem;
-import org.viktor44.jtvision.menus.JtvStatusDef;
-import org.viktor44.jtvision.menus.JtvStatusItem;
-import org.viktor44.jtvision.menus.JtvStatusLine;
+import org.viktor44.jtvision.views.JtvStatusDef;
+import org.viktor44.jtvision.views.JtvStatusItem;
+import org.viktor44.jtvision.views.JtvStatusLine;
 import org.viktor44.jtvision.views.JtvView;
 
 /**

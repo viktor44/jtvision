@@ -56,11 +56,11 @@ public class JtvDrawSurface {
      * Constructs a surface with the given dimensions and initialises all
      * cells to default values.
      *
-     * @param aSize the desired width ({@code x}) and height ({@code y}),
+     * @param size the desired width ({@code x}) and height ({@code y}),
      *              or {@code null} for an empty surface
      */
-    public JtvDrawSurface(JtvPoint aSize) {
-        resize(aSize);
+    public JtvDrawSurface(JtvPoint size) {
+        resize(size);
     }
 
     /**
@@ -69,16 +69,16 @@ public class JtvDrawSurface {
      * non-positive dimension the surface is reset to zero size with an empty
      * array.
      *
-     * @param aSize the new dimensions; must have positive {@code x} and
+     * @param size the new dimensions; must have positive {@code x} and
      *              {@code y} for a non-empty surface
      */
-    public void resize(JtvPoint aSize) {
-        if (aSize == null || aSize.getX() <= 0 || aSize.getY() <= 0) {
+    public void resize(JtvPoint size) {
+        if (size == null || size.getX() <= 0 || size.getY() <= 0) {
             size = new JtvPoint();
             data = new JtvScreenCell[0];
             return;
         }
-        size = aSize;
+        this.size = size;
         data = new JtvScreenCell[size.getX() * size.getY()];
         for (int i = 0; i < data.length; i++) {
             data[i] = JtvScreenCell.EMPTY_CELL;
@@ -90,13 +90,13 @@ public class JtvDrawSurface {
      * dimensions and resizing. Positive delta values expand; negative values
      * contract. If {@code aDelta} is {@code null}, does nothing.
      *
-     * @param aDelta the amount to add to each dimension
+     * @param delta the amount to add to each dimension
      */
-    public void grow(JtvPoint aDelta) {
-        if (aDelta == null) {
+    public void grow(JtvPoint delta) {
+        if (delta == null) {
             return;
         }
-        resize(new JtvPoint(size.getX() + aDelta.getX(), size.getY() + aDelta.getY()));
+        resize(new JtvPoint(size.getX() + delta.getX(), size.getY() + delta.getY()));
     }
 
     /**

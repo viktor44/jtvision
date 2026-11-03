@@ -1363,22 +1363,22 @@ public class JtvView {
      *       {@code cmReceivedFocus} / {@code cmReleasedFocus}.</li>
      * </ul>
      *
-     * @param aState the state bits to modify
+     * @param state the state bits to modify
      * @param enable {@code true} to set the bits, {@code false} to clear them
      */
-    public void setState(int aState, boolean enable) {
+    public void setState(int state, boolean enable) {
         if (enable) {
-            state |= aState;
+            this.state |= state;
         }
         else {
-            state &= ~aState;
+            this.state &= ~state;
         }
 
         if (owner == null) {
             return;
         }
 
-        switch (aState) {
+        switch (state) {
             case sfVisible:
                 if (owner.isInState(sfExposed)) {
                     setState(sfExposed, enable);

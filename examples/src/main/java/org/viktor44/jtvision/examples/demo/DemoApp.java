@@ -73,13 +73,13 @@ import org.viktor44.jtvision.help.JtvHelpWindow;
 import org.viktor44.jtvision.menus.JtvMenu;
 import org.viktor44.jtvision.menus.JtvMenuBar;
 import org.viktor44.jtvision.menus.JtvMenuItem;
-import org.viktor44.jtvision.menus.JtvStatusDef;
-import org.viktor44.jtvision.menus.JtvStatusItem;
-import org.viktor44.jtvision.menus.JtvStatusLine;
 import org.viktor44.jtvision.menus.JtvSubMenu;
 import org.viktor44.jtvision.platform.EventQueue;
 import org.viktor44.jtvision.util.MessageBox;
 import org.viktor44.jtvision.views.JtvScrollBar;
+import org.viktor44.jtvision.views.JtvStatusDef;
+import org.viktor44.jtvision.views.JtvStatusItem;
+import org.viktor44.jtvision.views.JtvStatusLine;
 import org.viktor44.jtvision.views.JtvView;
 import org.viktor44.jtvision.views.JtvWindow;
 

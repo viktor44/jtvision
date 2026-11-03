@@ -69,11 +69,11 @@ public class JtvSurfaceView extends JtvView {
      * Constructs a surface view with the given bounds and an attached surface.
      *
      * @param bounds   the bounding rectangle
-     * @param aSurface the draw surface to render, or {@code null} for blank
+     * @param surface the draw surface to render, or {@code null} for blank
      */
-    public JtvSurfaceView(JtvRect bounds, JtvDrawSurface aSurface) {
+    public JtvSurfaceView(JtvRect bounds, JtvDrawSurface surface) {
         super(bounds);
-        surface = aSurface;
+        this.surface = surface;
     }
 
     /**

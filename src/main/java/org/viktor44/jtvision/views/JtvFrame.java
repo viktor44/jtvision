@@ -436,13 +436,13 @@ public class JtvFrame extends JtvView {
      * Redraws the frame whenever the {@code sfActive} or {@code sfDragging}
      * state changes to switch between single-line and double-line border styles.
      *
-     * @param aState the state bits being changed
+     * @param state the state bits being changed
      * @param enable {@code true} if the bits are being set
      */
     @Override
-    public void setState(int aState, boolean enable) {
-        super.setState(aState, enable);
-        if ((aState & (sfActive | sfDragging)) != 0) {
+    public void setState(int state, boolean enable) {
+        super.setState(state, enable);
+        if ((state & (sfActive | sfDragging)) != 0) {
             drawView();
         }
     }

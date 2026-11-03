@@ -26,10 +26,10 @@ import org.viktor44.jtvision.dialogs.JtvStaticText;
 import org.viktor44.jtvision.menus.JtvMenu;
 import org.viktor44.jtvision.menus.JtvMenuBar;
 import org.viktor44.jtvision.menus.JtvMenuItem;
-import org.viktor44.jtvision.menus.JtvStatusDef;
-import org.viktor44.jtvision.menus.JtvStatusItem;
-import org.viktor44.jtvision.menus.JtvStatusLine;
 import org.viktor44.jtvision.menus.JtvSubMenu;
+import org.viktor44.jtvision.views.JtvStatusDef;
+import org.viktor44.jtvision.views.JtvStatusItem;
+import org.viktor44.jtvision.views.JtvStatusLine;
 
 /**
  * Directory tree demo: browse a filesystem tree in a collapsible outline.

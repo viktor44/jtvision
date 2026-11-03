@@ -2,7 +2,7 @@
  * SPDX-License-Identifier: Apache-2.0
  * Copyright 2026-present Viktor44
  */
-package org.viktor44.jtvision.menus;
+package org.viktor44.jtvision.views;
 
 import java.util.ArrayList;
 import java.util.List;

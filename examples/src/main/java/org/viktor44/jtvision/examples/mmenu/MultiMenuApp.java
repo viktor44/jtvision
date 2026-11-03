@@ -22,10 +22,10 @@ import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.menus.JtvMenu;
 import org.viktor44.jtvision.menus.JtvMenuBar;
 import org.viktor44.jtvision.menus.JtvMenuItem;
-import org.viktor44.jtvision.menus.JtvStatusDef;
-import org.viktor44.jtvision.menus.JtvStatusItem;
-import org.viktor44.jtvision.menus.JtvStatusLine;
 import org.viktor44.jtvision.menus.JtvSubMenu;
+import org.viktor44.jtvision.views.JtvStatusDef;
+import org.viktor44.jtvision.views.JtvStatusItem;
+import org.viktor44.jtvision.views.JtvStatusLine;
 
 /**
  * Multiple Menu Bar Demo.

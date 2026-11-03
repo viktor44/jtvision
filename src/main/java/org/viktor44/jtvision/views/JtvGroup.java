@@ -454,17 +454,17 @@ public class JtvGroup extends JtvView {
      * and all bits in {@code aOptions} set. Iterates the list from
      * {@link #last} backwards. Returns {@code null} if none matches.
      *
-     * @param aState   the state bits to require
+     * @param state   the state bits to require
      * @param aOptions the option bits to require
      * @return the first matching view, or {@code null}
      */
-    public JtvView firstMatch(int aState, int aOptions) {
+    public JtvView firstMatch(int state, int aOptions) {
         if (last == null) {
             return null;
         }
         JtvView temp = last;
         do {
-            if ((temp.state & aState) == aState && (temp.getOptions() & aOptions) == aOptions) {
+            if ((temp.state & state) == state && (temp.getOptions() & aOptions) == aOptions) {
                 return temp;
             }
             temp = temp.next;

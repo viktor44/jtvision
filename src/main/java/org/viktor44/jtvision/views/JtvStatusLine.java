@@ -2,7 +2,7 @@
  * SPDX-License-Identifier: Apache-2.0
  * Copyright 2026-present Viktor44
  */
-package org.viktor44.jtvision.menus;
+package org.viktor44.jtvision.views;
 
 import static org.viktor44.jtvision.core.CommandCodes.cmCommandSetChanged;
 import static org.viktor44.jtvision.core.EventCodes.evBroadcast;
@@ -27,7 +27,6 @@ import org.viktor44.jtvision.core.JtvPalette;
 import org.viktor44.jtvision.core.JtvPoint;
 import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.util.StringUtils;
-import org.viktor44.jtvision.views.JtvView;
 
 /**
  * The application status line, typically displayed at the bottom of the screen.
