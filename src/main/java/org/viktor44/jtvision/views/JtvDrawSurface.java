@@ -72,13 +72,13 @@ public class JtvDrawSurface {
      * @param size the new dimensions; must have positive {@code x} and
      *              {@code y} for a non-empty surface
      */
-    public void resize(JtvPoint size) {
-        if (size == null || size.getX() <= 0 || size.getY() <= 0) {
+    public void resize(JtvPoint aSize) {
+        if (aSize == null || aSize.getX() <= 0 || aSize.getY() <= 0) {
             size = new JtvPoint();
             data = new JtvScreenCell[0];
             return;
         }
-        this.size = size;
+        size = aSize;
         data = new JtvScreenCell[size.getX() * size.getY()];
         for (int i = 0; i < data.length; i++) {
             data[i] = JtvScreenCell.EMPTY_CELL;

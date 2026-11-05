@@ -1366,12 +1366,12 @@ public class JtvView {
      * @param state the state bits to modify
      * @param enable {@code true} to set the bits, {@code false} to clear them
      */
-    public void setState(int state, boolean enable) {
+    public void setState(int aState, boolean enable) {
         if (enable) {
-            this.state |= state;
+            state |= aState;
         }
         else {
-            this.state &= ~state;
+            state &= ~aState;
         }
 
         if (owner == null) {
