@@ -48,12 +48,6 @@ import org.viktor44.jtvision.views.JtvScrollBar;
  */
 public class JtvHistoryViewer extends JtvListViewer {
 
-    /** The history ID whose entries this viewer displays. */
-    private int historyId;
-
-    /** The entries displayed, in reverse-chronological order (most recent first). */
-    private List<String> entries = new ArrayList<String>();
-
     /**
      * Five-entry colour palette:
      * <ol>
@@ -65,6 +59,12 @@ public class JtvHistoryViewer extends JtvListViewer {
      * </ol>
      */
     private static final JtvPalette cpHistoryViewer = new JtvPalette(new int[] {0x06, 0x06, 0x07, 0x06, 0x06});
+
+    /** The history ID whose entries this viewer displays. */
+    private int historyId;
+
+    /** The entries displayed, in reverse-chronological order (most recent first). */
+    private List<String> entries = new ArrayList<String>();
 
     /**
      * Creates a history viewer for the given bounds, scroll bars, and history ID.

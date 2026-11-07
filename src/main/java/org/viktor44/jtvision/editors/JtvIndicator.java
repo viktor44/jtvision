@@ -38,18 +38,6 @@ import org.viktor44.jtvision.views.JtvView;
 public class JtvIndicator extends JtvView {
 
     /**
-     * The current (column, line) position to display.
-     * Updated by the associated {@link JtvEditor} via {@link #setValue}.
-     */
-    private JtvPoint location = new JtvPoint();
-
-    /**
-     * {@code true} if the associated editor's buffer has been modified.
-     * When {@code true}, {@link #draw()} prepends an asterisk to the indicator.
-     */
-    private boolean modified;
-
-    /**
      * Two-entry colour palette:
      * <ol>
      *   <li>{@code 2} — normal (non-dragging) indicator colour.</li>
@@ -60,6 +48,18 @@ public class JtvIndicator extends JtvView {
 
     private static final char dragFrame = '\u2550';
     private static final char normalFrame = '\u2500';
+
+    /**
+     * The current (column, line) position to display.
+     * Updated by the associated {@link JtvEditor} via {@link #setValue}.
+     */
+    private JtvPoint location = new JtvPoint();
+
+    /**
+     * {@code true} if the associated editor's buffer has been modified.
+     * When {@code true}, {@link #draw()} prepends an asterisk to the indicator.
+     */
+    private boolean modified;
 
     /**
      * Constructs an indicator anchored to the bottom of its owner.

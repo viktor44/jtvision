@@ -44,9 +44,6 @@ import org.viktor44.jtvision.views.JtvWindow;
  */
 public class JtvHistoryWindow extends JtvWindow {
 
-    /** The list-viewer component that displays the history entries. */
-    private JtvHistoryViewer viewer;
-
     /**
      * Seven-entry colour palette:
      * <ol>
@@ -62,6 +59,9 @@ public class JtvHistoryWindow extends JtvWindow {
     private static final JtvPalette cpHistoryWindow = new JtvPalette(
     		new int[] {0x13, 0x13, 0x15, 0x18, 0x17, 0x13, 0x14}
     );
+
+    /** The list-viewer component that displays the history entries. */
+    private JtvHistoryViewer viewer;
 
     /**
      * Creates a history window with the given bounds and history ID.

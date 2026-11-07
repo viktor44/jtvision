@@ -64,14 +64,14 @@ public class JtvMenuBox extends JtvMenuView {
      *
      * @param bounds       the initial bounding rectangle (adjusted by
      *                     {@link #adjustBounds()} before display)
-     * @param aMenu        the {@link JtvMenu} whose items to display
-     * @param aParentMenu  the owning {@link JtvMenuView} (e.g. the bar), or
+     * @param menu        the {@link JtvMenu} whose items to display
+     * @param parentMenu  the owning {@link JtvMenuView} (e.g. the bar), or
      *                     {@code null} for a standalone pop-up
      */
-    public JtvMenuBox(JtvRect bounds, JtvMenu aMenu, JtvMenuView aParentMenu) {
-        super(bounds, aMenu);
-        parentMenu = aParentMenu;
-        state |= sfShadow;
+    public JtvMenuBox(JtvRect bounds, JtvMenu menu, JtvMenuView parentMenu) {
+        super(bounds, menu);
+        this.parentMenu = parentMenu;
+        this.state |= sfShadow;
         enableOptions(ofPreProcess);
     }
 

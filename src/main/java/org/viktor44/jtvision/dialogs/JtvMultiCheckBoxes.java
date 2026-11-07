@@ -25,6 +25,9 @@ import org.viktor44.jtvision.core.JtvRect;
  */
 public class JtvMultiCheckBoxes extends JtvCluster {
 
+    /** Icon template drawn for each item: {@code " [ ] "}. */
+    private static final String multiCheckIcon = " [ ] ";
+
     /** Number of distinct states each item can cycle through. */
     private int selRange;
 
@@ -36,9 +39,6 @@ public class JtvMultiCheckBoxes extends JtvCluster {
 
     /** Characters used to render each state index inside the check-box icon. */
     private String states;
-
-    /** Icon template drawn for each item: {@code " [ ] "}. */
-    private static final String multiCheckIcon = " [ ] ";
 
     /**
      * Creates a multi-state check-box cluster.

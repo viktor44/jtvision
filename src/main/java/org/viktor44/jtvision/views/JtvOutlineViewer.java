@@ -100,11 +100,6 @@ public abstract class JtvOutlineViewer extends JtvScroller {
     protected static final int ovLast = 0x04;
 
     /**
-     * The index in the flat visible-node list of the currently focused node.
-     */
-    protected int foc;
-
-    /**
      * Four-entry colour palette:
      * <ol>
      *   <li>{@code 0x06} — normal text.</li>
@@ -114,6 +109,11 @@ public abstract class JtvOutlineViewer extends JtvScroller {
      * </ol>
      */
     private static final JtvPalette cpOutlineViewer = new JtvPalette(new int[] {0x06, 0x07, 0x03, 0x08});
+
+    /**
+     * The index in the flat visible-node list of the currently focused node.
+     */
+    protected int foc;
 
     /**
      * Constructs an outline viewer with the given bounds and optional scroll

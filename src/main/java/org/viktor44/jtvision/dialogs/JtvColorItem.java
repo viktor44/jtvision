@@ -4,6 +4,8 @@
  */
 package org.viktor44.jtvision.dialogs;
 
+import lombok.Getter;
+
 /**
  * A named colour-palette item within a {@link JtvColorGroup}.
  * <p>
@@ -17,9 +19,11 @@ package org.viktor44.jtvision.dialogs;
 public class JtvColorItem {
 
     /** The display name shown in the colour item list. */
+	@Getter
     private String name;
 
 	/** The index into the application palette that this item controls. */
+	@Getter
     private int index;
 
     /**
@@ -32,14 +36,4 @@ public class JtvColorItem {
         name = nm;
         index = idx;
     }
-
-    /** The display name shown in the colour item list. */
-    public String getName() {
-		return name;
-	}
-
-	/** The index into the application palette that this item controls. */
-	public int getIndex() {
-		return index;
-	}
 }

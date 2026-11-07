@@ -36,6 +36,7 @@
 		<maven-surefire-plugin.version>3.5.5</maven-surefire-plugin.version>
 
 		<assertj.version>3.27.7</assertj.version>
+		<javadoc2md.version>1.0.0</javadoc2md.version>
 		<jansi.version>2.4.3</jansi.version>
 		<junit-jupiter.version>5.14.3</junit-jupiter.version>
 	    <logback.version>1.5.32</logback.version>
@@ -206,6 +207,73 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<!-- Markdown API docs for the website. Run on demand: m25.bat javadoc:javadoc -Pmarkdown-docs (or generate-resources). The staleness marker lives in the output dir, so deleting website/docs/api forces regeneration; delete it also after changing sources of the doclet. -->
+		<profile>
+			<id>markdown-docs</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.projectlombok</groupId>
+						<artifactId>lombok-maven-plugin</artifactId>
+						<version>${lombok-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>delombok-md</id>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>delombok</goal>
+								</goals>
+								<configuration>
+									<addOutputDirectory>false</addOutputDirectory>
+									<sourceDirectory>src/main/java</sourceDirectory>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>${maven-javadoc-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>markdown-javadoc</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>javadoc</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<doclet>org.viktor44.javadoc2md.MarkdownDoclet</doclet>
+							<docletArtifact>
+								<groupId>org.viktor44.javadoc</groupId>
+								<artifactId>javadoc2md</artifactId>
+								<version>${javadoc2md.version}</version>
+							</docletArtifact>
+							<useStandardDocletOptions>false</useStandardDocletOptions>
+							<staleDataPath>${project.basedir}/website/docs/api/.javadoc-stale.txt</staleDataPath>
+							<disableNoFonts>true</disableNoFonts>
+							<sourcepath>${project.build.directory}/generated-sources/delombok</sourcepath>
+							<subpackages>org.viktor44.jtvision</subpackages>
+							<excludePackageNames>org.viktor44.jtvision.hello</excludePackageNames>
+							<doclint>none</doclint>
+							<quiet>true</quiet>
+							<additionalOptions>
+								<additionalOption>-d</additionalOption>
+								<additionalOption>${project.basedir}/website/docs/api</additionalOption>
+								<additionalOption>-e</additionalOption>
+								<additionalOption>md</additionalOption>
+								<additionalOption>-a</additionalOption>
+								<additionalOption>docusaurus</additionalOption>
+							</additionalOptions>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<dependencies>
 		<dependency>

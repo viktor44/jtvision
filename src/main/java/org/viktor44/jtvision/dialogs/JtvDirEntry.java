@@ -4,6 +4,8 @@
  */
 package org.viktor44.jtvision.dialogs;
 
+import lombok.Getter;
+
 /**
  * A data object representing a single entry in the directory tree list.
  * <p>
@@ -16,9 +18,11 @@ package org.viktor44.jtvision.dialogs;
 public class JtvDirEntry {
 
     /** The formatted text shown in the directory list (includes tree-drawing prefix characters). */
+	@Getter
     private final String displayText;
 
     /** The absolute path of the directory this entry represents. */
+    @Getter
     private final String directory;
 
     /**
@@ -30,23 +34,5 @@ public class JtvDirEntry {
     public JtvDirEntry(String txt, String dir) {
         displayText = txt;
         directory = dir;
-    }
-
-    /**
-     * Returns the absolute path of the directory this entry represents.
-     *
-     * @return the absolute directory path
-     */
-    public String dir() {
-        return directory;
-    }
-
-    /**
-     * Returns the formatted display text for this entry as shown in the list.
-     *
-     * @return the display string including tree-drawing prefix characters
-     */
-    public String text() {
-        return displayText;
     }
 }

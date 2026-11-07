@@ -27,6 +27,8 @@ import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.util.MessageBox;
 import org.viktor44.jtvision.views.JtvScrollBar;
 
+import lombok.Getter;
+
 /**
  * A dialog box for changing the current working directory.
  * <p>
@@ -72,6 +74,7 @@ public class JtvChangeDirDialog extends JtvDialog {
      * the tree list box. Exposed so that {@link JtvDirListBox} can toggle its
      * default state when the list box receives or loses focus.
      */
+    @Getter
     private JtvButton chDirButton;
 
     /**
@@ -168,7 +171,7 @@ public class JtvChangeDirDialog extends JtvDialog {
             case cmChangeDir:
                 if (event.getMessage().getInfoPtr() instanceof JtvDirEntry) {
                     JtvDirEntry p = (JtvDirEntry) event.getMessage().getInfoPtr();
-                    curDir = p.dir();
+                    curDir = p.getDirectory();
                 }
                 else {
                     return;
@@ -234,13 +237,4 @@ public class JtvChangeDirDialog extends JtvDialog {
         System.setProperty("user.dir", f.getAbsolutePath());
         return true;
     }
-
-    /**
-     * The Chdir button that navigates to the directory currently selected in
-     * the tree list box. Exposed so that {@link JtvDirListBox} can toggle its
-     * default state when the list box receives or loses focus.
-     */
-    public JtvButton getChDirButton() {
-		return chDirButton;
-	}
 }

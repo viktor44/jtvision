@@ -44,6 +44,22 @@ import org.viktor44.jtvision.views.JtvScrollBar;
  */
 public class JtvColorDialog extends JtvDialog {
 
+    /**
+     * Static storage for the per-group selected-item indices, shared across
+     * successive openings of the colour dialog.
+     */
+    private static JtvColorIndex colorIndexes;
+
+    private static final String colors = "Colors";
+    private static final String groupText = "~G~roups";
+    private static final String itemText = "~I~tems";
+    private static final String forText = "~F~ore";
+    private static final String bakText = "~B~ack";
+    private static final String textText = "Text";
+    private static final String colorText = "~C~olor";
+    private static final String okText = "~O~K";
+    private static final String cancelText = "Cancel";
+
     /** Working copy of the application palette being edited. */
     private JtvPalette pal;
 
@@ -76,22 +92,6 @@ public class JtvColorDialog extends JtvDialog {
      * Persisted via the static {@link #colorIndexes} field.
      */
     private int groupIndex;
-
-    /**
-     * Static storage for the per-group selected-item indices, shared across
-     * successive openings of the colour dialog.
-     */
-    private static JtvColorIndex colorIndexes;
-
-    private static final String colors = "Colors";
-    private static final String groupText = "~G~roups";
-    private static final String itemText = "~I~tems";
-    private static final String forText = "~F~ore";
-    private static final String bakText = "~B~ack";
-    private static final String textText = "Text";
-    private static final String colorText = "~C~olor";
-    private static final String okText = "~O~K";
-    private static final String cancelText = "Cancel";
 
     /**
      * Creates the colour dialog box.

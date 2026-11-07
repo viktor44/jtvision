@@ -29,8 +29,8 @@ public class JtvMemo extends JtvEditor {
      * @param indicator   optional position indicator, or {@code null}
      * @param bufferSize     maximum buffer size in characters
      */
-    public JtvMemo(JtvRect bounds, JtvScrollBar hScrollBar, JtvScrollBar vScrollBar, JtvIndicator indicator, int bufferSize) {
-        super(bounds, hScrollBar, vScrollBar, indicator, bufferSize);
+    public JtvMemo(JtvRect bounds, JtvScrollBar hScrollBar, JtvScrollBar vScrollBar, JtvIndicator indicator) {
+        super(bounds, hScrollBar, vScrollBar, indicator);
     }
 
     /**

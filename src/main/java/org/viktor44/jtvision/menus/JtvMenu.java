@@ -53,18 +53,16 @@ public class JtvMenu {
      * Constructs an empty menu with no items and no default.
      */
     public JtvMenu() {
-        defaultItem = null;
     }
 
     /**
      * Constructs a menu and adds {@code aItems} (and any chained items).
      * The default item is set to the first inserted item.
      *
-     * @param aItems the first {@link JtvMenuItem} to add
+     * @param items the first {@link JtvMenuItem} to add
      */
-    public JtvMenu(JtvMenuItem aItems) {
-        defaultItem = null;
-        addItem(aItems);
+    public JtvMenu(JtvMenuItem items) {
+        addItem(items);
     }
 
     public JtvMenu addItem(JtvMenuItem item) {

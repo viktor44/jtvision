@@ -11,6 +11,8 @@ import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.views.JtvListViewer;
 import org.viktor44.jtvision.views.JtvScrollBar;
 
+import lombok.Getter;
+
 /**
  * A scrollable list-box control backed by a {@link List} of strings.
  * <p>
@@ -28,6 +30,7 @@ import org.viktor44.jtvision.views.JtvScrollBar;
 public class JtvListBox extends JtvListViewer {
 
     /** The list of string items displayed in the list box. */
+	@Getter
     protected List<String> list;
 
     /**
@@ -82,25 +85,6 @@ public class JtvListBox extends JtvListViewer {
             focusItem(0);
         }
         drawView();
-    }
-
-    /**
-     * Returns the current list of items.
-     *
-     * @return the backing list
-     */
-    public List<String> getList() {
-        return list;
-    }
-
-    /**
-     * Reads the focused item index. Callers should read the {@code focused} field directly.
-     *
-     * @param rec the destination record (unused)
-     */
-    @Override
-    public void getDataTo(Object rec) {
-        // Caller should read focused field
     }
 
     /**

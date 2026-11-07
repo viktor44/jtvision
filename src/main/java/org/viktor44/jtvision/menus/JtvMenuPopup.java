@@ -30,9 +30,9 @@ public class JtvMenuPopup extends JtvMenuBox {
      *
      * @param bounds the initial bounding rectangle (adjusted by
      *               {@link JtvMenuBox#adjustBounds()} before display)
-     * @param aMenu  the {@link JtvMenu} whose items to display
+     * @param menu  the {@link JtvMenu} whose items to display
      */
-    public JtvMenuPopup(JtvRect bounds, JtvMenu aMenu) {
-        super(bounds, aMenu, null);
+    public JtvMenuPopup(JtvRect bounds, JtvMenu menu) {
+        super(bounds, menu, null);
     }
 }

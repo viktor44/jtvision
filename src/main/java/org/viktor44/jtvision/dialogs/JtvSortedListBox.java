@@ -44,7 +44,7 @@ public class JtvSortedListBox extends JtvListBox {
     protected int searchPos;
 
     /** The raw item objects in sorted order. */
-    protected final List<Object> items = new ArrayList<Object>();
+    protected final List<Object> items = new ArrayList<>();
 
     /** The current incremental search prefix string. */
     protected String searchPrefix = "";

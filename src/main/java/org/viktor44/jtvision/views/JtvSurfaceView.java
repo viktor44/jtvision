@@ -35,6 +35,14 @@ import org.viktor44.jtvision.core.JtvScreenCell;
 public class JtvSurfaceView extends JtvView {
 
     /**
+     * Single-entry colour palette:
+     * <ol>
+     *   <li>{@code 1} — background/empty cell colour.</li>
+     * </ol>
+     */
+    private static final JtvPalette cpSurfaceView = new JtvPalette(new int[] {1});
+
+    /**
      * The {@link JtvDrawSurface} whose cells this view renders. May be
      * {@code null}, in which case the entire view is filled with the
      * background colour.
@@ -46,14 +54,6 @@ public class JtvSurfaceView extends JtvView {
      * that maps to position {@code (0, 0)} in this view.
      */
     private JtvPoint delta = new JtvPoint();
-
-    /**
-     * Single-entry colour palette:
-     * <ol>
-     *   <li>{@code 1} — background/empty cell colour.</li>
-     * </ol>
-     */
-    private static final JtvPalette cpSurfaceView = new JtvPalette(new int[] {1});
 
     /**
      * Constructs a surface view with the given bounds and no attached surface.

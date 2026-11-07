@@ -97,7 +97,7 @@ public class JtvFileEditor extends JtvEditor {
      * @param fileName    path of the file to edit, or empty/null for a new untitled file
      */
     public JtvFileEditor(JtvRect bounds, JtvScrollBar hScrollBar, JtvScrollBar vScrollBar, JtvIndicator indicator, String fileName) {
-        super(bounds, hScrollBar, vScrollBar, indicator, 0x1000);
+        super(bounds, hScrollBar, vScrollBar, indicator);
         this.fileName = normalizeFileName(fileName);
         if (!fileName.isEmpty()) {
             isValid = loadFile();

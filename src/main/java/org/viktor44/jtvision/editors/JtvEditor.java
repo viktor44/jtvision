@@ -103,25 +103,19 @@ public class JtvEditor extends JtvView {
     protected static final JtvPalette cpEditor = new JtvPalette(new int[] {6, 7});
 
     /** Horizontal scroll bar, or {@code null} if none. */
-    protected JtvScrollBar hScrollBar;
+    private JtvScrollBar hScrollBar;
 
     /** Vertical scroll bar, or {@code null} if none. */
-    protected JtvScrollBar vScrollBar;
+    private JtvScrollBar vScrollBar;
 
     /**
      * Line/column indicator view, or {@code null} if none.
      * Updated after every cursor movement via {@link JtvIndicator#setValue}.
      */
-    protected JtvIndicator indicator;
+    private JtvIndicator indicator;
 
     /** The text content being edited. */
     protected StringBuilder buffer = new StringBuilder();
-
-    /**
-     * Maximum size of the edit buffer in characters.
-     * Passed to the constructor and used to cap buffer growth.
-     */
-    protected int bufSize;
 
     /**
      * Current number of characters in the buffer ({@code buffer.length()}).
@@ -248,13 +242,12 @@ public class JtvEditor extends JtvView {
      * @param indicator   optional position indicator, or {@code null}
      * @param bufSize     initial buffer capacity (minimum {@code 0x1000})
      */
-    public JtvEditor(JtvRect bounds, JtvScrollBar hScrollBar, JtvScrollBar vScrollBar, JtvIndicator indicator, int bufSize) {
+    public JtvEditor(JtvRect bounds, JtvScrollBar hScrollBar, JtvScrollBar vScrollBar, JtvIndicator indicator) {
         super(bounds);
         
         this.hScrollBar = hScrollBar;
         this.vScrollBar = vScrollBar;
         this.indicator = indicator;
-        this.bufSize = Math.max(0x1000, bufSize);
         enableOptions(ofSelectable);
         this.eventMask = evMouseDown | evKeyDown | evPaste | evCommand | evBroadcast;
         

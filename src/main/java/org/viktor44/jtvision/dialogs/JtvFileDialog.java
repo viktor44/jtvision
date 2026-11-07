@@ -38,6 +38,8 @@ import org.viktor44.jtvision.core.JtvRect;
 import org.viktor44.jtvision.util.MessageBox;
 import org.viktor44.jtvision.views.JtvScrollBar;
 
+import lombok.Getter;
+
 /**
  * A standard file-open / file-save dialog box.
  * <p>
@@ -84,6 +86,7 @@ public class JtvFileDialog extends JtvDialog {
      * The filename input line.
      * Exposed so callers can read or set the filename programmatically.
      */
+    @Getter
     private JtvFileInputLine fileName;
 
 	/** The file list box that displays directory contents. */
@@ -93,11 +96,13 @@ public class JtvFileDialog extends JtvDialog {
      * The current wildcard filter (e.g., {@code "*.java"}).
      * Updated when the user types a wildcard pattern in the input line.
      */
+    @Getter
     private String wildCard;
 
 	/**
      * The absolute path of the directory currently displayed, always ending with a file separator character.
      */
+    @Getter
     private String directory;
 
     /**
@@ -387,27 +392,4 @@ public class JtvFileDialog extends JtvDialog {
         }
         return true;
     }
-
-    /**
-     * The filename input line.
-     * Exposed so callers can read or set the filename programmatically.
-     */
-    public JtvFileInputLine getFileName() {
-		return fileName;
-	}
-
-    /**
-     * The current wildcard filter (e.g., {@code "*.java"}).
-     * Updated when the user types a wildcard pattern in the input line.
-     */
-    public String getWildCard() {
-		return wildCard;
-	}
-
-	/**
-     * The absolute path of the directory currently displayed, always ending with a file separator character.
-     */
-    public String getDirectory() {
-		return directory;
-	}
 }

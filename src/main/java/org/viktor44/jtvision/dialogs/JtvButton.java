@@ -37,6 +37,8 @@ import org.viktor44.jtvision.platform.Screen;
 import org.viktor44.jtvision.util.StringUtils;
 import org.viktor44.jtvision.views.JtvView;
 
+import lombok.Getter;
+
 /**
  * A titled push-button view that generates a command event when pressed.
  * <p>
@@ -92,11 +94,15 @@ public class JtvButton extends JtvView {
     private static final char[] markers = {'[', ']'};
     /** Special edge characters used in monochrome mode to indicate selected, default, or normal state. */
     private static final char[] specialChars = {'»', ' ', '«', ' ', ' ', ' '};
+    /** Duration of the press animation in milliseconds. */
+    private static final int animationDurationMs = 100;
 
     /** The text label of the button. Enclose a character in tildes to define a hot-key (e.g., {@code "~O~K"}). */
+    @Getter
     private String title;
 
 	/** The command code posted when the button is pressed. */
+    @Getter
     private int command;
 
 	/**
@@ -104,10 +110,12 @@ public class JtvButton extends JtvView {
      * See {@code bfXXXX} flag constants ({@code bfDefault}, {@code bfLeftJust},
      * {@code bfBroadcast}, {@code bfGrabFocus}).
      */
+    @Getter
     private int flags;
 
 	/** {@code true} when this button is currently acting as the default button (pressed on Enter). */
-    private boolean amDefault;
+    @Getter
+    private boolean defaultButton;
 
 	/**
      * Creates a button with the given bounds, label, command, and flags.
@@ -125,7 +133,7 @@ public class JtvButton extends JtvView {
         title = aTitle;
         command = aCommand;
         flags = aFlags;
-        amDefault = (aFlags & bfDefault) != 0;
+        defaultButton = (aFlags & bfDefault) != 0;
         enableOptions(ofSelectable, ofFirstClick, ofPreProcess, ofPostProcess);
         eventMask |= evBroadcast;
         if (!commandEnabled(aCommand)) {
@@ -162,7 +170,7 @@ public class JtvButton extends JtvView {
                 if (isInState(sfSelected)) {
                     cButton = getColor(3); cButtonHot = getColor(7);
                 }
-                else if (amDefault) {
+                else if (defaultButton) {
                     cButton = getColor(2); cButtonHot = getColor(6);
                 }
             }
@@ -236,7 +244,7 @@ public class JtvButton extends JtvView {
             if (isInState(sfSelected)) {
                 scOff = 0;
             }
-            else if (amDefault) {
+            else if (defaultButton) {
                 scOff = 2;
             }
             else {
@@ -325,7 +333,7 @@ public class JtvButton extends JtvView {
             case evBroadcast:
                 switch (event.getMessage().getCommand()) {
                     case cmDefault:
-                        if (amDefault && isNotInState(sfDisabled)) {
+                        if (defaultButton && isNotInState(sfDisabled)) {
                             animatePress();
                             clearEvent(event);
                         }
@@ -333,7 +341,7 @@ public class JtvButton extends JtvView {
                     case cmGrabDefault:
                     case cmReleaseDefault:
                         if ((flags & bfDefault) != 0) {
-                            amDefault = event.getMessage().getCommand() == cmReleaseDefault;
+                            defaultButton = event.getMessage().getCommand() == cmReleaseDefault;
                             drawView();
                         }
                         break;
@@ -357,7 +365,7 @@ public class JtvButton extends JtvView {
         if ((flags & bfDefault) == 0) {
             message(owner, evBroadcast,
                     enable ? cmGrabDefault : cmReleaseDefault, this);
-            amDefault = enable;
+            defaultButton = enable;
             drawView();
         }
     }
@@ -379,9 +387,6 @@ public class JtvButton extends JtvView {
             makeDefault(enable);
         }
     }
-
-    /** Duration of the press animation in milliseconds. */
-    private static final int animationDurationMs = 100;
 
     /**
      * Briefly renders the button as pressed, flushes the screen, waits
@@ -422,28 +427,4 @@ public class JtvButton extends JtvView {
             putEvent(e);
         }
     }
-
-    /** The text label of the button. Enclose a character in tildes to define a hot-key (e.g., {@code "~O~K"}). */
-    public String getTitle() {
-		return title;
-	}
-
-	/** The command code posted when the button is pressed. */
-    public int getCommand() {
-		return command;
-	}
-
-	/**
-     * Bitmapped field controlling button behaviour and label alignment.
-     * See {@code bfXXXX} flag constants ({@code bfDefault}, {@code bfLeftJust},
-     * {@code bfBroadcast}, {@code bfGrabFocus}).
-     */
-    public int getFlags() {
-		return flags;
-	}
-
-	/** {@code true} when this button is currently acting as the default button (pressed on Enter). */
-    public boolean isAmDefault() {
-		return amDefault;
-	}
 }

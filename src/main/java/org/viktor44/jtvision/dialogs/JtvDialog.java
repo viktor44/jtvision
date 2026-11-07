@@ -228,10 +228,10 @@ public class JtvDialog extends JtvWindow {
      * and the default gray palette.
      *
      * @param bounds the bounding rectangle of the dialog
-     * @param aTitle the title bar string
+     * @param title the title bar string
      */
-    public JtvDialog(JtvRect bounds, String aTitle) {
-        super(bounds, aTitle, wnNoNumber);
+    public JtvDialog(JtvRect bounds, String title) {
+        super(bounds, title, wnNoNumber);
         growMode = 0;
         flags = wfMove | wfClose;
         paletteIndex = dpGrayDialog;

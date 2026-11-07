@@ -32,16 +32,16 @@ import lombok.Getter;
  */
 public class JtvEditWindow extends JtvWindow {
 
+	/** Window title used when the editor is acting as the clipboard (not used by default). */
+    private static final String clipboardTitle = "Clipboard";
+    /** Window title shown when no file name has been assigned. */
+    private static final String untitled = "Untitled";
+
     /**
      * The embedded file editor view.  All text editing is performed by this object.
      */
 	@Getter
     private JtvFileEditor editor;
-
-	/** Window title used when the editor is acting as the clipboard (not used by default). */
-    private static final String clipboardTitle = "Clipboard";
-    /** Window title shown when no file name has been assigned. */
-    private static final String untitled = "Untitled";
 
     /**
      * Constructs an editor window, creating and inserting horizontal and vertical scroll bars,

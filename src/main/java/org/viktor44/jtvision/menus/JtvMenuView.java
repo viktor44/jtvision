@@ -128,11 +128,11 @@ public class JtvMenuView extends JtvView {
      * Adds {@code evBroadcast} to the event mask.
      *
      * @param bounds the bounding rectangle
-     * @param aMenu  the {@link JtvMenu} whose items to display
+     * @param menu  the {@link JtvMenu} whose items to display
      */
-    public JtvMenuView(JtvRect bounds, JtvMenu aMenu) {
+    public JtvMenuView(JtvRect bounds, JtvMenu menu) {
         super(bounds);
-        menu = aMenu;
+        menu = menu;
         eventMask |= evBroadcast;
     }
 

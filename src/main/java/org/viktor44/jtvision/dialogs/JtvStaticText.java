@@ -34,9 +34,6 @@ import org.viktor44.jtvision.views.JtvView;
  */
 public class JtvStaticText extends JtvView {
 
-    /** The text string to display. Lines ending with {@code \n} are wrapped. */
-    protected String text;
-
     /**
      * Single-entry colour palette:
      * <ol>
@@ -44,6 +41,9 @@ public class JtvStaticText extends JtvView {
      * </ol>
      */
     private static final JtvPalette cpStaticText = new JtvPalette(new int[] {6});
+
+    /** The text string to display. Lines ending with {@code \n} are wrapped. */
+    private String text;
 
     /**
      * Creates a static text view with the given bounds and text.

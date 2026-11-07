@@ -28,6 +28,8 @@ import org.viktor44.jtvision.core.JtvPalette;
 import org.viktor44.jtvision.core.JtvPoint;
 import org.viktor44.jtvision.core.JtvRect;
 
+import lombok.Getter;
+
 /**
  * A scrollable list view that displays a range of selectable items in one or
  * more columns.
@@ -68,6 +70,31 @@ import org.viktor44.jtvision.core.JtvRect;
 public class JtvListViewer extends JtvView {
 
     /**
+     * Characters used to mark list items when {@link JtvView#showMarkers} is
+     * {@code true}. Layout: {@code [focLeft, focRight, selLeft, selRight,
+     * normLeft, normRight]}, where the pairs are the left/right edge markers
+     * for focused, selected, and normal items respectively.
+     * <ul>
+     *   <li>{@code »} (») — left marker for selected items.</li>
+     *   <li>{@code «} («) — right marker for selected items.</li>
+     *   <li>{@code •} (•) — left/right marker for focused items.</li>
+     * </ul>
+     */
+    public static final char[] specialChars = {' ', ' ', '»', '«', '•', ' '};
+
+    /**
+     * Five-entry colour palette:
+     * <ol>
+     *   <li>{@code 0x1A} — normal (active).</li>
+     *   <li>{@code 0x1A} — normal (inactive).</li>
+     *   <li>{@code 0x1B} — focused item.</li>
+     *   <li>{@code 0x1C} — selected item.</li>
+     *   <li>{@code 0x1D} — column separator.</li>
+     * </ol>
+     */
+    private static final JtvPalette cpListViewer = new JtvPalette(new int[] {0x1A, 0x1A, 0x1B, 0x1C, 0x1D});
+
+    /**
      * The number of display columns the list is divided into.
      * Items are distributed top-to-bottom within each column.
      */
@@ -81,6 +108,7 @@ public class JtvListViewer extends JtvView {
     /**
      * The index of the currently focused (keyboard-cursor) item.
      */
+    @Getter
     protected int focused;
 
 	/**
@@ -100,34 +128,9 @@ public class JtvListViewer extends JtvView {
     protected JtvScrollBar vScrollBar;
 
     /**
-     * Characters used to mark list items when {@link JtvView#showMarkers} is
-     * {@code true}. Layout: {@code [focLeft, focRight, selLeft, selRight,
-     * normLeft, normRight]}, where the pairs are the left/right edge markers
-     * for focused, selected, and normal items respectively.
-     * <ul>
-     *   <li>{@code »} (») — left marker for selected items.</li>
-     *   <li>{@code «} («) — right marker for selected items.</li>
-     *   <li>{@code •} (•) — left/right marker for focused items.</li>
-     * </ul>
-     */
-    public static final char[] specialChars = {' ', ' ', '»', '«', '•', ' '};
-
-    /**
      * Text displayed in the first cell when the list is empty ({@code range == 0}).
      */
     protected String emptyText = "";
-
-    /**
-     * Five-entry colour palette:
-     * <ol>
-     *   <li>{@code 0x1A} — normal (active).</li>
-     *   <li>{@code 0x1A} — normal (inactive).</li>
-     *   <li>{@code 0x1B} — focused item.</li>
-     *   <li>{@code 0x1C} — selected item.</li>
-     *   <li>{@code 0x1D} — column separator.</li>
-     * </ol>
-     */
-    private static final JtvPalette cpListViewer = new JtvPalette(new int[] {0x1A, 0x1A, 0x1B, 0x1C, 0x1D});
 
     /**
      * Constructs a list viewer with the given bounds, column count, and
@@ -566,11 +569,4 @@ public class JtvListViewer extends JtvView {
             drawView();
         }
     }
-
-    /**
-     * The index of the currently focused (keyboard-cursor) item.
-     */
-    public int getFocused() {
-		return focused;
-	}
 }

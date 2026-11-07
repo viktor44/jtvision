@@ -6,6 +6,8 @@ package org.viktor44.jtvision.views;
 
 import org.viktor44.jtvision.core.JtvRect;
 
+import lombok.Getter;
+
 /**
  * A concrete {@link JtvOutlineViewer} backed by a {@link JtvNode} linked tree.
  * <p>
@@ -29,6 +31,7 @@ public class JtvOutline extends JtvOutlineViewer {
      * The root node of the displayed tree. The remaining top-level nodes are
      * reachable via successive calls to {@link JtvNode#getNext()}.
      */
+	@Getter
     private JtvNode root;
 
     /**
@@ -58,16 +61,6 @@ public class JtvOutline extends JtvOutlineViewer {
         if (node != null) {
             node.setExpanded(expand);
         }
-    }
-
-    /**
-     * Returns the root node of this outline's tree.
-     *
-     * @return the root {@link JtvNode}, or {@code null} if the tree is empty
-     */
-    @Override
-    public JtvNode getRoot() {
-        return root;
     }
 
     /**

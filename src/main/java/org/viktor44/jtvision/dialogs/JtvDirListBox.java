@@ -34,15 +34,6 @@ import org.viktor44.jtvision.views.JtvScrollBar;
  */
 public class JtvDirListBox extends JtvListBox {
 
-    /** The {@link JtvDirEntry} objects currently displayed (parallel to the string list). */
-    private final List<JtvDirEntry> entries = new ArrayList<JtvDirEntry>();
-
-    /** The absolute path of the directory currently reflected in the list. */
-    private String dir = "";
-
-    /** The index within {@link #entries} of the currently selected (active) directory. */
-    private int cur;
-
     /** Prefix string for items on the path from root to the current directory. */
     private static final String pathDir = "|--";
     /** Prefix for the first drive entry when showing the drives list. */
@@ -53,6 +44,15 @@ public class JtvDirListBox extends JtvListBox {
     private static final String lastDir = " \\--";
     /** Special directory name that causes {@link #newDirectory(String)} to list drives. */
     private static final String drives = "Drives";
+
+    /** The {@link JtvDirEntry} objects currently displayed (parallel to the string list). */
+    private final List<JtvDirEntry> entries = new ArrayList<JtvDirEntry>();
+
+    /** The absolute path of the directory currently reflected in the list. */
+    private String dir = "";
+
+    /** The index within {@link #entries} of the currently selected (active) directory. */
+    private int cur;
 
     /**
      * Creates an empty directory list box with the given bounds and scroll bar.
@@ -77,7 +77,7 @@ public class JtvDirListBox extends JtvListBox {
         if (item < 0 || item >= entries.size()) {
             return "";
         }
-        String s = entries.get(item).text();
+        String s = entries.get(item).getDisplayText();
         return s.length() > maxLen ? s.substring(0, maxLen) : s;
     }
 
@@ -141,7 +141,7 @@ public class JtvDirListBox extends JtvListBox {
 
         List<String> listText = new ArrayList<String>();
         for (JtvDirEntry e : entries) {
-            listText.add(e.text());
+            listText.add(e.getDisplayText());
         }
         super.newList(listText);
         focusItemNum(Math.min(cur, Math.max(0, entries.size() - 1)));

@@ -30,21 +30,21 @@ public class JtvSubMenu extends JtvMenuItem {
     /**
      * Creates a submenu item with no help context.
      *
-     * @param aName the display label for this top-level menu entry
+     * @param name the display label for this top-level menu entry
      *              (may contain {@code ~} hot-key markers, e.g. {@code "~F~ile"})
      */
-    public JtvSubMenu(String aName) {
-        this(aName, null, 0);
+    public JtvSubMenu(String name) {
+        this(name, null, 0);
     }
 
     /**
      * Creates a submenu item with no help context.
      *
-     * @param aName       the display label (may contain {@code ~} hot-key markers)
-     * @param aKeyStroke  the Alt+letter keystroke that opens this submenu, or {@code null}
+     * @param name       the display label (may contain {@code ~} hot-key markers)
+     * @param keyStroke  the Alt+letter keystroke that opens this submenu, or {@code null}
      */
-    public JtvSubMenu(String aName, JtvKeyStroke aKeyStroke) {
-        this(aName, aKeyStroke, 0);
+    public JtvSubMenu(String name, JtvKeyStroke keyStroke) {
+        this(name, keyStroke, 0);
     }
 
     /**
@@ -52,12 +52,12 @@ public class JtvSubMenu extends JtvMenuItem {
      * created and assigned to {@link JtvMenuItem#subMenu}; items are added
      * via {@link #addItem(JtvMenuItem)}.
      *
-     * @param aName       the display label
-     * @param aKeyStroke  the Alt+letter keystroke, or {@code null}
-     * @param aHelpCtx    the help context number
+     * @param name       the display label
+     * @param keyStroke  the Alt+letter keystroke, or {@code null}
+     * @param helpCtx    the help context number
      */
-    public JtvSubMenu(String aName, JtvKeyStroke aKeyStroke, int aHelpCtx) {
-        super(aName, aKeyStroke, new JtvMenu(), aHelpCtx);
+    public JtvSubMenu(String name, JtvKeyStroke keyStroke, int helpCtx) {
+        super(name, keyStroke, new JtvMenu(), helpCtx);
     }
 
     /**

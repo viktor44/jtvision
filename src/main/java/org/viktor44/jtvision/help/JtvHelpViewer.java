@@ -61,6 +61,16 @@ import org.viktor44.jtvision.views.JtvScroller;
  */
 public class JtvHelpViewer extends JtvScroller {
 
+    /**
+     * Default colour palette for the help viewer:
+     * <ol>
+     *   <li>{@code 0x13} — normal text.</li>
+     *   <li>{@code 0x14} — cross-reference (keyword) text.</li>
+     *   <li>{@code 0x15} — selected cross-reference text.</li>
+     * </ol>
+     */
+    private static final JtvPalette cpHelpViewer = new JtvPalette(new int[] {0x13, 0x14, 0x15});
+
     /** The help file used to look up topics when following cross-references. */
     private JtvHelpFile hFile;
 
@@ -72,16 +82,6 @@ public class JtvHelpViewer extends JtvScroller {
      * A value of {@code 1} selects the first cross-reference.
      */
     private int selected;
-
-    /**
-     * Default colour palette for the help viewer:
-     * <ol>
-     *   <li>{@code 0x13} — normal text.</li>
-     *   <li>{@code 0x14} — cross-reference (keyword) text.</li>
-     *   <li>{@code 0x15} — selected cross-reference text.</li>
-     * </ol>
-     */
-    private static final JtvPalette cpHelpViewer = new JtvPalette(new int[] {0x13, 0x14, 0x15});
 
     /**
      * Constructs a help viewer, loads the initial topic for {@code context},

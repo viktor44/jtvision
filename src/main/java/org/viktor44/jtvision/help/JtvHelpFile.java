@@ -50,9 +50,6 @@ import java.util.Map;
  */
 public class JtvHelpFile {
 
-    /** Internal map from help-context ID to the corresponding topic. */
-    private final Map<Integer, JtvHelpTopic> topics = new HashMap<Integer, JtvHelpTopic>();
-
     /**
      * File signature written at the start of every JTVHELP file.
      * The eight bytes spell {@code "JTVHELP"} followed by a NUL terminator.
@@ -61,6 +58,9 @@ public class JtvHelpFile {
 
     /** The only accepted help-file format version number. */
     private static final int formatVersion = 1;
+
+    /** Internal map from help-context ID to the corresponding topic. */
+    private final Map<Integer, JtvHelpTopic> topics = new HashMap<Integer, JtvHelpTopic>();
 
     /**
      * Loads a help file from the given path and returns the populated
