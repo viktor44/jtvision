@@ -5,13 +5,12 @@ import { themes as prismThemes } from 'prism-react-renderer';
 const config = {
   title: 'JT Vision',
   tagline: 'A Java text-based UI framework inspired by Turbo Vision',
-//  url: 'https://viktor44.github.io',
-  url: 'http://tubido.local',
-  baseUrl: '/jtvision/',
+  url: 'https://jtvision.viktor44.org',
+  baseUrl: '/',
   organizationName: 'viktor44',
   projectName: 'jtvision',
   favicon: 'img/favicon.svg',
-  trailingSlash: false,
+  trailingSlash: true,
   onBrokenLinks: 'throw',
 
   markdown: {
@@ -25,9 +24,9 @@ const config = {
 
   presets: [
     [
-      'classic',
+      '@docusaurus/preset-classic',
       /** @type {import('@docusaurus/preset-classic').Options} */
-      ({
+      {
         docs: {
           routeBasePath: '/',
           sidebarPath: './sidebars.js',
@@ -35,7 +34,14 @@ const config = {
         },
         blog: false,
         theme: { customCss: './src/css/custom.css' },
-      }),
+        googleTagManager: {
+          containerId: 'GTM-T82BK7Q5',
+        },
+        gtag: {
+          trackingID: 'G-Y18T9JV7G7',
+          anonymizeIP: true,
+        },
+      },
     ],
   ],
 
